@@ -32,11 +32,15 @@
           <stringProp name="IncludeController.includepath">[TF]-DB-CONNECT.jmx</stringProp>
         </IncludeController>
         <hashTree/>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-GET_OAUTH_COOKIES" enabled="true">
+          <stringProp name="IncludeController.includepath">[TF]-GET_OAUTH_COOKIES.jmx</stringProp>
+        </IncludeController>
+        <hashTree/>
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">${tochka20_host}</stringProp>
+          <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-stepler.bank24.int</stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
@@ -123,11 +127,15 @@
         <boolProp name="ThreadGroup.same_user_on_next_iteration">false</boolProp>
       </ThreadGroup>
       <hashTree>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-DB-CONNECT" enabled="true">
+          <stringProp name="IncludeController.includepath">[TF]-DB-CONNECT.jmx</stringProp>
+        </IncludeController>
+        <hashTree/>
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">${tochka20_host}</stringProp>
+          <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-stepler.bank24.int</stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
@@ -148,6 +156,10 @@
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-SET_ENVIRONMENT" enabled="true">
           <stringProp name="IncludeController.includepath">[TF]-SET_ENVIRONMENT.jmx</stringProp>
+        </IncludeController>
+        <hashTree/>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-GET_OAUTH_COOKIES" enabled="true">
+          <stringProp name="IncludeController.includepath">[TF]-GET_OAUTH_COOKIES.jmx</stringProp>
         </IncludeController>
         <hashTree/>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TF`s" enabled="true"/>
