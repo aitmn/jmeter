@@ -33,8 +33,8 @@ services:
 #Приколоченные консул слои
     - CONSUL_LAYER_Stage=test
     - CONSUL_LAYER_Pre=pre
-#Время нагрузки по секундам
-    - HOLD_LOAD_SEC=${HOLD_LOAD_SEC}
+#Бейсик вторизация в админке степлера
+    - STEPLER_BASIC_ADMIN=${STEPLER_BASIC_ADMIN}
     volumes:
       - ./:${JMETER_PATH}
     command: jmeter -n -t ${JMETER_PATH}/test-plan/${FILE_NAME}.jmx -Jlayer=${LAYER} -Jusers=${USERS_NUMBER} -l /result/allure-results/result.jtl -j /result/jmeter.log -e -o /result/report/ 
