@@ -181,6 +181,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -328,6 +338,15 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть одна скидка на о
           <hashTree>
             <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
             <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что объекта full_price нет" enabled="true">
+              <stringProp name="JSON_PATH">$.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+              <stringProp name="EXPECTED_VALUE">[]</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -359,6 +378,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -449,6 +478,16 @@ now() ,
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -517,7 +556,7 @@ float result_discount = full_price - price_with_discount
 
 if ( result_discount == discount ){
 	AssertionResult.setFailure(false)
-} 
+}
 else {
 	AssertionResult.setFailure(true)
 	AssertionResult.setFailureMessage(&quot;Скидка не соответствует ранее проставленной&quot;)
@@ -557,6 +596,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -619,6 +668,15 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть две скидки на оп
           <hashTree>
             <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
             <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что объекта full_price нет" enabled="true">
+              <stringProp name="JSON_PATH">$.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+              <stringProp name="EXPECTED_VALUE">[]</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -650,6 +708,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -740,6 +808,16 @@ now() ,
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -907,6 +985,16 @@ now() ,
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1015,6 +1103,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1077,6 +1175,15 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть одна скидка на о
           <hashTree>
             <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
             <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что объекта full_price нет" enabled="true">
+              <stringProp name="JSON_PATH">$.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+              <stringProp name="EXPECTED_VALUE">[]</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1108,6 +1215,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1198,6 +1315,16 @@ now() ,
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1306,6 +1433,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1368,6 +1505,15 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть две скидки на оп
           <hashTree>
             <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
             <hashTree/>
+            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что объекта full_price нет" enabled="true">
+              <stringProp name="JSON_PATH">$.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+              <stringProp name="EXPECTED_VALUE">[]</stringProp>
+              <boolProp name="JSONVALIDATION">true</boolProp>
+              <boolProp name="EXPECT_NULL">false</boolProp>
+              <boolProp name="INVERT">false</boolProp>
+              <boolProp name="ISREGEX">false</boolProp>
+            </JSONPathAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1399,6 +1545,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1489,6 +1645,16 @@ now() ,
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1656,6 +1822,16 @@ now() ,
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1764,6 +1940,16 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <stringProp name="variableNames"></stringProp>
           </JDBCSampler>
           <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-234430262">updates</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
             <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename">${_allure_config_path}</stringProp>
