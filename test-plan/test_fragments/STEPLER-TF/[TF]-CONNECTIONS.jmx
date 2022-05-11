@@ -647,7 +647,7 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на метод\\n
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                   <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
                   <stringProp name="query">select customer_code from stepler_customer 
-	where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;)
+	where id not in (select customer_id from stepler_serviceconnection where status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
 				and organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
 				and taxation_type_id = &apos;7&apos;
 				and created &gt;= TO_TIMESTAMP(&apos;${__timeShift(yyyy-MM-dd,,-P60D,yesterday)}&apos;, &apos;YYYY/MM/DD&apos;)
