@@ -2,8 +2,8 @@
  	Author: Alexey Chichuk
 	Description: Groovy for create allure-results for JMeter
 	Date Create: 29.07.2021
-	Date Update: 28.04.2022
-	Version: 1.2.4
+	Date Update: 04.05.2022
+	Version: 1.2.5
 */
 
 import org.apache.jmeter.util.Document;
@@ -26,10 +26,13 @@ if (vars['AllureStory'] == null){
 else allureStory = vars['AllureStory']
 
 // AllureManualID annotation
-if (vars['AllureManualID'] == null){
+if (vars['AllureManualID'] == null || vars['AllureManualID'] == empty){
 	allureManualID = empty
 }
-else allureManualID = vars['AllureManualID']
+else allureManualID = '{' +
+		'"name":"AS_ID",' +
+		'"value":"' + vars['AllureManualID'] + '"' +
+		'},'
 
 // AllureFeature annotation
 if (vars['AllureFeature'] == null){
@@ -398,10 +401,7 @@ def addMoreMainStep(boolean addPoint){
 						'"name":"layer",' +
 						'"value":"jmeter"' +
 					'},'+
-					'{' +
-						'"name":"AS_ID",' +
-						'"value":"' + allureManualID + '"' +
-					'},'+
+					allureManualID + 
 					'{' +
 						'"name":"language",' +
 						'"value":"java"' +
