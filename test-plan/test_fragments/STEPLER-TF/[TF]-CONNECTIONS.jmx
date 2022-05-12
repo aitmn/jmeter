@@ -5662,7 +5662,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;11659&quot;);</stringProp>
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем отмену услуги в stepler_serviceconnection" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем активацию услуги в stepler_serviceconnection" enabled="true">
                 <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
                 <stringProp name="query">select status from stepler_serviceconnection ss 
 	where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;)</stringProp>
@@ -5676,7 +5676,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;11659&quot;);</stringProp>
                 <stringProp name="variableNames"></stringProp>
               </JDBCSampler>
               <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion = &apos;DISCONNECTED&apos; (Услугу отменилась)" enabled="true">
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion = &apos;CONNECTED&apos; (Услугу активировалась)" enabled="true">
                   <collectionProp name="Asserion.test_strings">
                     <stringProp name="699955089">status
 CONNECTED</stringProp>
