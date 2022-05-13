@@ -74,7 +74,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Нет персональных ски
           </WhileController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
-              <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
               <stringProp name="query">select customer_code from stepler_customer 
 	where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;)
 				and organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
@@ -160,7 +160,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Нет персональных ски
             </hashTree>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -255,7 +255,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -357,7 +357,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть одна скидка на о
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -459,7 +459,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Просаживаем персональную скидку по клиенту в БД" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">insert into stepler_discounttocustomer values (
 (select id from stepler_discounttocustomer order by id desc limit 1) + 1,
 true,
@@ -575,7 +575,7 @@ else {
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -687,7 +687,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть две скидки на оп
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -789,7 +789,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Просаживаем персональную скидку по клиенту в БД" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">insert into stepler_discounttocustomer values (
 (select id from stepler_discounttocustomer order by id desc limit 1) + 1,
 true,
@@ -966,7 +966,7 @@ else {
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Просаживаем персональную скидку по клиенту в БД" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">insert into stepler_discounttocustomer values (
 (select id from stepler_discounttocustomer order by id desc limit 1) + 1,
 true,
@@ -1082,7 +1082,7 @@ else {
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -1194,7 +1194,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть одна скидка на о
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -1296,7 +1296,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Просаживаем персональную скидку по клиенту в БД" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">insert into stepler_discounttocustomer values (
 (select id from stepler_discounttocustomer order by id desc limit 1) + 1,
 true,
@@ -1412,7 +1412,7 @@ else {
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -1524,7 +1524,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Есть две скидки на оп
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
@@ -1626,7 +1626,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Просаживаем персональную скидку по клиенту в БД" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">insert into stepler_discounttocustomer values (
 (select id from stepler_discounttocustomer order by id desc limit 1) + 1,
 true,
@@ -1803,7 +1803,7 @@ else {
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Просаживаем персональную скидку по клиенту в БД" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">insert into stepler_discounttocustomer values (
 (select id from stepler_discounttocustomer order by id desc limit 1) + 1,
 true,
@@ -1919,7 +1919,7 @@ else {
             <hashTree/>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
-            <stringProp name="dataSource">STEPER_${__P(layer)}</stringProp>
+            <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
             <stringProp name="query">delete from stepler_discounttocustomer sd 
 	where customer_id in (
 		select id 
