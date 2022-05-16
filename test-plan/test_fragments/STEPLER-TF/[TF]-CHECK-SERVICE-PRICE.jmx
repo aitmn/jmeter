@@ -14416,7 +14416,7 @@ where UD.STATE = &apos;Active&apos;
                 <hashTree/>
                 <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="account_code specific Extractor" enabled="true">
                   <stringProp name="JSONPostProcessor.referenceNames">account_code;bank_code;</stringProp>
-                  <stringProp name="JSONPostProcessor.jsonPathExprs">.[?(@.gkCode =~ /40802-1.*?/i &amp;&amp; @.currency == &apos;RUB&apos;)].code;.[?(@.gkCode =~ /40802-1.*?/i &amp;&amp; @.currency == &apos;RUB&apos;)].bankCode</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">.[?(@.gkCode =~ /40702-1.*?/i &amp;&amp; @.currency == &apos;RUB&apos;)].code;.[?(@.gkCode =~ /40702-1.*?/i &amp;&amp; @.currency == &apos;RUB&apos;)].bankCode</stringProp>
                   <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
                   <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND;NOT_FOUND</stringProp>
                 </JSONPostProcessor>
@@ -14751,6 +14751,7 @@ end;</stringProp>
               <hashTree/>
             </hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на доступные услуги" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
@@ -14768,7 +14769,6 @@ end;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
