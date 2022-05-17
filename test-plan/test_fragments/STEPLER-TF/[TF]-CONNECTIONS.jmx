@@ -27,8 +27,8 @@
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_service, без списания комиссии&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.connect_service)\\n\\n---\\nPrecondition\\nНайти клиента без подключенной услуги, подходящих под Персональную бухгалтерию для УСН 6%\\n\\nselect customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id=&apos;7&apos;;\\n\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\n\\nПроверить, что на счете недостаточно денег\\nhttps://apibank-http.query.consul-pre/v3/short/account/bankCode/code(из пункта выше)/balances\\nУменьшить сумму на счете можно с помощью перевода контрагентам&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;11656&quot;);</stringProp>
@@ -470,8 +470,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11656&quot;);</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\nДолжно быть достаточно денег для подключение услуги (пополнить счёт можно через [https://stand-helper.bank24.int](https://stand-helper.bank24.int))&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
@@ -516,12 +516,6 @@ vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
-              <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
-                <boolProp name="displayJMeterProperties">false</boolProp>
-                <boolProp name="displayJMeterVariables">true</boolProp>
-                <boolProp name="displaySystemProperties">false</boolProp>
-              </DebugSampler>
-              <hashTree/>
               <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &lt;= 5000)" enabled="true">
                 <stringProp name="WhileController.condition">${__javaScript(${available_balance} &lt;= 5000)}
 </stringProp>
@@ -1036,8 +1030,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service. Счёт валютный&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем ошибку валидации на валютный счет&quot;);
 //vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
@@ -1245,8 +1239,8 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Вилидация параметров запроса connect_cap_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
 //vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
@@ -2044,8 +2038,8 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service. На счете недостаточно средств&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНайти клиента без подключенной услуги, подходящих под Персональную бухгалтерию для УСН 6%\\nselect customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id=&apos;7&apos;;\\nПроверить, что у клиента есть открытый рублевый счет (для запроса нужна авторизация, номер счета начинается на 408*)\\nhttps://apibank-http.query.consul-pre/v3/short/account?bankCode=044525999&amp;owner=customer_code&amp;showClosed=false\\nПроверить, что на счете недостаточно денег\\nhttps://apibank-http.query.consul-pre/v3/short/account/bankCode/code(из пункта выше)/balances\\nУменьшить сумму на счете можно с помощью перевода контрагентам\\nСумму комиссии можно посмотреть во вложении СНО РКО и Тарифы бухгалтерии.xlsx&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;13105&quot;);</stringProp>
@@ -2556,8 +2550,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;13105&quot;);</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;REPORT&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение REPORT через connect_cap_service, без указания счета&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНайти клиента без подключенной услуги, подходящих под услугу Отчетность и ИП:\\n select customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id=&apos;1&apos; or taxation_type_id=&apos;4&apos;;\\nЮР лицо: select customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;LEGAL_ENTITY&apos;;\\nПроверить, что у клиента есть открытый рублевый счет (для запроса нужна авторизация)\\nhttps://apibank-http.query.consul-pre/v3/short/account?bankCode=044525999&amp;owner=customer_code&amp;showClosed=false\\nПроверить, что на счете достаточно денег\\nhttps://apibank-http.query.consul-pre/v3/short/account/bankCode/code(из пункта выше)/balances\\nПополнить счет, при необходимости, можно на https://stand-helper.bank24.int/&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;11674&quot;);</stringProp>
@@ -3144,8 +3138,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11674&quot;);</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;REPORT&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение REPORT через connect_service, без списания комиссии&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.connect_service)\\n\\n---\\nНайти клиента без подключенной услуги, подходящих под услугу &apos;Отчетность&apos;:\\n\\nИП: select customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id=&apos;1&apos; or taxation_type_id=&apos;4&apos;;\\n\\nЮР лицо: select customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;LEGAL_ENTITY&apos;;\\n\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\n\\nПроверить, что на счете недостаточно денег\\nhttps://apibank-http.query.consul-pre/v3/short/account/bankCode/code(из пункта выше)/balances\\nУменьшить сумму на счете можно с помощью перевода контрагентам&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;11669&quot;);</stringProp>
@@ -3590,9 +3584,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;11669&quot;);</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Подключение&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT_EMPLOYEE через connect_service&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Позитивное подключение TAX_COUNT_EMPLOYEE через connect_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\nДолжно быть достаточно денег для подключение услуги (пополнить счёт можно через [https://stand-helper.bank24.int](https://stand-helper.bank24.int))\\n\\nВ данном случае комиссия взимается в отдельном сервисе, и в запрос добавляется флаг external_processing = true&quot;);
 //vars.put(&quot;AllureManualID&quot;,&quot;11659&quot;);</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
@@ -4187,8 +4181,8 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Отмена подключения&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Отмена подключения&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Отмена ожидающей услуги (TAX_COUNT_EMPLOYEE)&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.v1.html?highlight=cancel_pending_service#stepler.api.v1.connect_api.cancel_pending_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\nДолжно быть достаточно денег для подключение услуги (пополнить счёт можно через [https://stand-helper.bank24.int](https://stand-helper.bank24.int))\\n\\nнеобходимо оставить заявку на услугу TAX_COUNT_EMPLOYEE и потом уже отменить ее&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;11670&quot;);</stringProp>
@@ -4890,8 +4884,8 @@ DISCONNECTED</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Услуги&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Активация&quot;);
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Активация услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Активация услуги (только TAX_COUNT_EMPLOYEE)&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.v1.html?highlight=activate_service#stepler.api.v1.connect_api.activate_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\nДолжно быть достаточно денег для подключение услуги (пополнить счёт можно через [https://stand-helper.bank24.int](https://stand-helper.bank24.int))\\n\\nнеобходимо оставить заявку на услугу TAX_COUNT_EMPLOYEE и потом уже отменить ее&quot;);
 vars.put(&quot;AllureManualID&quot;,&quot;11659&quot;);</stringProp>
