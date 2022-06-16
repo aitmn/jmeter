@@ -153,11 +153,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -167,7 +170,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -176,7 +179,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -193,7 +198,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;1&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;1&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;2&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -468,7 +481,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -518,11 +539,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -532,7 +556,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -541,7 +565,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -558,7 +584,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;2&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;2&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;2&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -713,27 +747,9 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_info</stringProp>
-                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;creating&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
-                <stringProp name="EXPECTED_VALUE">creating</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;{}&apos; (пустой объект)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">{}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -833,7 +849,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -883,11 +907,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -897,7 +924,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -906,7 +933,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -923,7 +952,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;3&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;3&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;3&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1078,27 +1115,9 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_info</stringProp>
-                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;shipping&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
-                <stringProp name="EXPECTED_VALUE">shipping</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;{}&apos; (пустой объект)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">{}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1198,7 +1217,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1248,11 +1275,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1262,7 +1292,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -1271,7 +1301,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -1288,7 +1320,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;4&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;4&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;3&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1443,27 +1483,9 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_info</stringProp>
-                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;received&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
-                <stringProp name="EXPECTED_VALUE">received</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;{}&apos; (пустой объект)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">{}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1563,7 +1585,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1613,11 +1643,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1627,7 +1660,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -1636,7 +1669,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -1653,7 +1688,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;7&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;7&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;3&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1693,7 +1736,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача краткой информации по задаче " enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача краткой информации по задаче (актуальные)" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1728,36 +1771,63 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..title → &apos;Документы электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Документы электронной подписи</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..sub_title → &apos;Передайте оригиналы документов&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..sub_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте оригиналы документов</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..state → &apos;new&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..state</stringProp>
-                <stringProp name="EXPECTED_VALUE">new</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача краткой информации по задаче (законченные)" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;: &quot;completed&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..type → &apos;delivery&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..type</stringProp>
-                <stringProp name="EXPECTED_VALUE">delivery</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1844,7 +1914,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender (актуальные)" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1879,36 +1949,117 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;Документы электронной подписи&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Документы электронной подписи</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;Передайте оригиналы документов&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].sub_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте оригиналы документов</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;new&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].state</stringProp>
-                <stringProp name="EXPECTED_VALUE">new</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;delivery&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].type</stringProp>
-                <stringProp name="EXPECTED_VALUE">delivery</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender (законченные)" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;: &quot;completed&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">blender-app.query.consul-test</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].title</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].sub_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].state</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1928,7 +2079,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1978,11 +2137,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1992,7 +2154,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -2001,7 +2163,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -2018,7 +2182,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;5&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;5&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;3&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2058,7 +2230,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача краткой информации по задаче " enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача краткой информации по задаче (актуальные)" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2070,6 +2242,60 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
   &quot;method&quot;: &quot;tasks&quot;,&#xd;
   &quot;params&quot;: {&#xd;
     &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача краткой информации по задаче (законченные)" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;: &quot;completed&quot;&#xd;
   }&#xd;
 }</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
@@ -2173,27 +2399,9 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Оригиналы документов получены&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Оригиналы документов получены</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_info</stringProp>
-                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;success&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
-                <stringProp name="EXPECTED_VALUE">success</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;{}&apos; (пустой объект)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">{}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -2209,7 +2417,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender (актуальные)" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2221,6 +2429,87 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
   &quot;method&quot;: &quot;tasks&quot;,&#xd;
   &quot;params&quot;: {&#xd;
     &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">blender-app.query.consul-test</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].title</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].sub_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].state</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;[]&apos; (пустой массив)" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender (законченные)" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;: &quot;completed&quot;&#xd;
   }&#xd;
 }</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
@@ -2293,7 +2582,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2343,11 +2640,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2357,7 +2657,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -2366,7 +2666,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -2383,7 +2685,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;6&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;6&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;3&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2538,9 +2848,9 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Оригиналы документов не получены&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Оригиналы документов не получены</stringProp>
+                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -2658,7 +2968,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -2708,11 +3026,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -2722,7 +3043,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -2731,7 +3052,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -2748,7 +3071,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;8&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;8&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;2&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3023,7 +3354,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3073,11 +3412,14 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого есть задача по доставке документов и активное заявление" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id from customer c 
+              <stringProp name="query">select c.customer_code, t.last_claim_status, t.id,cp.status from customer c 
 	inner join task t on t.customer_id  = c.id
+	inner join claim cm on cm.task_id = t.id
+	inner join claimpost cp on cp.claim_id = cm.id
 	where t.is_active = &apos;true&apos;
+		and cm.claim_type = &apos;2&apos;
 	order by random() 
 	limit 1 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -3087,7 +3429,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
               <stringProp name="resultSetHandler">Store as String</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change</stringProp>
+              <stringProp name="variableNames">customer_code,last_claim_status,task_id_for_change,claimpost_status_for_change</stringProp>
             </JDBCSampler>
             <hashTree>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Vars initial" enabled="true">
@@ -3096,7 +3438,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;&quot;);
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;customer_code&quot;, &quot;${customer_code_1}&quot;);
 vars.put(&quot;last_claim_status&quot;, &quot;${last_claim_status_1}&quot;);
-vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</stringProp>
+vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);
+vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_change_1}&quot;);
+</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
@@ -3109,11 +3453,19 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Меняем статус заявления на ${__Random(20,100)} (UNKNOWN)" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Меняем статус заявления на not in (1,2,3,4,5,6,7,8) (UNKNOWN)" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
-	set last_claim_status = &apos;${__Random(20,100)}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	set last_claim_status = &apos;${__Random(20,100,randomStatusID)}&apos;
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${randomStatusID}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;3&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3188,36 +3540,26 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..title → &apos;Документы электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Документы электронной подписи</stringProp>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.message → &apos;Server error&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Server error</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..sub_title → &apos;Передайте оригиналы документов&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..sub_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте оригиналы документов</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..state → &apos;new&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..state</stringProp>
-                <stringProp name="EXPECTED_VALUE">new</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result..type → &apos;delivery&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result..type</stringProp>
-                <stringProp name="EXPECTED_VALUE">delivery</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.data → &apos;ValueError: 92 is not a valid ClaimStatus&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.error.data</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;ValueError: ${randomStatusID} is not a valid ClaimStatus&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -3268,27 +3610,26 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings"/>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">true</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.message → &apos;Server error&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Server error</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_info</stringProp>
-                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;unknown&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
-                <stringProp name="EXPECTED_VALUE">unknown</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.data → &apos;ValueError: 92 is not a valid ClaimStatus&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.error.data</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;ValueError: ${randomStatusID} is not a valid ClaimStatus&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -3339,36 +3680,36 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;Документы электронной подписи&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Документы электронной подписи</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;Передайте оригиналы документов&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].sub_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте оригиналы документов</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;new&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].state</stringProp>
-                <stringProp name="EXPECTED_VALUE">new</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;delivery&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;[]&apos; (пустой массив)" enabled="true">
                 <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].type</stringProp>
-                <stringProp name="EXPECTED_VALUE">delivery</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -3388,7 +3729,15 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
 	set last_claim_status = &apos;${last_claim_status}&apos;
-	where id = ${task_id_for_change}</stringProp>
+	where id = ${task_id_for_change};
+
+update claim
+	set status = &apos;${last_claim_status}&apos;
+	where task_id = ${task_id_for_change};
+
+update claimpost
+	set status = &apos;${claimpost_status_for_change}&apos;
+	where claim_id in (select id from claim where task_id = ${task_id_for_change});</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>

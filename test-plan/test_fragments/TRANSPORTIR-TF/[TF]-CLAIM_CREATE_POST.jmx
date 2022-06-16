@@ -3676,9 +3676,18 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <intProp name="Assertion.test_type">16</intProp>
                   </ResponseAssertion>
                   <hashTree/>
-                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.message → &apos;1 validation error for ShipmentContactSchema\nphone\n  ensure this value has at least 1 characters (type=value_error.any_str.min_length; limit_value=1)&apos;" enabled="true">
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.message → &apos;Server error&apos;" enabled="true">
                     <stringProp name="JSON_PATH">.error.message</stringProp>
-                    <stringProp name="EXPECTED_VALUE">[&quot;1 validation error for ShipmentContactSchema\nphone\n  ensure this value has at least 1 characters (type=value_error.any_str.min_length; limit_value=1)&quot;]</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Server error</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.data → &apos;KeyError: &apos;phone&apos;&apos;" enabled="true">
+                    <stringProp name="JSON_PATH">.error.data</stringProp>
+                    <stringProp name="EXPECTED_VALUE">[&quot;KeyError: &apos;phone&apos;&quot;]</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -3817,7 +3826,7 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным contact_info (phone невалидный)" enabled="true">
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с корректным contact_info (phone c делением частей номера телефона на скобки)" enabled="true">
                   <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                     <collectionProp name="Arguments.arguments">
@@ -3840,7 +3849,98 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
     },&#xd;
     &quot;contact_info&quot;: {&#xd;
       &quot;fullname&quot;: &quot;${random_contact_name}&quot;,&#xd;
-	 &quot;phone&quot;: &quot;+79${__RandomString(20,ячсмитьбюфывапролджэёйцукенгшщзъ1234567890,randomPhone)}&quot;&#xd;
+      &quot;phone&quot;: &quot;+7(${__Random(900,999,)})${__Random(100,999,)}-${__Random(10,99,)}-${__Random(100,999,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;true&apos;" enabled="true">
+                    <stringProp name="JSON_PATH">.result</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="Удаляем заявку, восстанавливем изначальный статус заявки " enabled="true">
+                    <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                    <stringProp name="query">delete from claim where task_id = &apos;${task_id_for_change}&apos;;
+update task set last_claim_status = &apos;${last_claim_status}&apos; where id = &apos;${task_id_for_change}&apos;;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="queryType">Update Statement</stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="resultSetMaxRows"></stringProp>
+                    <stringProp name="resultVariable"></stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                  </JDBCPostProcessor>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Удаляем заявку из БД транспортира, чтобы не аффектило на следующие проверки" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">if (1 == 1){
+	log.info(&quot;&quot;)
+}</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным contact_info (phone невалидный по длине &gt; 20)" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;claim_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;shipping_method&quot;: &quot;pochta&quot;,&#xd;
+    &quot;source_address&quot;: {&#xd;
+      &quot;address&quot;: &quot;${full_address}&quot;,&#xd;
+      &quot;flat&quot;: &quot;${__Random(1,300,randomFlat)}&quot;,&#xd;
+      &quot;street&quot;: &quot;${street}&quot;,&#xd;
+      &quot;region&quot;: &quot;${region}&quot;,&#xd;
+      &quot;house&quot;: &quot;${house_type} ${house_name}&quot;,&#xd;
+      &quot;zipcode&quot;: &quot;${zipcode}&quot;,&#xd;
+      &quot;city&quot;: &quot;${city}&quot;&#xd;
+    },&#xd;
+    &quot;contact_info&quot;: {&#xd;
+      &quot;fullname&quot;: &quot;${random_contact_name}&quot;,&#xd;
+	 &quot;phone&quot;: &quot;+79${__RandomString(20,1234567890,randomPhone)}&quot;&#xd;
     },&#xd;
     &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
   }&#xd;
@@ -3874,9 +3974,9 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
                     <intProp name="Assertion.test_type">16</intProp>
                   </ResponseAssertion>
                   <hashTree/>
-                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;true&apos; " enabled="true">
-                    <stringProp name="JSON_PATH">.result</stringProp>
-                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .error.message → &apos;1 validation error for ShipmentContactSchema\nphone\n  ensure this value has at most 20 characters (type=value_error.any_str.max_length; limit_value=20)&apos; " enabled="true">
+                    <stringProp name="JSON_PATH">.error.message</stringProp>
+                    <stringProp name="EXPECTED_VALUE">[&quot;1 validation error for ShipmentContactSchema\nphone\n  ensure this value has at most 20 characters (type=value_error.any_str.max_length; limit_value=20)&quot;]</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -4775,29 +4875,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Сохраняем файлы, привязанные к задаче" enabled="true">
-              <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select link from &quot;document&quot; d 
-	where d.task_id  = &apos;${task_id_for_change}&apos; order by d.&quot;type&quot; asc</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">file_name</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Меняем статус заявления на 1 &apos;pending&apos;" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
@@ -5073,7 +5150,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача детальной информации о заявке после получения трек-номера" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача детальной информации о заявке до получения трек-номера" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -5108,18 +5185,18 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Сертификат электронной подписи&apos;)].url → &apos;${file_name_1}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Сертификат электронной подписи&apos;)].url → &apos;https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/1&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.documents.[?(@.name == &apos;Сертификат электронной подписи&apos;)].url</stringProp>
-                <stringProp name="EXPECTED_VALUE">${file_name_1}</stringProp>
+                <stringProp name="EXPECTED_VALUE">https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/1</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Заявление на выпуск сертификата электронной подписи&apos;)].url → &apos;${file_name_2}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Заявление на выпуск сертификата электронной подписи&apos;)].url → &apos;https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/2&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.documents.[?(@.name == &apos;Заявление на выпуск сертификата электронной подписи&apos;)].url</stringProp>
-                <stringProp name="EXPECTED_VALUE">${file_name_2}</stringProp>
+                <stringProp name="EXPECTED_VALUE">https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/2</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -5246,7 +5323,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
     },&#xd;
     &quot;contact_info&quot;: {&#xd;
       &quot;fullname&quot;: &quot;${random_contact_name}&quot;,&#xd;
-      &quot;phone&quot;: &quot;+79${__RandomString(20,1234567890)}&quot;&#xd;
+      &quot;phone&quot;: &quot;+79${__RandomString(9,1234567890)}&quot;&#xd;
     },&#xd;
     &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
   }&#xd;
@@ -5776,27 +5853,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_title</stringProp>
-                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.task_info</stringProp>
-                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;shipping&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
-                <stringProp name="EXPECTED_VALUE">shipping</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;{}&apos; (не отдаем информацию по задаче при статусе shipping)" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">{}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -6138,29 +6197,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Сохраняем файлы, привязанные к задаче" enabled="true">
-              <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-              <stringProp name="query">select link from &quot;document&quot; d 
-	where d.task_id  = &apos;${task_id_for_change}&apos; order by d.&quot;type&quot; asc</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">file_name</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Меняем статус заявления на 1 &apos;pending&apos;" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
@@ -6436,7 +6472,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача детальной информации о заявке после получения трек-номера" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача детальной информации о заявке до получения трек-номера" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -6471,18 +6507,18 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Сертификат электронной подписи&apos;)].url → &apos;${file_name_1}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Сертификат электронной подписи&apos;)].url → &apos;https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/1&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.documents.[?(@.name == &apos;Сертификат электронной подписи&apos;)].url</stringProp>
-                <stringProp name="EXPECTED_VALUE">${file_name_1}</stringProp>
+                <stringProp name="EXPECTED_VALUE">https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/1</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Заявление на выпуск сертификата электронной подписи&apos;)].url → &apos;${file_name_2}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.documents.[?(@.name == &apos;Заявление на выпуск сертификата электронной подписи&apos;)].url → &apos;https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/2&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.documents.[?(@.name == &apos;Заявление на выпуск сертификата электронной подписи&apos;)].url</stringProp>
-                <stringProp name="EXPECTED_VALUE">${file_name_2}</stringProp>
+                <stringProp name="EXPECTED_VALUE">https://${tochka15_host}/api/v1/transportir/pdf/${customer_code}/2</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -6687,17 +6723,17 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
   &quot;params&quot;: {&#xd;
     &quot;shipping_method&quot;: &quot;pochta&quot;,&#xd;
     &quot;source_address&quot;: {&#xd;
-      &quot;address&quot;: &quot;${full_address}&quot;,&#xd;
+      &quot;address&quot;: &quot;Какой-то неизвестный адрес, для получения ошибки от ems&quot;,&#xd;
       &quot;flat&quot;: &quot;${__Random(1,300,randomFlat)}&quot;,&#xd;
-      &quot;street&quot;: &quot;${street}&quot;,&#xd;
-      &quot;region&quot;: &quot;${region}&quot;,&#xd;
-      &quot;house&quot;: &quot;${house_type} ${house_name}&quot;,&#xd;
-      &quot;zipcode&quot;: &quot;${zipcode}&quot;,&#xd;
-      &quot;city&quot;: &quot;${city}&quot;&#xd;
+      &quot;street&quot;: &quot;Неизвестная улица&quot;,&#xd;
+      &quot;region&quot;: &quot;Неизвестный регион&quot;,&#xd;
+      &quot;house&quot;: &quot;Неизвестный дом&quot;,&#xd;
+      &quot;zipcode&quot;: &quot;999991&quot;,&#xd;
+      &quot;city&quot;: &quot;Неизвестный город&quot;&#xd;
     },&#xd;
     &quot;contact_info&quot;: {&#xd;
       &quot;fullname&quot;: &quot;${random_contact_name}&quot;,&#xd;
-      &quot;phone&quot;: &quot;+7${__RandomString(500,1234567890)}&quot;&#xd;
+      &quot;phone&quot;: &quot;+7${__RandomString(9,1234567890)}&quot;&#xd;
     },&#xd;
     &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
   }&#xd;
@@ -6759,18 +6795,6 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
               <stringProp name="variableNames">flat_claim_db,zipcode_claim_db,name_claim_db,track_claim_number_db,status_claim_db</stringProp>
             </JDBCSampler>
             <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Message type Assertion → &apos;makeEMSShipment&apos;" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="609132727">makeEMSShipment</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message">Был отправлен не того типа запрос в сервис ems</stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">message_type_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Flat Assertion → &apos;${randomFlat}&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="296811498">${randomFlat}</stringProp>
@@ -6783,9 +6807,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">flat_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Zipcode Assertion → &apos;${zipcode}&apos;" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Zipcode Assertion → &apos;&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1883716730">${zipcode}</stringProp>
+                  <stringProp name="1686256984">999991</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6899,27 +6923,27 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.shipping_info.pochta_info.address → &apos;${full_address}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.shipping_info.pochta_info.address → &apos;Какой-то неизвестный адрес, для получения ошибки от ems&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.shipping_info.pochta_info.address</stringProp>
-                <stringProp name="EXPECTED_VALUE">${full_address}</stringProp>
+                <stringProp name="EXPECTED_VALUE">Какой-то неизвестный адрес, для получения ошибки от ems</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.address → &apos;${full_address}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.address → &apos;Какой-то неизвестный адрес, для получения ошибки от ems&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.source_address.address</stringProp>
-                <stringProp name="EXPECTED_VALUE">${full_address}</stringProp>
+                <stringProp name="EXPECTED_VALUE">Какой-то неизвестный адрес, для получения ошибки от ems</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.zipcode → &apos;${zipcode}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.zipcode → &apos;999991&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.source_address.zipcode</stringProp>
-                <stringProp name="EXPECTED_VALUE">${zipcode}</stringProp>
+                <stringProp name="EXPECTED_VALUE">999991</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -7020,7 +7044,7 @@ where claim_id in (
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="49">1</stringProp>
                 </collectionProp>
-                <stringProp name="Assertion.custom_message">В ответе на makeEMSShipment нет ошибки)</stringProp>
+                <stringProp name="Assertion.custom_message">В ответе на makeEMSShipment нет ошибки</stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
                 <intProp name="Assertion.test_type">8</intProp>
@@ -7055,18 +7079,6 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
               <stringProp name="variableNames">flat_claim_db,zipcode_claim_db,name_claim_db,track_claim_number_db,status_claim_db</stringProp>
             </JDBCSampler>
             <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Message type Assertion → &apos;makeEMSShipment&apos;" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="609132727">makeEMSShipment</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message">Был отправлен не того типа запрос в сервис ems</stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">message_type_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Flat Assertion → &apos;${randomFlat}&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="296811498">${randomFlat}</stringProp>
@@ -7079,9 +7091,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">flat_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Zipcode Assertion → &apos;${zipcode}&apos;" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Zipcode Assertion → &apos;999991&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1883716730">${zipcode}</stringProp>
+                  <stringProp name="1686256984">999991</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -7393,7 +7405,7 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача детальной информации о заявке получения ошибки от ems" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача детальной информации о заявке после получения ошибки от ems" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -7464,27 +7476,27 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.shipping_info.pochta_info.address → &apos;${full_address}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.shipping_info.pochta_info.address → &apos;Какой-то неизвестный адрес, для получения ошибки от ems&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.shipping_info.pochta_info.address</stringProp>
-                <stringProp name="EXPECTED_VALUE">${full_address}</stringProp>
+                <stringProp name="EXPECTED_VALUE">Какой-то неизвестный адрес, для получения ошибки от ems</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.address → &apos;${full_address}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.address → &apos;Какой-то неизвестный адрес, для получения ошибки от ems&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.source_address.address</stringProp>
-                <stringProp name="EXPECTED_VALUE">${full_address}</stringProp>
+                <stringProp name="EXPECTED_VALUE">Какой-то неизвестный адрес, для получения ошибки от ems</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.zipcode → &apos;${zipcode}&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.source_address.zipcode → &apos;999991&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.source_address.zipcode</stringProp>
-                <stringProp name="EXPECTED_VALUE">${zipcode}</stringProp>
+                <stringProp name="EXPECTED_VALUE">999991</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>

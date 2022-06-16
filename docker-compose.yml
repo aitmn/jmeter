@@ -53,6 +53,14 @@ services:
     - STEPLER_BASIC_ADMIN=${STEPLER_BASIC_ADMIN}
 #Бейсик авторизации от кролика скрепки
     - SKREKPA_BASIC_MQ=${SKREKPA_BASIC_MQ}
+#Данные от TRANSPORTIR state
+    - TRANSPORTIR_DB_URL_Stage=${TRANSPORTIR_DB_URL_Stage}
+    - TRANSPORTIR_DB_USERNAME_Stage=${TRANSPORTIR_DB_USERNAME_Stage}
+    - TRANSPORTIR_DB_PASSWORD_Stage=${TRANSPORTIR_DB_PASSWORD_Stage}
+#Данные от TRANSPORTIR pre
+    - TRANSPORTIR_DB_URL_Pre=${TRANSPORTIR_DB_URL_Pre}
+    - TRANSPORTIR_DB_USERNAME_Pre=${TRANSPORTIR_DB_USERNAME_Pre}
+    - TRANSPORTIR_DB_PASSWORD_Pre=${TRANSPORTIR_DB_PASSWORD_Pre}
     volumes:
       - ./:${JMETER_PATH}
     command: jmeter -n -t ${JMETER_PATH}/test-plan/${FILE_NAME}.jmx -Jlayer=${LAYER} -Jusers=${USERS_NUMBER} -l /result/allure-results/result.jtl -j /result/jmeter.log -e -o /result/report/ 
