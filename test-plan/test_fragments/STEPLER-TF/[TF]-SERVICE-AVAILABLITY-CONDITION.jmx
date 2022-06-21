@@ -82,7 +82,8 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
 				and organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
 				and taxation_type_id = &apos;7&apos;
 				and created &gt;= TO_TIMESTAMP(&apos;${__timeShift(yyyy-MM-dd,,-P60D,yesterday)}&apos;, &apos;YYYY/MM/DD&apos;)
-				order by random() limit 1 </stringProp>
+		and customer_code not in (&apos;302711141&apos;)
+		order by random() limit 1 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2187,7 +2188,8 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
 	where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) 
 	and organization_type=&apos;LEGAL_ENTITY&apos;
 	and created &gt;= TO_TIMESTAMP(&apos;${__timeShift(yyyy-MM-dd,,-P60D,yesterday)}&apos;, &apos;YYYY/MM/DD&apos;)
-	order by random() limit 1 
+		and customer_code not in (&apos;302711141&apos;)
+		order by random() limit 1 
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
