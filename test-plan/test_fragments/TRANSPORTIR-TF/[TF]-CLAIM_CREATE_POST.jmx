@@ -5421,9 +5421,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">name_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;1&apos; (Заявление создано)" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;0&apos; (Заявление в обработке)" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49">1</stringProp>
+                  <stringProp name="48">0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -5717,9 +5717,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">name_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;2&apos; (Документы в Пути)" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;1&apos; (Трек-номер создан)" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="50">2</stringProp>
+                  <stringProp name="49">1</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6622,94 +6622,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Ищем адрес через кландрас, сохраняем" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;suggest_address&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;query&quot;: &quot;${random_address}&quot;,&#xd;
-    &quot;limit&quot;: 10,&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">klandras-app.query.consul-${CONSUL_LAYER}</stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/api/v1/suggestions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-              <hashTree/>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="CITY Extractor" enabled="true">
-                <stringProp name="JSONPostProcessor.referenceNames">city</stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[0]address_components.CITY.full_name</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="REGION Extractor" enabled="true">
-                <stringProp name="JSONPostProcessor.referenceNames">region</stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[0]address_components.REGION.full_name</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="HOUSE Extractor" enabled="true">
-                <stringProp name="JSONPostProcessor.referenceNames">house_type;house_name</stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[0]address_components.HOUSE.type_short;.result.[0]address_components.HOUSE.formal_name</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND;NOT_FOUND</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="STREET Extractor" enabled="true">
-                <stringProp name="JSONPostProcessor.referenceNames">street</stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[0]address_components.STREET.full_name</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Full Address Extractor" enabled="true">
-                <stringProp name="JSONPostProcessor.referenceNames">full_address</stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[0]query_string</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Postal Code Extractor" enabled="true">
-                <stringProp name="JSONPostProcessor.referenceNames">zipcode</stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[0]postal_code</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Заявка на создание трек-номера" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -6807,7 +6719,7 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">flat_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Zipcode Assertion → &apos;&apos;" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Zipcode Assertion → &apos;999991&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1686256984">999991</stringProp>
                 </collectionProp>
@@ -6831,9 +6743,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">name_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;1&apos; (Заявление создано)" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;0&apos; (Заявление в обработке)" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49">1</stringProp>
+                  <stringProp name="48">0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -7115,9 +7027,9 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
                 <stringProp name="Scope.variable">name_claim_db_1</stringProp>
               </ResponseAssertion>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;1&apos; (Заявление создано)" enabled="true">
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Assertion → &apos;0&apos; (Заявление в обработке)" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49">1</stringProp>
+                  <stringProp name="48">0</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
