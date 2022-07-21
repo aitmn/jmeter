@@ -8161,7 +8161,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-118]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-118,TAXDEV-346]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -8520,6 +8520,95 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                 <boolProp name="Assertion.assume_success">true</boolProp>
                 <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отдача информации по задаче из blender" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">blender-app.query.consul-test</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].title → &apos;Документы электронной подписи&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Документы электронной подписи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].sub_title → &apos;Передайте оригиналы документов&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].sub_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Передайте оригиналы документов</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].state → &apos;new&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].state</stringProp>
+                <stringProp name="EXPECTED_VALUE">new</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].type → &apos;delivery&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">delivery</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.[?(@.service == &apos;transportir&apos;)].is_error → &apos;false&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.service == &apos;transportir&apos;)].is_error</stringProp>
+                <stringProp name="EXPECTED_VALUE">false</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
