@@ -188,7 +188,7 @@ vars.put(&quot;claimpost_status_for_change&quot;, &quot;${claimpost_status_for_c
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-245,TAXDEV-120,TAXDEV-346]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-245,TAXDEV-120,TAXDEV-346,TAXDEV-260]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -503,6 +503,13 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Document URL Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">document_url</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.documents..url</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;pending&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.claim_status</stringProp>
                 <stringProp name="EXPECTED_VALUE">pending</stringProp>
@@ -525,6 +532,152 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
                 <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Скачиваем документ по ссылке &apos;${__strReplace(${document_url_1},https://${tochka15_host},)}&apos;" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${tochka15_host}</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${__strReplace(${document_url_1},https://${tochka15_host},)}</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+                <stringProp name="FileSaver.filename">${_ALLURE_REPORT_PATH}/${attachment-UUID}-response-attachment</stringProp>
+                <boolProp name="FileSaver.errorsonly">false</boolProp>
+                <boolProp name="FileSaver.successonly">false</boolProp>
+                <boolProp name="FileSaver.skipsuffix">true</boolProp>
+                <boolProp name="FileSaver.skipautonumber">true</boolProp>
+                <boolProp name="FileSaver.ignoreTC">false</boolProp>
+              </ResultSaver>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion → &apos;Заявление индивидуального предпринимателя на изготовление квалифицированного сертификата ключа проверки электронной подписи&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="540259188">Заявление индивидуального предпринимателя на изготовление квалифицированного
+сертификата ключа проверки электронной подписи</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data_as_document</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion → &apos;Настоящим, в соответствии со статьей 9 Федерального закона...&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="137654961">Настоящим, в соответствии со статьей 9 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных
+данных», даю согласие АО «КАЛУГА АСТРАЛ» (юридический адрес: 248023, г. Калуга, пер. Теренинский, д. 6,
+почтовый адрес: 248000, г. Калуга, ул. Циолковского, д. 4): на обработку своих персональных данных: фамилия, имя,
+отчество, ИНН, СНИЛС, место работы (организация), подразделение, должность, адрес места жительства, адрес
+электронной почты, пол, телефон, паспортные данные (серия и номер, код подразделения, место и дата рождения,
+дата выдачи паспорта, адрес регистрации), фотоизображение заявителя с паспортом, включая сбор, запись,
+систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу
+(распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение с использованием
+средств автоматизации и без использования таких средств.
+
+Настоящее согласие на обработку персональных данных дается в целях исполнения функций
+аккредитованного Удостоверяющего центра АО «КАЛУГА АСТРАЛ» по изготовлению квалифицированных
+сертификатов ключей проверки электронной подписи в соответствии с федеральным законом от 06.04.2011 № 63-ФЗ
+«Об электронной подписи» (далее - договор).
+
+На основании части 1 статьи 8 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных»
+соглашаюсь с включением своих персональных данных, указанных выше, в объёме, необходимом для исполнения
+требований части 3 статьи 15 федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи» в
+общедоступный источник персональных данных: Реестр квалифицированных сертификатов аккредитованного
+удостоверяющего центра АО «КАЛУГА АСТРАЛ».
+
+Соглашаюсь с передачей своих персональных данных, указанных выше, в единую систему идентификации
+и аутентификации (далее - ЕСИА), в объеме, необходимом для регистрации в ЕСИА, в целях исполнения требований
+части 5 статьи 18 Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи».
+
+Настоящее согласие на обработку персональных данных вступает в силу со дня его подписания. Согласие
+на обработку персональных данных может быть отозвано мной в письменной форме. Согласие действует в течение
+срока деятельности аккредитованного Удостоверяющего центра АО «КАЛУГА АСТРАЛ» (часть 2 статьи 15
+Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи»).
+
+Даю согласие на создание квалифицированного сертификата ключа проверки электронной подписи в
+соответствии со сведениями, указанными в настоящем заявлении. Достоверность данных сведений подтверждаю.</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data_as_document</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code Assertion → &apos;200&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message">Документ не сформирован</stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue tika_xml</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Скачиваем документ по ссылке &apos;${__strReplace(${document_url_2},https://${tochka15_host},)}&apos;" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${tochka15_host}</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${__strReplace(${document_url_2},https://${tochka15_host},)}</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+                <stringProp name="FileSaver.filename">${_ALLURE_REPORT_PATH}/${attachment-UUID}-response-attachment</stringProp>
+                <boolProp name="FileSaver.errorsonly">false</boolProp>
+                <boolProp name="FileSaver.successonly">false</boolProp>
+                <boolProp name="FileSaver.skipsuffix">true</boolProp>
+                <boolProp name="FileSaver.skipautonumber">true</boolProp>
+                <boolProp name="FileSaver.ignoreTC">false</boolProp>
+              </ResultSaver>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code Assertion → &apos;200&apos;" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message">Документ не сформирован</stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue tika_xml</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1492,12 +1645,16 @@ vars.put(&quot;claim_date&quot;, &quot;${claim_date_1}&quot;);
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-245,TAXDEV-120,TAXDEV-346]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-245,TAXDEV-120,TAXDEV-346,TAXDEV-260]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
+            <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-DEBUG_MODE-snx" enabled="true">
+              <stringProp name="IncludeController.includepath">[TF]-DEBUG_MODE-snx.jmx</stringProp>
+            </IncludeController>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Меняем статус заявления на 4 (RECEIVED)" enabled="true">
               <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
               <stringProp name="query">update task
@@ -1816,10 +1973,163 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Document URL Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">document_url</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.documents..url</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
                 <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Скачиваем документ по ссылке &apos;${__strReplace(${document_url_1},https://${tochka15_host},)}&apos;" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${tochka15_host}</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${__strReplace(${document_url_1},https://${tochka15_host},)}</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+                <stringProp name="FileSaver.filename">${_ALLURE_REPORT_PATH}/${attachment-UUID}-response-attachment</stringProp>
+                <boolProp name="FileSaver.errorsonly">false</boolProp>
+                <boolProp name="FileSaver.successonly">false</boolProp>
+                <boolProp name="FileSaver.skipsuffix">true</boolProp>
+                <boolProp name="FileSaver.skipautonumber">true</boolProp>
+                <boolProp name="FileSaver.ignoreTC">false</boolProp>
+              </ResultSaver>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion → &apos;Заявление индивидуального предпринимателя на изготовление квалифицированного сертификата ключа проверки электронной подписи&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="540259188">Заявление индивидуального предпринимателя на изготовление квалифицированного
+сертификата ключа проверки электронной подписи</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data_as_document</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion → &apos;Настоящим, в соответствии со статьей 9 Федерального закона...&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="137654961">Настоящим, в соответствии со статьей 9 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных
+данных», даю согласие АО «КАЛУГА АСТРАЛ» (юридический адрес: 248023, г. Калуга, пер. Теренинский, д. 6,
+почтовый адрес: 248000, г. Калуга, ул. Циолковского, д. 4): на обработку своих персональных данных: фамилия, имя,
+отчество, ИНН, СНИЛС, место работы (организация), подразделение, должность, адрес места жительства, адрес
+электронной почты, пол, телефон, паспортные данные (серия и номер, код подразделения, место и дата рождения,
+дата выдачи паспорта, адрес регистрации), фотоизображение заявителя с паспортом, включая сбор, запись,
+систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу
+(распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение с использованием
+средств автоматизации и без использования таких средств.
+
+Настоящее согласие на обработку персональных данных дается в целях исполнения функций
+аккредитованного Удостоверяющего центра АО «КАЛУГА АСТРАЛ» по изготовлению квалифицированных
+сертификатов ключей проверки электронной подписи в соответствии с федеральным законом от 06.04.2011 № 63-ФЗ
+«Об электронной подписи» (далее - договор).
+
+На основании части 1 статьи 8 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных»
+соглашаюсь с включением своих персональных данных, указанных выше, в объёме, необходимом для исполнения
+требований части 3 статьи 15 федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи» в
+общедоступный источник персональных данных: Реестр квалифицированных сертификатов аккредитованного
+удостоверяющего центра АО «КАЛУГА АСТРАЛ».
+
+Соглашаюсь с передачей своих персональных данных, указанных выше, в единую систему идентификации
+и аутентификации (далее - ЕСИА), в объеме, необходимом для регистрации в ЕСИА, в целях исполнения требований
+части 5 статьи 18 Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи».
+
+Настоящее согласие на обработку персональных данных вступает в силу со дня его подписания. Согласие
+на обработку персональных данных может быть отозвано мной в письменной форме. Согласие действует в течение
+срока деятельности аккредитованного Удостоверяющего центра АО «КАЛУГА АСТРАЛ» (часть 2 статьи 15
+Федерального закона от 06.04.2011 № 63-ФЗ «Об электронной подписи»).
+
+Даю согласие на создание квалифицированного сертификата ключа проверки электронной подписи в
+соответствии со сведениями, указанными в настоящем заявлении. Достоверность данных сведений подтверждаю.</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data_as_document</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code Assertion → &apos;200&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message">Документ не сформирован</stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue tika_xml</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Скачиваем документ по ссылке &apos;${__strReplace(${document_url_2},https://${tochka15_host},)}&apos;" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${tochka15_host}</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${__strReplace(${document_url_2},https://${tochka15_host},)}</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
+                <stringProp name="FileSaver.filename">${_ALLURE_REPORT_PATH}/${attachment-UUID}-response-attachment</stringProp>
+                <boolProp name="FileSaver.errorsonly">false</boolProp>
+                <boolProp name="FileSaver.successonly">false</boolProp>
+                <boolProp name="FileSaver.skipsuffix">true</boolProp>
+                <boolProp name="FileSaver.skipautonumber">true</boolProp>
+                <boolProp name="FileSaver.ignoreTC">false</boolProp>
+              </ResultSaver>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code Assertion → &apos;200&apos;" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message">Документ не сформирован</stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue tika_xml</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
