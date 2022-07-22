@@ -6218,7 +6218,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-119,TAXDEV-120]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-119,TAXDEV-120,TAXDEV-361]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -7211,6 +7211,15 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;error&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.claim_status</stringProp>
                 <stringProp name="EXPECTED_VALUE">error</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_active → &apos;false&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.claim_active</stringProp>
+                <stringProp name="EXPECTED_VALUE">false</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
