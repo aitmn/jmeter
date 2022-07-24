@@ -4869,7 +4869,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-119,TAXDEV-120]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-119,TAXDEV-120,TAXDEV-361]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -5853,9 +5853,36 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result → &apos;{}&apos; (не отдаем информацию по задаче при статусе shipping)" enabled="true">
-                <stringProp name="JSON_PATH">.result</stringProp>
-                <stringProp name="EXPECTED_VALUE">{}</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_title → &apos;Передайте документы для электронной подписи&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.task_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Передайте документы для электронной подписи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.task_info → &apos;Отправьте заявление и сертификат электронной подписи курьером или почтой&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.task_info</stringProp>
+                <stringProp name="EXPECTED_VALUE">Отправьте заявление и сертификат электронной подписи курьером или почтой</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;shipping&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.claim_status</stringProp>
+                <stringProp name="EXPECTED_VALUE">shipping</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_active → &apos;true&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.claim_active</stringProp>
+                <stringProp name="EXPECTED_VALUE">true</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -6191,7 +6218,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-119,TAXDEV-120]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-119,TAXDEV-120,TAXDEV-361]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -7184,6 +7211,15 @@ from claimpost c where claim_id in (select id from claim cl where cl.task_id = &
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;error&apos;" enabled="true">
                 <stringProp name="JSON_PATH">.result.claim_status</stringProp>
                 <stringProp name="EXPECTED_VALUE">error</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_active → &apos;false&apos;" enabled="true">
+                <stringProp name="JSON_PATH">.result.claim_active</stringProp>
+                <stringProp name="EXPECTED_VALUE">false</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
