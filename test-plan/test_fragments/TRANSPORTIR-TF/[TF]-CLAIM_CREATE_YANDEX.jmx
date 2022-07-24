@@ -831,47 +831,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -881,10 +865,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с отсутствующим полем flat" enabled="true">
@@ -964,47 +944,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1014,10 +978,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным типом поля flat (int)" enabled="true">
@@ -1098,47 +1058,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1148,10 +1092,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с корректным типом поля flat (string)" enabled="true">
@@ -1232,47 +1172,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1282,10 +1206,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным полем flat = null" enabled="true">
@@ -1366,47 +1286,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1416,10 +1320,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим заявку на доставку" enabled="true">
@@ -1442,89 +1342,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                 </JDBCSampler>
                 <hashTree>
                   <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update Assertion" enabled="false">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="-234430262">updates</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">2</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">stop</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Перманентно отменяем заявку" enabled="false">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-                    <collectionProp name="Arguments.arguments"/>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain">localhost</stringProp>
-                  <stringProp name="HTTPSampler.port">3001</stringProp>
-                  <stringProp name="HTTPSampler.protocol">http</stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                  <stringProp name="HTTPSampler.path">/b2b/cargo/integration/v2/claims/info/?claim_id=</stringProp>
-                  <stringProp name="HTTPSampler.method">GET</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
-                <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="" elementType="Header">
-                        <stringProp name="Header.name">Authorization</stringProp>
-                        <stringProp name="Header.value">Bearer AQAAAABgnEQaAAVM1Z5d7gCpAkQig9_1HuOE3N4</stringProp>
-                      </elementProp>
-                      <elementProp name="" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">ru/ru</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
-                  <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
-                    <stringProp name="JSONPostProcessor.referenceNames">status</stringProp>
-                    <stringProp name="JSONPostProcessor.jsonPathExprs">.status</stringProp>
-                    <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                    <stringProp name="JSONPostProcessor.defaultValues">1</stringProp>
-                  </JSONPostProcessor>
-                  <hashTree/>
-                  <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="false">
-                    <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="filename"></stringProp>
-                    <stringProp name="parameters"></stringProp>
-                    <stringProp name="script">log.info(&quot;********** ${status}&quot;)</stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223PostProcessor>
-                  <hashTree/>
-                </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку, восстанавливем изначальный статус заявки " enabled="false">
-                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-                  <stringProp name="query">delete from claim where task_id = &apos;${task_id_for_change}&apos;;
-update task set last_claim_status = &apos;${last_claim_status}&apos; where id = &apos;${task_id_for_change}&apos;;</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="queryType">Update Statement</stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                  <stringProp name="resultSetMaxRows"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                </JDBCSampler>
-                <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update Assertion" enabled="true">
                     <collectionProp name="Asserion.test_strings">
                       <stringProp name="-234430262">updates</stringProp>
                     </collectionProp>
@@ -1792,47 +1609,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSONPathAssertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1842,10 +1643,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с отсутствующим полем porch" enabled="true">
@@ -1925,47 +1722,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1975,10 +1756,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным типом поля porch (int)" enabled="true">
@@ -2059,47 +1836,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2109,10 +1870,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным полем porch = null" enabled="true">
@@ -2193,47 +1950,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2243,10 +1984,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим заявку на доставку" enabled="true">
@@ -2535,47 +2272,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2585,10 +2306,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с отсутствующим полем floor" enabled="true">
@@ -2668,47 +2385,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2718,10 +2419,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным типом поля floor (int)" enabled="true">
@@ -2802,47 +2499,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2852,10 +2533,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным полем floor = null" enabled="true">
@@ -2936,47 +2613,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2986,10 +2647,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим заявку на доставку" enabled="true">
@@ -3278,47 +2935,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -3328,10 +2969,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с отсутствующим полем door_code" enabled="true">
@@ -3411,47 +3048,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -3461,10 +3082,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным типом поля door_code (int)" enabled="true">
@@ -3545,47 +3162,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -3595,10 +3196,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным полем door_code = null" enabled="true">
@@ -3679,66 +3276,13 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
-                <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
-                  <hashTree/>
-                </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку, восстанавливем изначальный статус заявки " enabled="false">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
                   <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-                  <stringProp name="query">delete from claim where task_id = &apos;${task_id_for_change}&apos;;
-update task set last_claim_status = &apos;${last_claim_status}&apos; where id = &apos;${task_id_for_change}&apos;;</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -3749,7 +3293,7 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
                   <stringProp name="variableNames"></stringProp>
                 </JDBCSampler>
                 <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update Assertion" enabled="true">
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
                     <collectionProp name="Asserion.test_strings">
                       <stringProp name="-234430262">updates</stringProp>
                     </collectionProp>
@@ -3762,7 +3306,7 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                     <stringProp name="cacheKey">false</stringProp>
                     <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
@@ -4054,47 +3598,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4104,10 +3632,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с длинным полем comment &gt; 256" enabled="true">
@@ -4188,47 +3712,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4238,10 +3746,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с отсутствующим полем comment" enabled="true">
@@ -4321,47 +3825,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4371,10 +3859,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным типом поля comment (int)" enabled="true">
@@ -4455,47 +3939,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4505,10 +3973,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректным полем comment = null" enabled="true">
@@ -4589,66 +4053,13 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
-                <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
-                  <hashTree/>
-                </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку, восстанавливем изначальный статус заявки " enabled="false">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
                   <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
-                  <stringProp name="query">delete from claim where task_id = &apos;${task_id_for_change}&apos;;
-update task set last_claim_status = &apos;${last_claim_status}&apos; where id = &apos;${task_id_for_change}&apos;;</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -4659,7 +4070,7 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
                   <stringProp name="variableNames"></stringProp>
                 </JDBCSampler>
                 <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update Assertion" enabled="true">
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
                     <collectionProp name="Asserion.test_strings">
                       <stringProp name="-234430262">updates</stringProp>
                     </collectionProp>
@@ -4672,7 +4083,7 @@ update task set last_claim_status = &apos;${last_claim_status}&apos; where id = 
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                     <stringProp name="cacheKey">false</stringProp>
                     <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
@@ -5375,47 +4786,31 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отменяем заявку, чтобы дальше не пошла гулять по процессу доставки" enabled="true">
-                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
-  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-  &quot;method&quot;: &quot;claim_cancel&quot;,&#xd;
-  &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
-  }&#xd;
-}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/api/v1/jsonrpc</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                </HTTPSamplerProxy>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявку ради санитарии, возвращаем исходные статусы задач" enabled="true">
+                  <stringProp name="dataSource">TRANSPORTIR_${__P(layer)}</stringProp>
+                  <stringProp name="query">update task
+	set last_claim_status = &apos;${last_claim_status}&apos;
+	where id = ${task_id_for_change};
+
+delete from claim where task_id = ${task_id_for_change};</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Update Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames"></stringProp>
+                </JDBCSampler>
                 <hashTree>
-                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                  <hashTree/>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Ignore != 200 status code Assertion" enabled="true">
-                    <collectionProp name="Asserion.test_strings"/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Update&apos;s Assertion" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-234430262">updates</stringProp>
+                    </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">true</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">2</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -5425,10 +4820,6 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
-                  <hashTree/>
-                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                    <stringProp name="ConstantTimer.delay">10000</stringProp>
-                  </ConstantTimer>
                   <hashTree/>
                 </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос с некорректными latuturde и longitude (запятая вместо точки)" enabled="true">
@@ -8411,7 +7802,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;shipping&apos;" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assertion .result.claim_status → &apos;shipping&apos;" enabled="false">
                 <stringProp name="JSON_PATH">.result.claim_status</stringProp>
                 <stringProp name="EXPECTED_VALUE">shipping</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
@@ -8988,7 +8379,7 @@ vars.put(&quot;task_id_for_change&quot;, &quot;${task_id_for_change_1}&quot;);</
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Создание заявки с ошибкой" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Создание заявки с ошибкой" enabled="false">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
