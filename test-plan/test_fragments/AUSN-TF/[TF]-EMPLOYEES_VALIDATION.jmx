@@ -1,0 +1,1774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="true"/>
+      <hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверка валидации" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create. Invalid params snils" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">С ошибкой валидации</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create. Invalid params snils&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employeereport e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем отчет по клиенту" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;ndfl_report_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;report_data&quot;: {&#xd;
+      &quot;employees&quot;: [&#xd;
+        {&#xd;
+          &quot;employee&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(000000000000,999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${incorrect_snils}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;2514210299&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+          },&#xd;
+          &quot;income_info&quot;: [&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 3000,&#xd;
+                  &quot;code&quot;: &quot;105&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 100,&#xd;
+                  &quot;code&quot;: &quot;1010&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;2000&quot;,&#xd;
+              &quot;amount&quot;: 120000,&#xd;
+              &quot;calculated_tax_amount&quot;: 15,&#xd;
+              &quot;withhold_tax_amount&quot;: 96.9,&#xd;
+              &quot;paid_tax_amount&quot;: 97&#xd;
+            },&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 900,&#xd;
+                  &quot;code&quot;: &quot;130&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;1211&quot;,&#xd;
+              &quot;amount&quot;: 1900,&#xd;
+              &quot;calculated_tax_amount&quot;: 130,&#xd;
+              &quot;withhold_tax_amount&quot;: 0,&#xd;
+              &quot;paid_tax_amount&quot;: 0&#xd;
+            }&#xd;
+          ]&#xd;
+        }&#xd;
+      ],&#xd;
+      &quot;report_id&quot;: &quot;${__UUID}&quot;,&#xd;
+      &quot;payment_date&quot;: &quot;${__time(yyyy-MM-dd,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].loc</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;employee_data&quot;,&quot;snils&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">ensure this value has at most 11 characters</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сооющение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport 
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create. Invalid params inn" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">С ошибкой валидации</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create. Invalid params inn&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employeereport e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем отчет по клиенту" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;ndfl_report_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;report_data&quot;: {&#xd;
+      &quot;employees&quot;: [&#xd;
+        {&#xd;
+          &quot;employee&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(0000000000000,9999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+          },&#xd;
+          &quot;income_info&quot;: [&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 3000,&#xd;
+                  &quot;code&quot;: &quot;105&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 100,&#xd;
+                  &quot;code&quot;: &quot;1010&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;2000&quot;,&#xd;
+              &quot;amount&quot;: 120000,&#xd;
+              &quot;calculated_tax_amount&quot;: 15,&#xd;
+              &quot;withhold_tax_amount&quot;: 96.9,&#xd;
+              &quot;paid_tax_amount&quot;: 97&#xd;
+            },&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 900,&#xd;
+                  &quot;code&quot;: &quot;130&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;1211&quot;,&#xd;
+              &quot;amount&quot;: 1900,&#xd;
+              &quot;calculated_tax_amount&quot;: 130,&#xd;
+              &quot;withhold_tax_amount&quot;: 0,&#xd;
+              &quot;paid_tax_amount&quot;: 0&#xd;
+            }&#xd;
+          ]&#xd;
+        }&#xd;
+      ],&#xd;
+      &quot;report_id&quot;: &quot;${__UUID}&quot;,&#xd;
+      &quot;payment_date&quot;: &quot;${__time(yyyy-MM-dd,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сообщение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].loc</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;report_data&quot;,&quot;employees&quot;,0,&quot;employee&quot;,&quot;employee_inn&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">ensure this value has at most 12 characters</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport 
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create. Birthdate more than today" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">С ошибкой валидации</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create. Birthdate more than today&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employeereport e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем отчет по клиенту" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;ndfl_report_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;report_data&quot;: {&#xd;
+      &quot;employees&quot;: [&#xd;
+        {&#xd;
+          &quot;employee&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(000000000000,999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomDate(,2032-12-31,2070-07-08,,)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+          },&#xd;
+          &quot;income_info&quot;: [&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 3000,&#xd;
+                  &quot;code&quot;: &quot;105&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 100,&#xd;
+                  &quot;code&quot;: &quot;1010&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;2000&quot;,&#xd;
+              &quot;amount&quot;: 120000,&#xd;
+              &quot;calculated_tax_amount&quot;: 15,&#xd;
+              &quot;withhold_tax_amount&quot;: 96.9,&#xd;
+              &quot;paid_tax_amount&quot;: 97&#xd;
+            },&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 900,&#xd;
+                  &quot;code&quot;: &quot;130&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;1211&quot;,&#xd;
+              &quot;amount&quot;: 1900,&#xd;
+              &quot;calculated_tax_amount&quot;: 130,&#xd;
+              &quot;withhold_tax_amount&quot;: 0,&#xd;
+              &quot;paid_tax_amount&quot;: 0&#xd;
+            }&#xd;
+          ]&#xd;
+        }&#xd;
+      ],&#xd;
+      &quot;report_id&quot;: &quot;${__UUID}&quot;,&#xd;
+      &quot;payment_date&quot;: &quot;${__time(yyyy-MM-dd,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сооющение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].loc</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;report_data&quot;,&quot;employees&quot;,0,&quot;employee&quot;,&quot;birthdate&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">ensure this value has at most 12 characters</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport 
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create. Invalid params birthdate" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">С ошибкой валидации</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create. Invalid params birthdate&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employeereport e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем отчет по клиенту" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;ndfl_report_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;report_data&quot;: {&#xd;
+      &quot;employees&quot;: [&#xd;
+        {&#xd;
+          &quot;employee&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(000000000000,999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomString(1,2)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+          },&#xd;
+          &quot;income_info&quot;: [&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 3000,&#xd;
+                  &quot;code&quot;: &quot;105&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 100,&#xd;
+                  &quot;code&quot;: &quot;1010&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;2000&quot;,&#xd;
+              &quot;amount&quot;: 120000,&#xd;
+              &quot;calculated_tax_amount&quot;: 15,&#xd;
+              &quot;withhold_tax_amount&quot;: 96.9,&#xd;
+              &quot;paid_tax_amount&quot;: 97&#xd;
+            },&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 900,&#xd;
+                  &quot;code&quot;: &quot;130&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;1211&quot;,&#xd;
+              &quot;amount&quot;: 1900,&#xd;
+              &quot;calculated_tax_amount&quot;: 130,&#xd;
+              &quot;withhold_tax_amount&quot;: 0,&#xd;
+              &quot;paid_tax_amount&quot;: 0&#xd;
+            }&#xd;
+          ]&#xd;
+        }&#xd;
+      ],&#xd;
+      &quot;report_id&quot;: &quot;${__UUID}&quot;,&#xd;
+      &quot;payment_date&quot;: &quot;${__time(yyyy-MM-dd,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сооющение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].loc</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;report_data&quot;,&quot;employees&quot;,0,&quot;employee&quot;,&quot;birthdate&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">invalid date format</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport 
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create. payment_date more than today" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">С ошибкой валидации</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create. payment_date more than today&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employeereport e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем отчет по клиенту" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;ndfl_report_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;report_data&quot;: {&#xd;
+      &quot;employees&quot;: [&#xd;
+        {&#xd;
+          &quot;employee&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(000000000000,999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+          },&#xd;
+          &quot;income_info&quot;: [&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 3000,&#xd;
+                  &quot;code&quot;: &quot;105&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 100,&#xd;
+                  &quot;code&quot;: &quot;1010&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;2000&quot;,&#xd;
+              &quot;amount&quot;: 120000,&#xd;
+              &quot;calculated_tax_amount&quot;: 15,&#xd;
+              &quot;withhold_tax_amount&quot;: 96.9,&#xd;
+              &quot;paid_tax_amount&quot;: 97&#xd;
+            },&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 900,&#xd;
+                  &quot;code&quot;: &quot;130&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;1211&quot;,&#xd;
+              &quot;amount&quot;: 1900,&#xd;
+              &quot;calculated_tax_amount&quot;: 130,&#xd;
+              &quot;withhold_tax_amount&quot;: 0,&#xd;
+              &quot;paid_tax_amount&quot;: 0&#xd;
+            }&#xd;
+          ]&#xd;
+        }&#xd;
+      ],&#xd;
+      &quot;report_id&quot;: &quot;${__UUID}&quot;,&#xd;
+      &quot;payment_date&quot;: &quot;${__RandomDate(,2023-12-31,2050-07-08,,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сооющение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].loc</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;report_data&quot;,&quot;employees&quot;,0,&quot;employee&quot;,&quot;payment_date&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">ensure this value has at most 12 characters</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport 
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_create. Invalid params inn" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">employee_create</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;employee_create. Invalid params inn, больше 12 символов&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без сотрудников" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employee e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем сотрудника для клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;employee_create&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;employee_data&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(0000000000000,9999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+        },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сооющение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].loc</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;employee_data&quot;,&quot;employee_inn&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.data[0].msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">ensure this value has at most 12 characters</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport  where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee  where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create. Invalid params report_id" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">С ошибкой валидации</stringProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters">start</stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create. Invalid params report_id&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code
+from employeereport e  
+         right join customer c  on e.customer_id = c.id
+where e.id is null order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем отчет по клиенту" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;ndfl_report_create&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;report_data&quot;: {&#xd;
+      &quot;employees&quot;: [&#xd;
+        {&#xd;
+          &quot;employee&quot;: {&#xd;
+            &quot;employee_inn&quot;: &quot;${__Random(000000000000,999999999999)}&quot;,&#xd;
+            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
+            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
+            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
+            &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
+            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
+            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
+          },&#xd;
+          &quot;income_info&quot;: [&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 3000,&#xd;
+                  &quot;code&quot;: &quot;105&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 100,&#xd;
+                  &quot;code&quot;: &quot;1010&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;2000&quot;,&#xd;
+              &quot;amount&quot;: 120000,&#xd;
+              &quot;calculated_tax_amount&quot;: 15,&#xd;
+              &quot;withhold_tax_amount&quot;: 96.9,&#xd;
+              &quot;paid_tax_amount&quot;: 97&#xd;
+            },&#xd;
+            {&#xd;
+              &quot;deductions&quot;: [&#xd;
+                {&#xd;
+                  &quot;amount&quot;: 900,&#xd;
+                  &quot;code&quot;: &quot;130&quot;&#xd;
+                }&#xd;
+              ],&#xd;
+              &quot;uninsured_payments&quot;: [],&#xd;
+              &quot;calculation_month&quot;: 4,&#xd;
+              &quot;calculation_year&quot;: 2022,&#xd;
+              &quot;code&quot;: &quot;1211&quot;,&#xd;
+              &quot;amount&quot;: 1900,&#xd;
+              &quot;calculated_tax_amount&quot;: 130,&#xd;
+              &quot;withhold_tax_amount&quot;: 0,&#xd;
+              &quot;paid_tax_amount&quot;: 0&#xd;
+            }&#xd;
+          ]&#xd;
+        }&#xd;
+      ],&#xd;
+      &quot;report_id&quot;: &quot;${customer_code_1}&quot;,&#xd;
+      &quot;payment_date&quot;: &quot;${__time(yyyy-MM-dd,)}&quot;&#xd;
+    },&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.code</stringProp>
+                <stringProp name="EXPECTED_VALUE">-32602</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сообщение ошибки ответа" enabled="true">
+                <stringProp name="JSON_PATH">$.error.message</stringProp>
+                <stringProp name="EXPECTED_VALUE">Invalid params</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем причину ошибки" enabled="true">
+                <stringProp name="JSON_PATH">$.error.msg</stringProp>
+                <stringProp name="EXPECTED_VALUE">value is not a valid uuid</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employee
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;); </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
+              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="queryType">Callable Statement</stringProp>
+              <stringProp name="query">delete 
+from employeereport 
+where customer_id =(select id from customer where
+ customer_code =&apos;${customer_code_1}&apos;); </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1157542694">0 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
