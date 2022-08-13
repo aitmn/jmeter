@@ -19,6 +19,164 @@
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Запрос одной операции" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Проверка операций&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Список операций&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос одной операции&quot;);
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select c.customer_code  
+from operation o 
+	right join customer c on o.inn=c.inn 
+	where o.id is not null 
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Клиент должен быть зарегистрирован в одном из регионов пилота и не быть на режиме АУСН</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что нашелся клиента в базе" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1072787279">customer_code	
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">12</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем операции в БД АУСН" enabled="true">
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="query">select
+ operation.id, operation.is_income,operation.specifics, operation.amount, operation.currency_code,operation.operation_date, 
+ operation.counterparty_name, operation.payment_purpose ,operation.sync_error_description
+	FROM operation 
+		LEFT OUTER join account operation__account 
+			ON operation__account.id=operation.account_id 
+	WHERE operation__account.customer_id=
+	(
+		select id from customer where customer_code = &apos;${customer_code_1}&apos;
+	)
+ORDER BY operation.operation_date DESC, operation.id ASC LIMIT 1</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="variableNames">operation_id, is_income,specifics,amount,currency_code,operation_date,counterparty_name,payment_purpose,sync_error_description</stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="TestPlan.comments">Клиент должен быть зарегистрирован в одном из регионов пилота и не быть на режиме АУСН</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что нашелся клиента в базе" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1072787279">customer_code	
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">12</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список операций клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;arni-0f309ceb-7593-4419-9bcd-d10843573c8f&quot;,&#xd;
+    &quot;method&quot;: &quot;operations_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+        &quot;limit&quot;: 1 &#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path"></stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип задачи" enabled="true">
+                <stringProp name="JSON_PATH">$.result..id</stringProp>
+                <stringProp name="EXPECTED_VALUE">${operation_id_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Клиент не на АУСН, регион в пилоте" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
@@ -234,7 +392,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Клиент не на АУСН, ре�
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select oc.customer_code 
 	from orders_company oc   
-where oc.closing_date is null and (oc.inn not like &apos;${region1}%&apos; and oc.inn not like &apos;${region2}%&apos; and oc.inn not like &apos;${region3}%&apos; and oc.inn not like &apos;${region4}%&apos;  ) and tax_regime_id not in(select id from orders_taxregime ot where key like &apos;%ausn%&apos;)
+where oc.closing_date is null and (oc.inn not like &apos;${region1}%&apos; or oc.inn not like &apos;${region2}%&apos; or oc.inn not like &apos;${region3}%&apos; or oc.inn not like &apos;${region4}%&apos;  ) and tax_regime_id not in(select id from orders_taxregime ot where key like &apos;%ausn%&apos;)
 order by random() limit 1;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -343,7 +501,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Клиент на АУСН без за
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
-              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query"> select c.customer_code
 from  customer c 
@@ -414,15 +572,14 @@ where t.id is  null and c.tax_type in (10,11) and c.inn!=&apos;239538100638&apos
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
               <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет задачи на оплату налога" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="287036234">type&quot;: &quot;tax_pay&quot;,</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">20</intProp>
-              </ResponseAssertion>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список задач" enabled="true">
+                <stringProp name="JSON_PATH">$.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
@@ -434,149 +591,7 @@ where t.id is  null and c.tax_type in (10,11) and c.inn!=&apos;239538100638&apos
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Клиент на АУСН, есть задача на налог" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
-          <hashTree>
-            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
-              <stringProp name="cacheKey">true</stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Задачи для клиентов&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Задача на оплату налога&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Клиент на АУСН, есть задача на налог&quot;);
-
-/*
- * to create case report with single step
- * do not use parameters start/continue/stop
- * and do not create variable AllureCaseName
- */</stringProp>
-              <stringProp name="scriptLanguage">groovy</stringProp>
-            </JSR223Sampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
-              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="query">select c.customer_code, t.charge_id,t.year,t.month
-from  customer c 
-         left join taxcharge t  on t.customer_id = c.id 
-where t.id is not null and c.tax_type in (10,11) 
-and c.inn!=&apos;239538100638&apos;
-order by random() limit 1;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="variableNames">customer_code,charge_id ,year,month</stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="TestPlan.comments">Клиент должен быть зарегистрирован в одном из регионов пилота и не быть на режиме АУСН</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что нашелся клиента в базе" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1072787279">customer_code	
-</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">12</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-    &quot;id&quot;: &quot;arni-0f309ceb-7593-4419-9bcd-d10843573c8f&quot;,&#xd;
-    &quot;method&quot;: &quot;accordion_tasks&quot;,&#xd;
-    &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
-    }&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path"></stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип задачи" enabled="true">
-                <stringProp name="JSON_PATH">$.result..type</stringProp>
-                <stringProp name="EXPECTED_VALUE">tax_pay</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год задачи" enabled="true">
-                <stringProp name="JSON_PATH">$.result..extra.year</stringProp>
-                <stringProp name="EXPECTED_VALUE">${year_1}</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем месяц задачи" enabled="true">
-                <stringProp name="JSON_PATH">$.result..extra.month</stringProp>
-                <stringProp name="EXPECTED_VALUE">${month_1}</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем tax_charge в задаче" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-822074132">tax_charge:${charge_id_1}:</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">stop</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос задачи по типу = проверка операций" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос задачи по типу = проверка операций" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -598,7 +613,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Клиент на АУСН, запро
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
-              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from  customer c 
@@ -716,7 +731,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос задачи по типу = переход на АУСН" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос задачи по типу = переход на АУСН" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -738,7 +753,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Клиент на АУСН, запро
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
-              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from  customer c 
@@ -856,7 +871,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос задачи по типу = оплата налога" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос задачи по типу = оплата налога" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -878,7 +893,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Клиент на АУСН, запро
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
-              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from  customer c 
@@ -987,7 +1002,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос 1 задачи " enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="переделать Клиент на АУСН, запрос 1 задачи " enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1009,7 +1024,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Клиент на АУСН, запро
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН" enabled="true">
-              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from  customer c 

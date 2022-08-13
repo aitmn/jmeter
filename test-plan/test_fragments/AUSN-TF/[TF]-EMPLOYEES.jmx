@@ -12,13 +12,14 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="true"/>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Методы для создания/изменения данных по сотрудникам" enabled="true">
-          <stringProp name="TestPlan.comments">TAXDEV-275</stringProp>
-        </GenericController>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Методы для создания/изменения данных по сотрудникам" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
         <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_create для сотрудника с паспортом РФ" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_create для сотрудника с паспортом РФ" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">employee_create</stringProp>
@@ -41,7 +42,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;employee_create для сотрудн�
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без сотрудников" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employee e  
@@ -144,7 +145,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем сотрудника в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">
 select employee_inn , snils 
@@ -189,7 +190,7 @@ and customer_code =&apos;${customer_code_1}&apos;;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee  
@@ -246,7 +247,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;employee_create для сотрудн�
               </JSR223Sampler>
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без сотрудников" enabled="true">
-                <stringProp name="dataSource">AUSNtest</stringProp>
+                <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">select c.customer_code
 from employee e  
@@ -340,7 +341,7 @@ where e.id is null order by random() limit 1;</stringProp>
                 <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем сотрудника в БД" enabled="true">
-                <stringProp name="dataSource">AUSNtest</stringProp>
+                <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
                 <stringProp name="query">
 select employee_inn , snils 
@@ -385,7 +386,7 @@ and customer_code =&apos;${customer_code_1}&apos;;</stringProp>
                 <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-                <stringProp name="dataSource">AUSNtest</stringProp>
+                <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Callable Statement</stringProp>
                 <stringProp name="query">delete 
 from employee  
@@ -421,7 +422,7 @@ where customer_id =(select id from customer where
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create с 1 выплатой, вычетом и сотрудником" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create с 1 выплатой, вычетом и сотрудником" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_create</stringProp>
@@ -444,7 +445,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create с 1 выплато
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employeereport e  
@@ -588,7 +589,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select report_id, payment_date 
 from employeereport 
@@ -633,7 +634,7 @@ from employeereport
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -668,7 +669,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -741,7 +742,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Несколько ndfl_report_create 
             </Arguments>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code 
 from employeereport e  
@@ -960,7 +961,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select count(customer_id) 
 from employeereport 
@@ -994,7 +995,7 @@ where report_id in (&apos;${reportId_1}&apos;,&apos;${reportId_2}&apos;);</strin
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем инфомрацию о сотруднике в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select count(id) 
 from employee 
@@ -1028,7 +1029,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем инфомрацию о выплатах в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select calculation_month from employeeincomeinfo e join employeereport e2 on  e2.id = e.report_id and e2.report_id in (&apos;${reportId_1}&apos;,&apos;${reportId_2}&apos;)</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1061,7 +1062,7 @@ ${month_2}</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -1095,7 +1096,7 @@ where report_id  in (&apos;${reportId_1}&apos;,&apos;${reportId_2}&apos;);</stri
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -1153,7 +1154,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create со сменой �
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code 
 from employeereport e  
@@ -1268,7 +1269,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код вида документа в ответе" enabled="true">
                 <stringProp name="JSON_PATH">$.result.employee.document_type_code</stringProp>
-                <stringProp name="EXPECTED_VALUE">${document_type_code}</stringProp>
+                <stringProp name="EXPECTED_VALUE">21</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1285,7 +1286,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем информацию о коде документа сотрудника" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select document_type_code 
 from employee 
@@ -1301,12 +1302,14 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Провермяем код вида документа" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1120012888">${document_type_code}</stringProp>
+                  <stringProp name="-1670285297">document_type_code
+21
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">8</intProp>
               </ResponseAssertion>
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1404,7 +1407,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код вида документа в ответе" enabled="true">
                 <stringProp name="JSON_PATH">$.result.employee.document_type_code</stringProp>
-                <stringProp name="EXPECTED_VALUE">${document_type_code_2}</stringProp>
+                <stringProp name="EXPECTED_VALUE">12</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1421,7 +1424,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем информацию о коде документа сотрудника" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select document_type_code 
 from employee 
@@ -1437,12 +1440,14 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Провермяем код вида документа" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1704433083">${document_type_code_2}</stringProp>
+                  <stringProp name="-1670286227">document_type_code
+12
+</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                 <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
+                <intProp name="Assertion.test_type">8</intProp>
               </ResponseAssertion>
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1455,7 +1460,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -1490,7 +1495,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -1548,7 +1553,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create с нескольк
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code 
 from employeereport e  
@@ -1687,7 +1692,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select  report_id, payment_date 
 from employeereport 
@@ -1722,7 +1727,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем выплаты в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select count(e.id) from employeeincomeinfo e join employeereport e2 on e.report_id =e2.id and e2.report_id =&apos;${report_Id}&apos;;
 </stringProp>
@@ -1755,7 +1760,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -1790,7 +1795,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -1825,7 +1830,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_detail на существующий отчет" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_detail на существующий отчет" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_detail</stringProp>
@@ -1848,7 +1853,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_detail на существ
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employeereport e  
@@ -2057,7 +2062,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -2092,7 +2097,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -2127,7 +2132,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_detail на несуществующий отчет" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_detail на несуществующий отчет" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_detail</stringProp>
@@ -2150,7 +2155,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_detail на несущес
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code 
 from employeereport e  
@@ -2239,7 +2244,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_list на не пустой список отчетов" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_list на не пустой список отчетов" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_list</stringProp>
@@ -2262,7 +2267,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_list на не пусто�
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employeereport e  
@@ -2412,7 +2417,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select report_id , status , payment_date 
 from employeereport 
@@ -2549,7 +2554,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках из отчета" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -2584,7 +2589,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport
@@ -2619,7 +2624,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname=" ndfl_report_list на пустой список отчетов" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname=" ndfl_report_list на пустой список отчетов" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_list</stringProp>
@@ -2642,7 +2647,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_list на пустой с�
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employeereport e  
@@ -2744,7 +2749,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot; Два ndfl_report_create на оди
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employeereport e  
@@ -2920,8 +2925,8 @@ where e.id is null order by random() limit 1;</stringProp>
             &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
             &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
             &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
-            &quot;citizenship&quot;: &quot;643&quot;,//Код страны. 643 - РФ&#xd;
-            &quot;document_type_code&quot;: &quot;21&quot;,//Тип документа уд. лич. 21 - паспорт РФ&#xd;
+            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
+            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
             &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
             &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
           },&#xd;
@@ -2989,7 +2994,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">ndfl_report_create</stringProp>
+              <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
               <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
@@ -3040,7 +3045,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select count(report_id), report_id, payment_date 
 from employeereport 
@@ -3084,7 +3089,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Запрашиваем кол-во отчето в БД для клиента" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select count(report_id)
 from employeereport 
@@ -3120,7 +3125,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -3155,7 +3160,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -3190,7 +3195,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create без вычетов и необлагаемых выплат" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create без вычетов и необлагаемых выплат" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_create</stringProp>
@@ -3213,7 +3218,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create без вычето
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code 
 from employeereport e  
@@ -3330,7 +3335,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select report_id, payment_date 
 from employeereport 
@@ -3365,7 +3370,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -3400,7 +3405,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -3435,7 +3440,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create сесколькими выплатами" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create сесколькими выплатами" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">ndfl_report_create</stringProp>
@@ -3458,7 +3463,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create сескольки�
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без отчета по сотрудникам" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code 
 from employeereport e  
@@ -3597,7 +3602,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем отчет в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select  report_id, payment_date 
 from employeereport 
@@ -3632,7 +3637,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем выплаты в БД" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select count(e.id) from employeeincomeinfo e join employeereport e2 on e.report_id =e2.id and e2.report_id =&apos;${report_Id}&apos;;
 </stringProp>
@@ -3665,7 +3670,7 @@ where customer_id=(select id from customer where customer_code=&apos;${customer_
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию об отчете" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employeereport 
@@ -3700,7 +3705,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотрудниках" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee
@@ -3735,7 +3740,7 @@ where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_list на не пустой список клиентов" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_list на не пустой список клиентов" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">employee_list</stringProp>
@@ -3758,7 +3763,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;employee_list на не пустой �
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без сотрудников" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employee e  
@@ -3910,7 +3915,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Callable Statement</stringProp>
               <stringProp name="query">delete 
 from employee  where customer_id =(select id from customer where
@@ -3944,7 +3949,7 @@ from employee  where customer_id =(select id from customer where
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_list на пустой список отчетов" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_list на пустой список отчетов" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
             <stringProp name="TestPlan.comments">employee_list</stringProp>
@@ -3967,7 +3972,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;employee_list на пустой спи
             </JSR223Sampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без сотрудников" enabled="true">
-              <stringProp name="dataSource">AUSNtest</stringProp>
+              <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
               <stringProp name="queryType">Select Statement</stringProp>
               <stringProp name="query">select c.customer_code
 from employee e  
@@ -4045,6 +4050,86 @@ where e.id is null order by random() limit 1;</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>true</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>true</responseData>
+                  <samplerData>true</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>true</responseHeaders>
+                  <requestHeaders>true</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <sentBytes>true</sentBytes>
+                  <url>true</url>
+                  <fileName>true</fileName>
+                  <hostname>true</hostname>
+                  <threadCounts>true</threadCounts>
+                  <sampleCount>true</sampleCount>
+                  <idleTime>true</idleTime>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>true</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>true</responseData>
+                  <samplerData>true</samplerData>
+                  <xml>true</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>true</responseHeaders>
+                  <requestHeaders>true</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <sentBytes>true</sentBytes>
+                  <url>true</url>
+                  <fileName>true</fileName>
+                  <hostname>true</hostname>
+                  <threadCounts>true</threadCounts>
+                  <sampleCount>true</sampleCount>
+                  <idleTime>true</idleTime>
+                  <connectTime>true</connectTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
           </hashTree>
         </hashTree>
       </hashTree>
