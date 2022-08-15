@@ -48,6 +48,10 @@
               <stringProp name="Header.name">Content-Type</stringProp>
               <stringProp name="Header.value">application/json</stringProp>
             </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
+            </elementProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
@@ -72,6 +76,12 @@
           <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="STEPLER-TF/[TF]-CONNECTIONS" enabled="true">
             <stringProp name="IncludeController.includepath">STEPLER-TF/[TF]-CONNECTIONS.jmx</stringProp>
           </IncludeController>
+          <hashTree/>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
           <hashTree/>
         </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
@@ -115,7 +125,7 @@
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[TG]-STEPLER-REGRESS-THREAD-2" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[TG]-STEPLER-REGRESS-THREAD-2" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -153,6 +163,10 @@
             </elementProp>
           </collectionProp>
         </HeaderManager>
+        <hashTree/>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-DB-CONNECT" enabled="true">
+          <stringProp name="IncludeController.includepath">[TF]-DB-CONNECT.jmx</stringProp>
+        </IncludeController>
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-GET_OAUTH_COOKIES" enabled="true">
           <stringProp name="IncludeController.includepath">[TF]-GET_OAUTH_COOKIES.jmx</stringProp>
@@ -218,7 +232,7 @@
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[TG]-STEPLER-REGRESS-THREAD-3" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[TG]-STEPLER-REGRESS-THREAD-3" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -256,6 +270,10 @@
             </elementProp>
           </collectionProp>
         </HeaderManager>
+        <hashTree/>
+        <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-DB-CONNECT" enabled="true">
+          <stringProp name="IncludeController.includepath">[TF]-DB-CONNECT.jmx</stringProp>
+        </IncludeController>
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="[TF]-GET_OAUTH_COOKIES" enabled="true">
           <stringProp name="IncludeController.includepath">[TF]-GET_OAUTH_COOKIES.jmx</stringProp>
@@ -353,6 +371,10 @@
               <stringProp name="Header.name">Content-Type</stringProp>
               <stringProp name="Header.value">application/json</stringProp>
             </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Authorization</stringProp>
+              <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
+            </elementProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
@@ -373,6 +395,16 @@
           <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="STEPLER-TF/[TF]-ACTIVE_CONNECTIONS" enabled="true">
             <stringProp name="IncludeController.includepath">STEPLER-TF/[TF]-ACTIVE_CONNECTIONS.jmx</stringProp>
           </IncludeController>
+          <hashTree/>
+          <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="STEPLER-TF/[TF]-AUSN_SERVICE" enabled="true">
+            <stringProp name="IncludeController.includepath">STEPLER-TF/[TF]-AUSN_SERVICE.jmx</stringProp>
+          </IncludeController>
+          <hashTree/>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
           <hashTree/>
         </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
