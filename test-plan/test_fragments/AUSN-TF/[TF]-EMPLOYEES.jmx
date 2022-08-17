@@ -28,7 +28,7 @@
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start issues=[TAXDEV-275]</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Операции с сотрудниками&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;employee_create для сотрудника с паспортом РФ&quot;);
@@ -60,7 +60,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-275]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -224,203 +224,6 @@ where customer_id =(select id from customer where
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="employee_create для сотрудника с паспортом РФ" enabled="true">
-              <boolProp name="TransactionController.includeTimers">false</boolProp>
-              <boolProp name="TransactionController.parent">true</boolProp>
-              <stringProp name="TestPlan.comments">employee_list</stringProp>
-            </TransactionController>
-            <hashTree>
-              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters">start issues=[TAXDEV-275]</stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Операции с сотрудниками&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;employee_create для сотрудника с паспортом РФ&quot;);
-
-/*
- * to create case report with single step
- * do not use parameters start/continue/stop
- * and do not create variable AllureCaseName
- */</stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Sampler>
-              <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД АУСН без сотрудников" enabled="true">
-                <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select c.customer_code
-from employee e  
-         right join customer c  on e.customer_id = c.id
-where e.id is null order by random() limit 1;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames">customer_code</stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">continue</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Создаем сотрудника для клиента" enabled="true">
-                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                  <collectionProp name="Arguments.arguments">
-                    <elementProp name="" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&#xd;
-  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
-    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-    &quot;method&quot;: &quot;employee_create&quot;,&#xd;
-    &quot;params&quot;: {&#xd;
-        &quot;employee_data&quot;: {&#xd;
-            &quot;employee_inn&quot;: &quot;${__Random(000000000000,999999999999)}&quot;,&#xd;
-            &quot;snils&quot;: &quot;${__Random(00000000000,99999999999)}&quot;,&#xd;
-            &quot;last_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
-            &quot;first_name&quot;: &quot;${__RandomString(9,абвгдежзиклмнопр)} &quot;,&#xd;
-            &quot;patronymic&quot;: &quot;${__RandomString(7,абвгдежзиклмнопр)}&quot;,&#xd;
-            &quot;birthdate&quot;: &quot;${__RandomDate(,1980-12-31,2020-07-08,,)}&quot;,&#xd;
-            &quot;citizenship&quot;: &quot;643&quot;,&#xd;
-            &quot;document_type_code&quot;: &quot;21&quot;,&#xd;
-            &quot;document_number&quot;: &quot;${__Random(00000,99999)}&quot;,&#xd;
-            &quot;gender&quot;: ${__RandomString(1,2)}&#xd;
-        },&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
-    }&#xd;
-}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </elementProp>
-                <stringProp name="HTTPSampler.domain"></stringProp>
-                <stringProp name="HTTPSampler.port"></stringProp>
-                <stringProp name="HTTPSampler.protocol"></stringProp>
-                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path"></stringProp>
-                <stringProp name="HTTPSampler.method">POST</stringProp>
-                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                <stringProp name="TestPlan.comments">//Код страны. 643 - РФ, Тип документа уд. лич. 21 - паспорт РФ</stringProp>
-              </HTTPSamplerProxy>
-              <hashTree>
-                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
-                <hashTree/>
-                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Запоминаем СНИЛС" enabled="true">
-                  <stringProp name="JSONPostProcessor.referenceNames">snils</stringProp>
-                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.snils</stringProp>
-                  <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                </JSONPostProcessor>
-                <hashTree/>
-                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Запоминаем ИНН" enabled="true">
-                  <stringProp name="JSONPostProcessor.referenceNames">employee_inn</stringProp>
-                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.employee_inn</stringProp>
-                  <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-                </JSONPostProcessor>
-                <hashTree/>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">continue</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем сотрудника в БД" enabled="true">
-                <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">
-select employee_inn , snils 
-from employee join customer on customer.id=employee.customer_id 
-and customer_code =&apos;${customer_code_1}&apos;;</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем ИНН" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-1350630098">${employee_inn}</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем СНИЛС" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="-792359105">${snils}</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">continue</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
-              </hashTree>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем информацию о сотруднике" enabled="true">
-                <stringProp name="dataSource">AUSN_${__P(layer)}</stringProp>
-                <stringProp name="queryType">Callable Statement</stringProp>
-                <stringProp name="query">delete 
-from employee  
-where customer_id =(select id from customer where
- customer_code =&apos;${customer_code_1}&apos;);</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем факт удаления записи из БД" enabled="true">
-                  <collectionProp name="Asserion.test_strings">
-                    <stringProp name="1329970139">1 updates</stringProp>
-                  </collectionProp>
-                  <stringProp name="Assertion.custom_message"></stringProp>
-                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                  <boolProp name="Assertion.assume_success">false</boolProp>
-                  <intProp name="Assertion.test_type">16</intProp>
-                </ResponseAssertion>
-                <hashTree/>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">stop</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
-              </hashTree>
-            </hashTree>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ndfl_report_create с 1 выплатой, вычетом и сотрудником" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -431,7 +234,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create с 1 выплатой, вычетом и сотрудником&quot;);
@@ -463,7 +266,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -713,7 +516,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Несколько ndfl_report_create по клиенту за разные месяца&quot;);
@@ -760,7 +563,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1140,7 +943,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create со сменой типа документа сотруднику&quot;);
@@ -1172,7 +975,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1539,7 +1342,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create с несколькими выплатами&quot;);
@@ -1571,7 +1374,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1839,7 +1642,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_detail на существующий отчет&quot;);
@@ -1871,7 +1674,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2141,7 +1944,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_detail на несуществующий отчет&quot;);
@@ -2173,7 +1976,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2253,7 +2056,7 @@ where e.id is null order by random() limit 1;</stringProp>
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_list на не пустой список отчетов&quot;);
@@ -2285,7 +2088,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2633,7 +2436,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_list на пустой список отчетов&quot;);
@@ -2665,7 +2468,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2735,7 +2538,7 @@ where e.id is null order by random() limit 1;</stringProp>
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot; Два ndfl_report_create на один отчет&quot;);
@@ -2767,7 +2570,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -3204,7 +3007,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create без вычетов и необлагаемых выплат&quot;);
@@ -3236,7 +3039,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -3449,7 +3252,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Отчёты о выплатах сотруднику&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ndfl_report_create сесколькими выплатами&quot;);
@@ -3481,7 +3284,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -3749,7 +3552,7 @@ where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Операции с сотрудниками&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;employee_list на не пустой список клиентов&quot;);
@@ -3781,7 +3584,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -3958,7 +3761,7 @@ from employee  where customer_id =(select id from customer where
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="parameters">start</stringProp>
+              <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Сотрудники&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Операции с сотрудниками&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;employee_list на пустой список отчетов&quot;);
@@ -3990,7 +3793,7 @@ where e.id is null order by random() limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="parameters">start</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -4050,86 +3853,6 @@ where e.id is null order by random() limit 1;</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>true</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>true</code>
-                  <message>true</message>
-                  <threadName>true</threadName>
-                  <dataType>true</dataType>
-                  <encoding>true</encoding>
-                  <assertions>true</assertions>
-                  <subresults>true</subresults>
-                  <responseData>true</responseData>
-                  <samplerData>true</samplerData>
-                  <xml>true</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>true</responseHeaders>
-                  <requestHeaders>true</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <bytes>true</bytes>
-                  <sentBytes>true</sentBytes>
-                  <url>true</url>
-                  <fileName>true</fileName>
-                  <hostname>true</hostname>
-                  <threadCounts>true</threadCounts>
-                  <sampleCount>true</sampleCount>
-                  <idleTime>true</idleTime>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename"></stringProp>
-            </ResultCollector>
-            <hashTree/>
-            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>true</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>true</code>
-                  <message>true</message>
-                  <threadName>true</threadName>
-                  <dataType>true</dataType>
-                  <encoding>true</encoding>
-                  <assertions>true</assertions>
-                  <subresults>true</subresults>
-                  <responseData>true</responseData>
-                  <samplerData>true</samplerData>
-                  <xml>true</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>true</responseHeaders>
-                  <requestHeaders>true</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <bytes>true</bytes>
-                  <sentBytes>true</sentBytes>
-                  <url>true</url>
-                  <fileName>true</fileName>
-                  <hostname>true</hostname>
-                  <threadCounts>true</threadCounts>
-                  <sampleCount>true</sampleCount>
-                  <idleTime>true</idleTime>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename"></stringProp>
-            </ResultCollector>
-            <hashTree/>
           </hashTree>
         </hashTree>
       </hashTree>
