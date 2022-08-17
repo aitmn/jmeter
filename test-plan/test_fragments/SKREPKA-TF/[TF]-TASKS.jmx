@@ -110,7 +110,7 @@ order by random() limit 1;
 {&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;create_patent_profile&quot;,&#xd;
-  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
     &quot;tax_payment&quot;: &quot;459&quot;,&#xd;
     &quot;tax_payable_date&quot;: &quot;${tax_payable_date1}&quot;,&#xd;
@@ -249,7 +249,7 @@ ${start_date1}	${end_date1}	${customer_code_1}
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-    &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;method&quot;: &quot;tasks&quot;,&#xd;
     &quot;params&quot;: {&#xd;
         &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
@@ -412,7 +412,7 @@ order by random() limit 1;
 {&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;create_patent_profile&quot;,&#xd;
-  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
     &quot;tax_payment&quot;: &quot;459&quot;,&#xd;
     &quot;tax_payable_date&quot;: &quot;${tax_payable_date2}&quot;,&#xd;
@@ -551,7 +551,7 @@ ${start_date2}	${end_date2}	${customer_code_1}
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-    &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;method&quot;: &quot;tasks&quot;,&#xd;
     &quot;params&quot;: {&#xd;
         &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
@@ -578,30 +578,6 @@ ${start_date2}	${end_date2}	${customer_code_1}
               <stringProp name="TestPlan.comments">tasks</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="false">
-                <stringProp name="JSON_PATH">.result</stringProp>
-                <stringProp name="EXPECTED_VALUE">{
-            &quot;is_can_pay&quot;: true,
-            &quot;is_expired&quot;: true,
-            &quot;type&quot;: &quot;patent&quot;,
-            &quot;year&quot;: 2022,
-            &quot;quarter&quot;: 1,
-            &quot;title&quot;: &quot;Налог по Патенту, первая часть&quot;,
-            &quot;subtitle&quot;: &quot;Можно платить&quot;,
-            &quot;state&quot;: &quot;overdue&quot;,
-            &quot;sum&quot;: 1627.0,
-            &quot;start_pay_date&quot;: &quot;2022-01-01&quot;,
-            &quot;end_pay_date&quot;: &quot;2022-03-31&quot;,
-            &quot;sno_type&quot;: &quot;patent&quot;,
-            &quot;id&quot;: ${patent_id},
-            &quot;address&quot;: &quot;127422, ??????, ?????? ?, ??????????? ??????, ??? 6 ???? 1, ?? 50&quot;
-        },</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="-219650391">&quot;start_pay_date&quot;: &quot;${start_date2}&quot;, &quot;end_pay_date&quot;: &quot;${end_date2}&quot;, &quot;sno_type&quot;: &quot;patent&quot;, &quot;id&quot;: ${patent_id}, &quot;address&quot;: &quot;127422, РОССИЯ, МОСКВА г, ДМИТРОВСКИЙ проезд, ДОМ 6 корп 1, кв 50&quot;</stringProp>
@@ -737,7 +713,7 @@ order by random() limit 1;
 {&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;create_patent_profile&quot;,&#xd;
-  &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
     &quot;tax_payment&quot;: &quot;459&quot;,&#xd;
     &quot;tax_payable_date&quot;: &quot;${tax_payable_date}&quot;,&#xd;
@@ -876,7 +852,7 @@ ${start_date}	${end_date}	${customer_code_1}
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
-    &quot;id&quot;: &quot;${__UUID}&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;method&quot;: &quot;tasks&quot;,&#xd;
     &quot;params&quot;: {&#xd;
         &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
@@ -903,30 +879,6 @@ ${start_date}	${end_date}	${customer_code_1}
               <stringProp name="TestPlan.comments">tasks</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="false">
-                <stringProp name="JSON_PATH">.result</stringProp>
-                <stringProp name="EXPECTED_VALUE">{
-            &quot;is_can_pay&quot;: true,
-            &quot;is_expired&quot;: true,
-            &quot;type&quot;: &quot;patent&quot;,
-            &quot;year&quot;: 2022,
-            &quot;quarter&quot;: 1,
-            &quot;title&quot;: &quot;Налог по Патенту, первая часть&quot;,
-            &quot;subtitle&quot;: &quot;Можно платить&quot;,
-            &quot;state&quot;: &quot;overdue&quot;,
-            &quot;sum&quot;: 1627.0,
-            &quot;start_pay_date&quot;: &quot;2022-01-01&quot;,
-            &quot;end_pay_date&quot;: &quot;2022-03-31&quot;,
-            &quot;sno_type&quot;: &quot;patent&quot;,
-            &quot;id&quot;: ${patent_id},
-            &quot;address&quot;: &quot;127422, ??????, ?????? ?, ??????????? ??????, ??? 6 ???? 1, ?? 50&quot;
-        },</stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">false</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="-629726595">{&quot;is_can_pay&quot;: true, &quot;is_expired&quot;: true, &quot;type&quot;: &quot;patent&quot;, &quot;year&quot;: 2022, &quot;quarter&quot;: 1, &quot;title&quot;: &quot;Налог по Патенту</stringProp>

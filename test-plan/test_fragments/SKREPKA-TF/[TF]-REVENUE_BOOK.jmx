@@ -19,7 +19,7 @@
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная дата начала расчета налога 2022" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная дата начала расчета налога текущий" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -30,7 +30,7 @@
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная дата начала расчета налога = 2022&quot;);  
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная дата начала расчета налога = текйщий год&quot;);  
 vars.put(&quot;AllureManualID&quot;,&quot;16813&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
@@ -43,7 +43,7 @@ where oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in
 	(select id 
 		from orders_taxregime ot
 		where ot.description in 
-		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;2022-01-01&apos;
+		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__time(yyyy,)}-01-01&apos;
 order by random() limit 1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -82,7 +82,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -112,7 +112,7 @@ order by random() limit 1;</stringProp>
             <hashTree>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -121,7 +121,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -130,7 +130,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
@@ -147,7 +147,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = 2021, автоматическая дата = 2022" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = прошлый год, автоматическая дата = текущий год" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -158,7 +158,7 @@ order by random() limit 1;</stringProp>
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = 2021, автоматическая дата = 2022&quot;);  
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = прошлый год, автоматическая дата = текущий год&quot;);  
 vars.put(&quot;AllureManualID&quot;,&quot;16810&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
@@ -172,7 +172,7 @@ where oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in
 	(select id 
 		from orders_taxregime ot
 		where ot.description =&apos;ИП на УСН Д-Р&apos;) 
-		and oc.tax_calc_start_date =&apos;2021-01-01&apos; and oc.tax_calc_start_date_auto =&apos;2022-01-01&apos;
+		and oc.tax_calc_start_date =&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and oc.tax_calc_start_date_auto =&apos;${__time(yyyy,)}-01-01&apos;
 order by random() limit 1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -211,7 +211,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -241,7 +241,7 @@ order by random() limit 1;</stringProp>
             <hashTree>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2022" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -250,7 +250,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2022 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -259,7 +259,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2021" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -268,7 +268,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2021 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -294,7 +294,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = 2022, автоматическая дата = 2021" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента. Ручная дата начала расчета налога = текущий, автоматическая дата = прошлый год" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -305,7 +305,7 @@ order by random() limit 1;</stringProp>
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = 2022, автоматическая дата = 2021&quot;);  
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента. Ручная дата начала расчета налога = текущий, автоматическая дата = прошлый год&quot;);  
 vars.put(&quot;AllureManualID&quot;,&quot;16811&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
@@ -315,13 +315,9 @@ vars.put(&quot;AllureManualID&quot;,&quot;16811&quot;);</stringProp>
               <stringProp name="query">
 select oc.customer_code
 	from orders_company oc  
-where oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
-	(select id 
-		from orders_taxregime ot
-		where ot.description in ( 
-		&apos;ИП на УСН Д-Р&apos;) 
-	)
-		and oc.tax_calc_start_date =&apos;2022-01-01&apos; and oc.tax_calc_start_date_auto =&apos;2021-01-01&apos;
+where oc.closing_date is null 
+	and oc.is_active is true
+	and oc.tax_calc_start_date =&apos;${__time(yyyy,)}-01-01&apos; and oc.tax_calc_start_date_auto =&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos;
 order by random() limit 1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -360,7 +356,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -390,7 +386,7 @@ order by random() limit 1;</stringProp>
             <hashTree>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2022" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -399,7 +395,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2022 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -408,7 +404,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
@@ -425,7 +421,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная и автоматическая дата начала расчета налога = 2020" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная и автоматическая дата начала расчета налога = 2020" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -495,7 +491,7 @@ order by random() limit 1;
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -525,7 +521,7 @@ order by random() limit 1;
             <hashTree>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2022" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -534,7 +530,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2022 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -543,7 +539,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2021" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -552,7 +548,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2021 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -587,7 +583,7 @@ order by random() limit 1;
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для неактивного клиента на ОСНО" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для неактивного клиента на ОСНО" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -650,7 +646,7 @@ order by random() limit 1;
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -698,7 +694,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
@@ -715,7 +711,7 @@ order by random() limit 1;
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для клиента на УСН. С неактивным расчетом" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для клиента на УСН. С неактивным расчетом" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -739,7 +735,7 @@ where oc.closing_date is null and oc.is_active is false and oc.tax_regime_id in
 	(select id 
 		from orders_taxregime ot
 		where ot.description in 
-		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;2022-01-01&apos;
+		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__time(yyyy,)}-01-01&apos;
 order by random() limit 1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -778,7 +774,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -824,9 +820,9 @@ order by random() limit 1;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет  года в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
@@ -843,7 +839,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная дата начала расчета не установлена" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная дата начала расчета не установлена" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -914,7 +910,7 @@ order by random() limit 1;
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -944,7 +940,7 @@ order by random() limit 1;
             <hashTree>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2022" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -953,7 +949,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2022 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -962,7 +958,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2021" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -971,7 +967,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2021 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1006,7 +1002,7 @@ order by random() limit 1;
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная и автоматическая дата начала расчета не установлена" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН. Ручная и автоматическая дата начала расчета не установлена" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1024,7 +1020,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;16814&quot;);</stringProp>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
               <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-              <stringProp name="query">
+              <stringProp name="query">		
 select oc.customer_code
 	from orders_company oc  
 where oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
@@ -1036,9 +1032,8 @@ where oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in
 		&apos;ИП на УСН 6% (ЕНВД)&apos;,
 		&apos;ИП на УСН Д-Р&apos;)
 	)
-		and oc.tax_calc_start_date is null and oc.tax_calc_start_date_auto is null and incorporation_date &gt;=&apos;2020-01-01&apos;
-order by random() limit 1;
-</stringProp>
+		and oc.tax_calc_start_date is null and oc.tax_calc_start_date_auto is null and incorporation_date between &apos;2020-01-01&apos; and &apos;2020-12-31&apos;
+order by random() limit 1;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1076,7 +1071,7 @@ order by random() limit 1;
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -1115,7 +1110,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2022 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1124,7 +1119,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = 2021" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1133,7 +1128,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для 2021 года" enabled="true">
                 <stringProp name="JSON_PATH">.result..title</stringProp>
-                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за 2021</stringProp>
+                <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1174,7 +1169,7 @@ order by random() limit 1;
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Доходы. КУДиР за текущий год. Ручная дата начала расчета налога 2022" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Доходы. КУДиР за текущий год. Ручная дата начала расчета налога текуйщий год" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1185,7 +1180,7 @@ order by random() limit 1;
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Скачивание КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;УСН Доходы. КУДиР за текущий год. Ручная дата начала расчета налога 2022&quot;);   
+vars.put(&quot;AllureCaseName&quot;,&quot;УСН Доходы. КУДиР за текущий год. Ручная дата начала расчета налога текущий год&quot;);   
 
 /*
  * to create case report with single step
@@ -1242,7 +1237,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -1292,7 +1287,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Доходы. КУДиР за прошлый год. Ручная дата начала расчета налога 2022" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Доходы. КУДиР за прошлый год. Ручная дата начала расчета налога текущий год" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1303,7 +1298,7 @@ order by random() limit 1;</stringProp>
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Скачивание КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;УСН Доходы. КУДиР за прошлый год. Ручная дата начала расчета налога 2022&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;УСН Доходы. КУДиР за прошлый год. Ручная дата начала расчета налога текущий год&quot;);
 
 /*
  * to create case report with single step
@@ -1360,7 +1355,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -1426,7 +1421,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Доходы. КУДиР за будущий год. Ручная дата начала расчета налога 2022" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Доходы. КУДиР за будущий год. Ручная дата начала расчета налога текущий" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1437,7 +1432,7 @@ order by random() limit 1;</stringProp>
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Скачивание КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;УСН Доходы. КУДиР за будущий год. Ручная дата начала расчета налога 2022&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;УСН Доходы. КУДиР за будущий год. Ручная дата начала расчета налога текущий год&quot;);
 
 /*
  * to create case report with single step
@@ -1494,7 +1489,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -1560,7 +1555,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Д-Р. КУДиР за текущий год. Ручная дата начала расчета налога 2022" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН Д-Р. КУДиР за текущий год. Ручная дата начала расчета налога текущий" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1571,7 +1566,7 @@ order by random() limit 1;</stringProp>
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Скачивание КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;УСН Д-Р. КУДиР за текущий год. Ручная дата начала расчета налога 2022&quot;);   
+vars.put(&quot;AllureCaseName&quot;,&quot;УСН Д-Р. КУДиР за текущий год. Ручная дата начала расчета налога текущий год&quot;);   
 
 
 /*
@@ -1629,7 +1624,7 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -1679,7 +1674,7 @@ order by random() limit 1;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ОСНО. КУДиР за текущий год. Ручная дата начала расчета налога 2022" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ОСНО. КУДиР за текущий год. Ручная дата начала расчета налога текущий" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1690,7 +1685,7 @@ order by random() limit 1;</stringProp>
               <stringProp name="parameters">start</stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Скачивание КУДиР&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;ОСНО. КУДиР за текущий год. Ручная дата начала расчета налога 2022&quot;);   
+vars.put(&quot;AllureCaseName&quot;,&quot;ОСНО. КУДиР за текущий год. Ручная дата начала расчета налога текущий год&quot;);   
 
 
 /*
@@ -1748,7 +1743,7 @@ order by random() limit 1;
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
     &quot;params&quot;: {&#xd;
@@ -1797,7 +1792,7 @@ order by random() limit 1;
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
                 <stringProp name="JSON_PATH">.result..year</stringProp>
-                <stringProp name="EXPECTED_VALUE">2022</stringProp>
+                <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
@@ -1814,7 +1809,7 @@ order by random() limit 1;
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН. КУДиР с &gt;1к операций" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="УСН. КУДиР с &gt;1к операций" enabled="false">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -1850,8 +1845,8 @@ where oc.tax_regime_id in (
 		&apos;ИП на УСН Д-Р&apos;,
 		&apos;ИП на УСН Доходы&apos;)
 )
-and ob.calc_date &gt;= &apos;2021-01-01&apos;
-and ob.calc_date &lt; &apos;2022-01-01&apos;
+and ob.calc_date &gt;= &apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos;
+and ob.calc_date &lt; &apos;${__time(yyyy,)}-01-01&apos;
 group by oc.id
 )  
             select *
@@ -1895,12 +1890,12 @@ order by random() limit 1;</stringProp>
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">{&#xd;
-    &quot;id&quot;: &quot;34da1105-04a5-7d1a-f54e-4ddcb1a4360d&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
     &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
     &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
     &quot;params&quot;: {&#xd;
         &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
-        &quot;year&quot;: 2021&#xd;
+        &quot;year&quot;: ${__timeShift(yyyy,,-P365D,,)}&#xd;
     }&#xd;
 } </stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
