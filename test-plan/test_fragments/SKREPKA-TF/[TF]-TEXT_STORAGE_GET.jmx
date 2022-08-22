@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+      <hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение статичных текстов" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="tochka_x.web.taxes.usn_detailed_description" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="label_usn" elementType="Argument">
+                  <stringProp name="Argument.name">label_usn</stringProp>
+                  <stringProp name="Argument.value">tochka_x.web.taxes.usn_detailed_description</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="txt_usn" elementType="Argument">
+                  <stringProp name="Argument.name">txt_usn</stringProp>
+                  <stringProp name="Argument.value">&lt;p&gt;Сейчас Бухгалтерия подходит только для&amp;nbsp;ИП на&amp;nbsp;УСН &amp;laquo;Доходы&amp;raquo; без&amp;nbsp;сотрудников. Если вы&amp;nbsp;сменили налоговый режим или наняли сотрудников, Бухгалтерию лучше отключить.&lt;/p&gt;&lt;p&gt;В&amp;nbsp;любой момент её&amp;nbsp;можно бесплатно подключить обратно, чтобы получать расчёт налогов и&amp;nbsp;взносов, а&amp;nbsp;также задачи на&amp;nbsp;их&amp;nbsp;уплату.&lt;/p&gt;&lt;p&gt;О&amp;nbsp;начале работы с&amp;nbsp;другими системами налогообложения обязательно напишем.&lt;/p&gt;</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </Arguments>
+            <hashTree/>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Онбординг&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Статические тексты&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;tochka_x.web.taxes.usn_detailed_description&quot;); 
+vars.put(&quot;AllureManualID&quot;,&quot;16580&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем, что в БД есть запись " enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select type, text 
+	from client_app_text_storage_storedtext  
+	where label =&apos;skrepka.${label_usn}&apos;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">type,text</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-174581973">1	${txt_usn}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем тексты" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;label&quot;: &quot;skrepka.${label_usn}&quot;&#xd;
+    },&#xd;
+    &quot;method&quot;: &quot;text_storage_get&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;&#xd;
+}&#xd;
+</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем метку в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..label</stringProp>
+                <stringProp name="EXPECTED_VALUE">skrepka.${label_usn}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату завершения патента в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..text</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;&lt;p&gt;Сейчас Бухгалтерия подходит только для&amp;nbsp;ИП на&amp;nbsp;УСН &amp;laquo;Доходы&amp;raquo; без&amp;nbsp;сотрудников. Если вы&amp;nbsp;сменили налоговый режим или наняли сотрудников, Бухгалтерию лучше отключить.&lt;\/p&gt;&lt;p&gt;В&amp;nbsp;любой момент её&amp;nbsp;можно бесплатно подключить обратно, чтобы получать расчёт налогов и&amp;nbsp;взносов, а&amp;nbsp;также задачи на&amp;nbsp;их&amp;nbsp;уплату.&lt;\/p&gt;&lt;p&gt;О&amp;nbsp;начале работы с&amp;nbsp;другими системами налогообложения обязательно напишем.&lt;\/p&gt; &quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result..type</stringProp>
+                <stringProp name="EXPECTED_VALUE">html</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="tochka_x.web.taxes.detailed_description" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="label" elementType="Argument">
+                  <stringProp name="Argument.name">label</stringProp>
+                  <stringProp name="Argument.value">tochka_x.web.taxes.detailed_description</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="txt" elementType="Argument">
+                  <stringProp name="Argument.name">txt</stringProp>
+                  <stringProp name="Argument.value">&lt;p&gt;Подходит для&amp;nbsp;ИП на&amp;nbsp;УСН без&amp;nbsp;сотрудников.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Мы&amp;nbsp;рассчитаем налоги и&amp;nbsp;взносы, подготовим платежи&lt;/li&gt;&lt;li&gt;Подготовим декларацию для&amp;nbsp;отправки онлайн&lt;/li&gt;&lt;li&gt;Вам останется нажать одну кнопку, и&amp;nbsp;налоговые задачи будут выполнены&lt;/li&gt;&lt;li&gt;Чтобы вы&amp;nbsp;ничего не&amp;nbsp;пропустили, мы&amp;nbsp;напомним вам обо&amp;nbsp;всех событиях&lt;/li&gt;&lt;/ul&gt;</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </Arguments>
+            <hashTree/>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Онбординг&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Статические тексты&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;tochka_x.web.taxes.detailed_description&quot;); 
+vars.put(&quot;AllureManualID&quot;,&quot;16578&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем, что в БД есть запись " enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select type, text 
+	from client_app_text_storage_storedtext  
+	where label =&apos;skrepka.${label}&apos;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">type,text</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1395981014">type	text
+1	${txt}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем тексты" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;label&quot;: &quot;skrepka.${label}&quot;&#xd;
+    },&#xd;
+    &quot;method&quot;: &quot;text_storage_get&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;&#xd;
+}&#xd;
+</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем метку в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..label</stringProp>
+                <stringProp name="EXPECTED_VALUE">skrepka.${label}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату завершения патента в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..text</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;&lt;p&gt;Подходит для&amp;nbsp;ИП на&amp;nbsp;УСН без&amp;nbsp;сотрудников.&lt;\/p&gt;&lt;ul&gt;&lt;li&gt;Мы&amp;nbsp;рассчитаем налоги и&amp;nbsp;взносы, подготовим платежи&lt;\/li&gt;&lt;li&gt;Подготовим декларацию для&amp;nbsp;отправки онлайн&lt;\/li&gt;&lt;li&gt;Вам останется нажать одну кнопку, и&amp;nbsp;налоговые задачи будут выполнены&lt;\/li&gt;&lt;li&gt;Чтобы вы&amp;nbsp;ничего не&amp;nbsp;пропустили, мы&amp;nbsp;напомним вам обо&amp;nbsp;всех событиях&lt;\/li&gt;&lt;\/ul&gt;&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result..type</stringProp>
+                <stringProp name="EXPECTED_VALUE">html</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="tochka_x.mobile.taxes.usn_detailed_description" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="usn_label" elementType="Argument">
+                  <stringProp name="Argument.name">usn_label</stringProp>
+                  <stringProp name="Argument.value">tochka_x.mobile.taxes.usn_detailed_description</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="txt_usn" elementType="Argument">
+                  <stringProp name="Argument.name">txt_usn</stringProp>
+                  <stringProp name="Argument.value">&lt;p&gt;Сейчас Бухгалтерия подходит только для&amp;nbsp;ИП на&amp;nbsp;УСН &amp;laquo;Доходы&amp;raquo; без&amp;nbsp;сотрудников. Если вы&amp;nbsp;сменили налоговый режим или наняли сотрудников, Бухгалтерию лучше отключить.&lt;/p&gt;&lt;p&gt;В&amp;nbsp;любой момент её&amp;nbsp;можно бесплатно подключить обратно, чтобы получать расчёт налогов и&amp;nbsp;взносов, а&amp;nbsp;также задачи на&amp;nbsp;их&amp;nbsp;уплату.&lt;/p&gt;&lt;p&gt;О&amp;nbsp;начале работы с&amp;nbsp;другими системами налогообложения обязательно напишем.&lt;/p&gt;</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </Arguments>
+            <hashTree/>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Онбординг&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Статические тексты&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;tochka_x.mobile.taxes.usn_detailed_description&quot;); 
+vars.put(&quot;AllureManualID&quot;,&quot;16579&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем, что в БД есть запись " enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select type, text 
+	from client_app_text_storage_storedtext  
+	where label =&apos;skrepka.${usn_label}&apos;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">type,text</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-174581973">1	${txt_usn}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем тексты" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;label&quot;: &quot;skrepka.${usn_label}&quot;&#xd;
+    },&#xd;
+    &quot;method&quot;: &quot;text_storage_get&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;&#xd;
+}&#xd;
+</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем метку в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..label</stringProp>
+                <stringProp name="EXPECTED_VALUE">skrepka.${usn_label}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату завершения патента в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..text</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;&lt;p&gt;Сейчас Бухгалтерия подходит только для&amp;nbsp;ИП на&amp;nbsp;УСН &amp;laquo;Доходы&amp;raquo; без&amp;nbsp;сотрудников. Если вы&amp;nbsp;сменили налоговый режим или наняли сотрудников, Бухгалтерию лучше отключить.&lt;\/p&gt;&lt;p&gt;В&amp;nbsp;любой момент её&amp;nbsp;можно бесплатно подключить обратно, чтобы получать расчёт налогов и&amp;nbsp;взносов, а&amp;nbsp;также задачи на&amp;nbsp;их&amp;nbsp;уплату.&lt;\/p&gt;&lt;p&gt;О&amp;nbsp;начале работы с&amp;nbsp;другими системами налогообложения обязательно напишем.&lt;\/p&gt; &quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result..type</stringProp>
+                <stringProp name="EXPECTED_VALUE">html</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="tochka_x.mobile.taxes.detailed_description" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="label" elementType="Argument">
+                  <stringProp name="Argument.name">label</stringProp>
+                  <stringProp name="Argument.value">tochka_x.mobile.taxes.detailed_description</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="txt" elementType="Argument">
+                  <stringProp name="Argument.name">txt</stringProp>
+                  <stringProp name="Argument.value">&lt;p&gt;Подходит для&amp;nbsp;ИП на&amp;nbsp;УСН без&amp;nbsp;сотрудников.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Мы&amp;nbsp;рассчитаем налоги и&amp;nbsp;взносы, подготовим платежи&lt;/li&gt;&lt;li&gt;Подготовим декларацию для&amp;nbsp;отправки онлайн&lt;/li&gt;&lt;li&gt;Вам останется нажать одну кнопку, и&amp;nbsp;налоговые задачи будут выполнены&lt;/li&gt;&lt;li&gt;Чтобы вы&amp;nbsp;ничего не&amp;nbsp;пропустили, мы&amp;nbsp;напомним вам обо&amp;nbsp;всех событиях&lt;/li&gt;&lt;/ul&gt;</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </Arguments>
+            <hashTree/>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Онбординг&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Статические тексты&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;tochka_x.mobile.taxes.detailed_description&quot;); 
+vars.put(&quot;AllureManualID&quot;,&quot;16577&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем, что в БД есть запись " enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select type, text 
+	from client_app_text_storage_storedtext  
+	where label =&apos;skrepka.${label}&apos;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">type,text</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1395981014">type	text
+1	${txt}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем тексты" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;label&quot;: &quot;skrepka.${label}&quot;&#xd;
+    },&#xd;
+    &quot;method&quot;: &quot;text_storage_get&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;&#xd;
+}&#xd;
+</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем метку в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..label</stringProp>
+                <stringProp name="EXPECTED_VALUE">skrepka.${label}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату завершения патента в ответе" enabled="true">
+                <stringProp name="JSON_PATH">.result..text</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;&lt;p&gt;Подходит для&amp;nbsp;ИП на&amp;nbsp;УСН без&amp;nbsp;сотрудников.&lt;\/p&gt;&lt;ul&gt;&lt;li&gt;Мы&amp;nbsp;рассчитаем налоги и&amp;nbsp;взносы, подготовим платежи&lt;\/li&gt;&lt;li&gt;Подготовим декларацию для&amp;nbsp;отправки онлайн&lt;\/li&gt;&lt;li&gt;Вам останется нажать одну кнопку, и&amp;nbsp;налоговые задачи будут выполнены&lt;\/li&gt;&lt;li&gt;Чтобы вы&amp;nbsp;ничего не&amp;nbsp;пропустили, мы&amp;nbsp;напомним вам обо&amp;nbsp;всех событиях&lt;\/li&gt;&lt;\/ul&gt;&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result..type</stringProp>
+                <stringProp name="EXPECTED_VALUE">html</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
