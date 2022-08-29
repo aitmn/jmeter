@@ -346,18 +346,54 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Подготовка  отчётности&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Подготовка  отчётности&quot;,&quot;Общайтесь с реальными бухгалтерами. Они проконсультируют и помогут во всем разобраться&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Подключайте копилку и не беспокойтесь о налогах. Мы накопим деньги с ваших доходов и уплатим налоги точно в срок.&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;, &quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Опытные бухгалтеры ответят на ваши вопросы и помогут во всем разобраться&quot;,&quot;Подключайте Копилку: мы накопим в ней деньги с ваших доходов и уплатим налоги в срок&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -601,18 +637,36 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Подготовка  отчётности&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Подготовка  отчётности&quot;,&quot;Общайтесь с реальными бухгалтерами. Они проконсультируют и помогут во всем разобраться&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Подключайте копилку и не беспокойтесь о налогах. Мы накопим деньги с ваших доходов и уплатим налоги точно в срок.&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;, &quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Опытные бухгалтеры ответят на ваши вопросы и помогут во всем разобраться&quot;,&quot;Подключайте Копилку: мы накопим в ней деньги с ваших доходов и уплатим налоги в срок&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -856,9 +910,18 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT_IN_EXP" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT_IN_EXP&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Подготовка  отчётности&quot;,&quot;Общайтесь с реальными бухгалтерами. Они проконсультируют и помогут во всем разобраться&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT_IN_EXP для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT_IN_EXP&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT_IN_EXP для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT_IN_EXP&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Общайтесь с реальными бухгалтерами. Они проконсультируют и помогут во всем разобраться&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1102,18 +1165,36 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Подготовка  отчётности&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Подготовка  отчётности&quot;,&quot;Общайтесь с реальными бухгалтерами. Они проконсультируют и помогут во всем разобраться&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Подключайте копилку и не беспокойтесь о налогах. Мы накопим деньги с ваших доходов и уплатим налоги точно в срок.&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;, &quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Опытные бухгалтеры ответят на ваши вопросы и помогут во всем разобраться&quot;,&quot;Подключайте Копилку: мы накопим в ней деньги с ваших доходов и уплатим налоги в срок&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1357,18 +1438,36 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Подготовка  отчётности&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..name</stringProp>
-                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Подготовка  отчётности&quot;,&quot;Общайтесь с реальными бухгалтерами. Они проконсультируют и помогут во всем разобраться&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Подключайте копилку и не беспокойтесь о налогах. Мы накопим деньги с ваших доходов и уплатим налоги точно в срок.&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи&quot;,&quot;Подготовим декларацию для отправки онлайн&quot;,&quot;Напомним вам о всех налоговых событиях, чтобы вы ничего не пропустили&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;, &quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Опытные бухгалтеры ответят на ваши вопросы и помогут во всем разобраться&quot;,&quot;Подключайте Копилку: мы накопим в ней деньги с ваших доходов и уплатим налоги в срок&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1612,9 +1711,27 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..name</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                 <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -1858,9 +1975,27 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..name</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                 <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -2104,9 +2239,27 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..name</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                 <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -2456,9 +2609,27 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..name</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                 <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -2702,9 +2873,27 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..name</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                 <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -2948,9 +3137,27 @@ end;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT" enabled="true">
-                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..name</stringProp>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                 <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">false</boolProp>
@@ -3211,6 +3418,33 @@ end;</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
             </hashTree>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ООО (Патент)" enabled="true">
@@ -3456,6 +3690,33 @@ end;</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
               <hashTree/>
             </hashTree>
           </hashTree>
@@ -3703,6 +3964,33 @@ end;</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
             </hashTree>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ООО (Неизвестная СНО)" enabled="true">
@@ -3949,6 +4237,33 @@ end;</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
             </hashTree>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ООО (ЕСХН)" enabled="true">
@@ -4184,6 +4499,33 @@ end;</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для веба" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для мобилки" enabled="true">
+                <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
               <hashTree/>
             </hashTree>
           </hashTree>
