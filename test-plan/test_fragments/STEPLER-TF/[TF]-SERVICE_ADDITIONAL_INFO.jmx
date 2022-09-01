@@ -532,8 +532,7 @@ from stepler_customer sc
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение короткого имени доступных услуг &apos;TAX_COUNT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].short_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;Персональная&quot;]
-</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;Персональная&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -640,8 +639,7 @@ from stepler_customer sc
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение короткого имени доступных услуг &apos;FREE_TAX_COUNT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].short_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;Базовая&quot;]
-</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;Базовая&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2876,6 +2874,47 @@ now() ,
                   <intProp name="Assertion.test_type">2</intProp>
                 </ResponseAssertion>
                 <hashTree/>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную месяца" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">vars.put(&quot;month&quot;,&quot;${__time(MM,)}&quot;);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Находим имя месяца" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">switch (&apos;${month}&apos;) {
+            case &apos;01&apos;:  vars.put(&quot;finish_month&quot;,&quot;января&quot;);
+                     break;
+            case &apos;02&apos;:  vars.put(&quot;finish_month&quot;,&quot;февраля&quot;); 
+            		 break;
+            case &apos;03&apos;:  vars.put(&quot;finish_month&quot;,&quot;марта&quot;); 
+                     break;
+            case &apos;04&apos;:  vars.put(&quot;finish_month&quot;,&quot;апреля&quot;);
+          		 break;
+            case &apos;05&apos;:  vars.put(&quot;finish_month&quot;,&quot;мая&quot;);
+                     break;
+            case &apos;06&apos;:  vars.put(&quot;finish_month&quot;,&quot;июня&quot;); 
+            		 break;
+            case &apos;07&apos;:  vars.put(&quot;finish_month&quot;,&quot;июля&quot;); 
+                     break;
+            case &apos;08&apos;:  vars.put(&quot;finish_month&quot;,&quot;августа&quot;);
+          		 break;
+            case &apos;09&apos;:  vars.put(&quot;finish_month&quot;,&quot;сентября&quot;);
+                     break;
+            case &apos;10&apos;:  vars.put(&quot;finish_month&quot;,&quot;октября&quot;); 
+            		 break;
+            case &apos;11&apos;:  vars.put(&quot;finish_month&quot;,&quot;ноября&quot;); 
+                     break;
+            case &apos;12&apos;:  vars.put(&quot;finish_month&quot;,&quot;декабря&quot;);
+          		 break;
+}</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -2923,7 +2962,7 @@ now() ,
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Сохраняем имя скидки finish_discount  is null" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].finish_discount</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;При оплате до ${__time(dd,)} августа&quot;]</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;При оплате до ${__time(d,)} ${finish_month}&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -3318,7 +3357,7 @@ now() ,
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату окончания скидки" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].finish_discount</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;При оплате до ${__timeShift(dd,,+P30D,,)} ${finish_month}&quot;]</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;При оплате до ${__timeShift(d,,+P30D,,)} ${finish_month}&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
