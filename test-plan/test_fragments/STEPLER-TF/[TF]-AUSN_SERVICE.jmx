@@ -186,6 +186,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -406,19 +419,10 @@ order by ss2.date_begin desc limit 1;
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
-                <hashTree/>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
                 <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Возвращаем СНО клиенту" enabled="true">
@@ -437,6 +441,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -676,18 +693,18 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
-                <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="Авторизация для запроса" enabled="true">
-                  <collectionProp name="AuthManager.auth_list">
-                    <elementProp name="" elementType="Authorization">
-                      <stringProp name="Authorization.url"></stringProp>
-                      <stringProp name="Authorization.username">skrepka</stringProp>
-                      <stringProp name="Authorization.password">ZrPXhQfOGMdC</stringProp>
-                      <stringProp name="Authorization.domain"></stringProp>
-                      <stringProp name="Authorization.realm"></stringProp>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
                     </elementProp>
                   </collectionProp>
-                  <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
-                </AuthManager>
+                </HeaderManager>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
@@ -959,9 +976,27 @@ order by ss2.date_begin desc limit 1;
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">authorization</stringProp>
+                      <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Добавляем заголовок для запроса" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="Проверяем статус подключения в БД степлера" enabled="true">
                   <stringProp name="dataSource">customer_code</stringProp>
-                  <stringProp name="query">select status  from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
+                  <stringProp name="query">select status from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code_1}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -971,6 +1006,14 @@ order by ss2.date_begin desc limit 1;
                   <stringProp name="resultVariable">DISCONNECTED</stringProp>
                   <stringProp name="variableNames"></stringProp>
                 </JDBCPostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем виджет по клиенту" enabled="true">
@@ -1069,6 +1112,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1136,7 +1192,7 @@ Output variables by position:
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;AUSN&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;ИП в ожидании подключения услуги &quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП в ожидании подключения услуги перешел на АУСН&quot;);
 
 /*
  * to create case report with single step
@@ -1305,6 +1361,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1530,15 +1599,6 @@ order by ss2.date_begin desc limit 1;
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
                 <hashTree/>
-                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                  <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                  </collectionProp>
-                </HeaderManager>
-                <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Возвращаем СНО клиенту" enabled="true">
                 <stringProp name="dataSource">CBS_${__P(layer)}</stringProp>
@@ -1556,6 +1616,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1563,10 +1636,6 @@ end;
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
-                <hashTree/>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">8000</stringProp>
-                </ConstantTimer>
                 <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Отправляем событие на обновление" enabled="true">
@@ -1609,10 +1678,6 @@ Output variables by position:
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
-                <hashTree/>
-                <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">300</stringProp>
-                </ConstantTimer>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -1793,6 +1858,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -1887,14 +1965,6 @@ Output variables by position:
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">continue</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
@@ -1907,6 +1977,14 @@ Output variables by position:
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Запрашиваем информацию по клиенту в степлере" enabled="true">
@@ -1964,6 +2042,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -2196,6 +2287,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -2367,6 +2471,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -2734,18 +2851,18 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
-                <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="Авторизация для запроса" enabled="true">
-                  <collectionProp name="AuthManager.auth_list">
-                    <elementProp name="" elementType="Authorization">
-                      <stringProp name="Authorization.url"></stringProp>
-                      <stringProp name="Authorization.username">skrepka</stringProp>
-                      <stringProp name="Authorization.password">ZrPXhQfOGMdC</stringProp>
-                      <stringProp name="Authorization.domain"></stringProp>
-                      <stringProp name="Authorization.realm"></stringProp>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
                     </elementProp>
                   </collectionProp>
-                  <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
-                </AuthManager>
+                </HeaderManager>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
@@ -2989,6 +3106,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -3226,6 +3356,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -3477,6 +3620,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -3700,6 +3856,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -3970,6 +4139,15 @@ order by ss2.date_begin desc limit 1;
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">authorization</stringProp>
+                      <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="Проверяем статус подключения в БД степлера" enabled="true">
                   <stringProp name="dataSource">customer_code</stringProp>
                   <stringProp name="query">select status  from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
@@ -3982,6 +4160,14 @@ order by ss2.date_begin desc limit 1;
                   <stringProp name="resultVariable">DISCONNECTED</stringProp>
                   <stringProp name="variableNames"></stringProp>
                 </JDBCPostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
               </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем виджет по клиенту" enabled="true">
@@ -4080,6 +4266,19 @@ end;
                 <stringProp name="resultSetHandler">Store as String</stringProp>
               </JDBCSampler>
               <hashTree>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/json</stringProp>
+                    </elementProp>
+                    <elementProp name="" elementType="Header">
+                      <stringProp name="Header.name">Authorization</stringProp>
+                      <stringProp name="Header.value">${APIBANKA_BASIC_STEPLER}</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
