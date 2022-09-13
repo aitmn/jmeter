@@ -4997,8 +4997,8 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                 <hashTree>
                   <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                   <hashTree/>
-                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert error message" enabled="true">
-                    <stringProp name="JSON_PATH">$.error.message</stringProp>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert error code" enabled="true">
+                    <stringProp name="JSON_PATH">$.error.data..code</stringProp>
                     <stringProp name="EXPECTED_VALUE">VALIDATION_ERROR</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
