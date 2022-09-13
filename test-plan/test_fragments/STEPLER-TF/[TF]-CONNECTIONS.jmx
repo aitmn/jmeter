@@ -4999,7 +4999,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert error message" enabled="true">
                     <stringProp name="JSON_PATH">$.error.message</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Invalid parameters: connect_by_card() missing 1 required positional argument: &apos;email&apos;</stringProp>
+                    <stringProp name="EXPECTED_VALUE">VALIDATION_ERROR</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -5053,7 +5053,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert error message" enabled="true">
                     <stringProp name="JSON_PATH">$.error.message</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Invalid parameters: connect_by_card() missing 1 required positional argument: &apos;email&apos;</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Invalid parameters: connect_service_by_card_via_url() missing 1 required positional argument: &apos;email&apos;</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -5235,7 +5235,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert message" enabled="true">
                     <stringProp name="JSON_PATH">$.error.message</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Invalid parameters: connect_service_by_account() missing 1 required positional argument: &apos;customer_code&apos;</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Invalid parameters: connect_service_by_card_via_url() missing 1 required positional argument: &apos;customer_code&apos;</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -5290,7 +5290,16 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert message" enabled="true">
                     <stringProp name="JSON_PATH">$.error.message</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Invalid parameters: connect_service_by_account() missing 1 required positional argument: &apos;customer_code&apos;</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Неизвестный код услуги </stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert error code" enabled="true">
+                    <stringProp name="JSON_PATH">$.error.data.errors..code</stringProp>
+                    <stringProp name="EXPECTED_VALUE">UNKNOWN_SERVICE</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -5345,7 +5354,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert message" enabled="true">
                     <stringProp name="JSON_PATH">$.error.message</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Неизвестный код услуги TAX_COUNT_1</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Неизвестный код услуги TAX_COUNT2</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
