@@ -19,7 +19,7 @@
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TAX_COUNT" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TAX_COUNT" enabled="false"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="connect_cap_service" enabled="true"/>
             <hashTree>
@@ -6355,7 +6355,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;11674&quot;);</stringProp>
 inner join stepler_settlement ss on ss.customer_id  = sc.id
 	where sc.id not in (select ssc.customer_id from stepler_serviceconnection ssc where ssc.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;))
 				and sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and sc.taxation_type_id = &apos;1&apos; or sc.taxation_type_id = &apos;4&apos;
+				and sc.taxation_type_id in( &apos;1&apos;,&apos;4&apos;)
 				and ss.is_closed = false
 				and ss.state = &apos;REG&apos;
 		and sc.customer_code not in (&apos;302711141&apos;)
@@ -6987,11 +6987,10 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
 inner join stepler_settlement ss on ss.customer_id  = sc.id
 	where sc.id not in (select ssc.customer_id from stepler_serviceconnection ssc where ssc.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;))
 				and sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and sc.taxation_type_id = &apos;1&apos; or sc.taxation_type_id = &apos;4&apos;
+				and sc.taxation_type_id  in (&apos;1&apos;,&apos;4&apos;)
 				and ss.is_closed = false
 				and ss.state = &apos;REG&apos;
-		and sc.customer_code not in (&apos;302711141&apos;)
-		and sc.created &lt;&apos;${__time(yyyy,)}-01-01&apos;
+		and sc.created &lt;&apos;2022-01-01&apos;
 		order by random() limit 1 </stringProp>
                     <stringProp name="queryArguments"></stringProp>
                     <stringProp name="queryArgumentsTypes"></stringProp>
@@ -7539,11 +7538,10 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
 inner join stepler_settlement ss on ss.customer_id  = sc.id
 	where sc.id not in (select ssc.customer_id from stepler_serviceconnection ssc where ssc.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;))
 				and sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and sc.taxation_type_id = &apos;1&apos; or sc.taxation_type_id = &apos;4&apos;
+				and sc.taxation_type_id  in (&apos;1&apos;,&apos;4&apos;)
 				and ss.is_closed = false
 				and ss.state = &apos;REG&apos;
-		and sc.customer_code not in (&apos;302711141&apos;)
-		and sc.created &lt;&apos;${__time(yyyy,)}-01-01&apos;
+		and sc.created &lt;&apos;2022-01-01&apos;
 		order by random() limit 1 </stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
@@ -7916,11 +7914,10 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Валидация параметро�
 inner join stepler_settlement ss on ss.customer_id  = sc.id
 	where sc.id not in (select ssc.customer_id from stepler_serviceconnection ssc where ssc.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;))
 				and sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and sc.taxation_type_id = &apos;1&apos; or sc.taxation_type_id = &apos;4&apos;
+				and sc.taxation_type_id  in (&apos;1&apos;,&apos;4&apos;)
 				and ss.is_closed = false
 				and ss.state = &apos;REG&apos;
-		and sc.customer_code not in (&apos;302711141&apos;)
-		and sc.created &lt;&apos;${__time(yyyy,)}-01-01&apos;
+		and sc.created &lt;&apos;2022-01-01&apos;
 		order by random() limit 1 </stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
@@ -8576,7 +8573,7 @@ vars.put(&quot;AllureManualID&quot;,&quot;11669&quot;);</stringProp>
 inner join stepler_settlement ss on ss.customer_id  = sc.id
 	where sc.id not in (select ssc.customer_id from stepler_serviceconnection ssc where ssc.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;))
 				and sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and sc.taxation_type_id = &apos;1&apos; or sc.taxation_type_id = &apos;4&apos;
+				and sc.taxation_type_id in (&apos;1&apos;,&apos;4&apos;)
 				and ss.is_closed = false
 				and ss.state = &apos;REG&apos;
 		and sc.customer_code not in (&apos;302711141&apos;)
@@ -9532,7 +9529,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="TAX_COUNT_EMPLOYEE" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="TAX_COUNT_EMPLOYEE" enabled="false">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -13065,7 +13062,7 @@ CONNECTED</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="BUNDLE_BASE_TAX_COUNT" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="BUNDLE_BASE_TAX_COUNT" enabled="false">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -13418,7 +13415,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="FREE_TAX_COUNT" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="FREE_TAX_COUNT" enabled="false">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
