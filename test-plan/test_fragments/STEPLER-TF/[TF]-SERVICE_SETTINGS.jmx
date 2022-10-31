@@ -9773,7 +9773,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Использование настр�
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="query">select archive_date 
 	from stepler_service ss 
-where name =&apos;TAX_COUNT&apos;
+where code =&apos;9909&apos;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9805,7 +9805,7 @@ where name =&apos;TAX_COUNT&apos;
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Обновляем дату архивации для услуги" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="query">update stepler_service set archive_date =&apos;${__timeShift(yyyy-MM-dd,,-P20D,,)}&apos;
-	where name =&apos;TAX_COUNT&apos;
+	where code =&apos;9909&apos;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9940,8 +9940,8 @@ order by random() limit 1;</stringProp>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Возвращаем дату услуге" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                <stringProp name="query"> update stepler_service set archive_date = null
-	where name =&apos;TAX_COUNT&apos;
+                <stringProp name="query"> update stepler_service set archive_date = ${archive_date_1}
+	where code =&apos;9909&apos;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -9992,7 +9992,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Использование настр�
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="query">select archive_date 
 	from stepler_service ss 
-where name =&apos;TAX_COUNT&apos;
+where code =&apos;9909&apos;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10024,8 +10024,7 @@ where name =&apos;TAX_COUNT&apos;
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Обновляем дату архивации для услуги" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="query">update stepler_service set archive_date =&apos;${__timeShift(yyyy-MM-dd,,+P20D,,)}&apos;
-	where name =&apos;TAX_COUNT&apos;
-</stringProp>
+	where code =&apos;9909&apos;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -10159,8 +10158,8 @@ order by random() limit 1;</stringProp>
               </hashTree>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Возвращаем дату услуге" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                <stringProp name="query"> update stepler_service set archive_date = null
-	where name =&apos;TAX_COUNT&apos;
+                <stringProp name="query"> update stepler_service set archive_date = ${archive_date_1}
+	where code =&apos;9909&apos;
 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -10294,6 +10293,15 @@ order by random() limit 1;</stringProp>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что получили услугу &apos;TAX_COUNT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;TAX_COUNT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что получили цену 9900 для TAX_COUNT" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT&apos;)].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
