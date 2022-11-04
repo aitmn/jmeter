@@ -66,7 +66,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,3000);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -79,10 +80,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;11673&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &lt;= 5000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &lt;= 5000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &lt;= 5000)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">with st as (select sc.customer_code,   array_agg(c.status) as statuses
@@ -437,6 +446,40 @@ order by random() limit 1;</stringProp>
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем статус списания комиссии" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="query">select sc.status from stepler_connectioncomission sc join stepler_serviceconnection ss on ss.id =sc.connection_id where
+	ss.customer_id = (select id from stepler_customer sc2 where sc2.customer_code=&apos;${customer_code}&apos;) and ss.status =&apos;CONNECTS&apos;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что статус платежа - SENT" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-892481550">status</stringProp>
+                      <stringProp name="2541464">SENT</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг (active_connections_info)" enabled="true">
                   <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -565,14 +608,10 @@ order by random() limit 1;</stringProp>
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем статус списания комиссии" enabled="true">
                   <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9927&apos;)</stringProp>
+                  <stringProp name="query">select sc.status from stepler_connectioncomission sc join stepler_serviceconnection ss on ss.id =sc.connection_id where
+	ss.customer_id = (select id from stepler_customer sc2 where sc2.customer_code=&apos;${customer_code}&apos;) and ss.status =&apos;CONNECTED&apos;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -580,13 +619,13 @@ order by random() limit 1;</stringProp>
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                   <stringProp name="resultSetMaxRows"></stringProp>
                   <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
                 </JDBCSampler>
                 <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 9900" enabled="true">
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что есть статус = SUCCESS" enabled="true">
                     <collectionProp name="Asserion.test_strings">
-                      <stringProp name="810837740">connection_price
-9900.00</stringProp>
+                      <stringProp name="-892481550">status</stringProp>
+                      <stringProp name="-1149187101">SUCCESS</stringProp>
                     </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -713,7 +752,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;13171&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.put(&quot;account_code&quot;,&quot;NOT_FOUND&quot;);</stringProp>
+                    <stringProp name="script">vars.put(&quot;account_code&quot;,&quot;NOT_FOUND&quot;);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -726,10 +766,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;13171&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (account_code == NOT_FOUND)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(&quot;${account_code}&quot; == &quot;NOT_FOUND&quot;)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((&quot;${account_code}&quot; == &quot;NOT_FOUND&quot;)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">with st as (select sc.customer_code,   array_agg(c.status) as statuses
@@ -933,7 +981,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;13170&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.put(&quot;account_code&quot;,&quot;NOT_FOUND&quot;);</stringProp>
+                    <stringProp name="script">vars.put(&quot;account_code&quot;,&quot;NOT_FOUND&quot;);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -946,10 +995,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;13170&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (account_code == NOT_FOUND)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(&quot;${account_code}&quot; == &quot;NOT_FOUND&quot;)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((&quot;${account_code}&quot; == &quot;NOT_FOUND&quot;)&amp;&amp;(${counter} &lt; 10))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">with st as (select sc.customer_code,   array_agg(c.status) as statuses
@@ -1743,7 +1800,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;13105&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -1756,10 +1814,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;13105&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &gt;= 1000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &gt;= 1000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &gt;= 1000)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">select sc.customer_code from stepler_customer sc
@@ -1954,6 +2020,40 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                     <stringProp name="filename">${_allure_config_path}</stringProp>
                     <stringProp name="cacheKey">false</stringProp>
                     <stringProp name="script"></stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем статус списания комиссии" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="query">select sc.status from stepler_connectioncomission sc join stepler_serviceconnection ss on ss.id =sc.connection_id where
+	ss.customer_id = (select id from stepler_customer sc2 where sc2.customer_code=&apos;${customer_code}&apos;) and ss.status =&apos;CONNECTS&apos;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что пришёл не пустой ответ" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-892481550">status</stringProp>
+                      <stringProp name="2541464">SENT</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
@@ -2158,15 +2258,15 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                     <stringProp name="script"></stringProp>
                   </JSR223Assertion>
                   <hashTree/>
+                  <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+                    <stringProp name="ConstantTimer.delay">300</stringProp>
+                  </ConstantTimer>
+                  <hashTree/>
                 </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем статус списания комиссии" enabled="true">
                   <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9927&apos;)</stringProp>
+                  <stringProp name="query">select sc.status from stepler_connectioncomission sc join stepler_serviceconnection ss on ss.id =sc.connection_id where
+	ss.customer_id = (select id from stepler_customer sc2 where sc2.customer_code=&apos;${customer_code}&apos;) and ss.status =&apos;CONNECTS&apos;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -2174,13 +2274,13 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <stringProp name="resultSetHandler">Store as String</stringProp>
                   <stringProp name="resultSetMaxRows"></stringProp>
                   <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
                 </JDBCSampler>
                 <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 9900" enabled="true">
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что пришёл не пустой ответ" enabled="true">
                     <collectionProp name="Asserion.test_strings">
-                      <stringProp name="810837740">connection_price
-9900.00</stringProp>
+                      <stringProp name="-892481550">status</stringProp>
+                      <stringProp name="2066319421">FAILED</stringProp>
                     </collectionProp>
                     <stringProp name="Assertion.custom_message"></stringProp>
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2242,9 +2342,304 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                     <stringProp name="cacheKey">false</stringProp>
                     <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
                     <stringProp name="script"></stringProp>
                     <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Подключение TAX_COUNT (позитив оплата картой)" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;TAX_COUNT&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service с оплатой картой&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="query">with st as (select sc.customer_code,   array_agg(c.status) as statuses
+            from stepler_customer sc join stepler_settlement ss on ss.customer_id  = sc.id join stepler_serviceconnection c on c.customer_id =sc.id 
+	where   sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
+				and sc.taxation_type_id = &apos;7&apos;
+				and ss.is_closed = false
+				and ss.state = &apos;REG&apos;
+		and sc.customer_code not in (&apos;302711141&apos;)
+		and sc.created &lt;&apos;${__time(yyyy,)}-01-01&apos;
+		group by customer_code
+		)
+select *
+from st
+where not (&apos;CONNECTED&apos; = any (statuses)) and not (&apos;CONNECTS&apos; = any (statuses))
+order by random() limit 1;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную без постфикса" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters"></stringProp>
+                    <stringProp name="filename"></stringProp>
+                    <stringProp name="cacheKey">true</stringProp>
+                    <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+                  </JSR223PostProcessor>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что пришёл не пустой ответ" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="263090491">customer_code	statuses</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">12</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на подключение услуги TAX_COUNT" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+   &quot;id&quot;:&quot;${__UUID()}&quot;,&#xd;
+   &quot;jsonrpc&quot;:&quot;2.0&quot;,&#xd;
+   &quot;method&quot;:&quot;connect_cap_service&quot;,&#xd;
+   &quot;params&quot;:{&#xd;
+      &quot;email&quot;:&quot;111@ya.ru&quot;,&#xd;
+      &quot;customer_code&quot;:&quot;${customer_code}&quot;,&#xd;
+      &quot;service_name&quot;:&quot;TAX_COUNT&quot;,&#xd;
+      &quot;to_acquiring_payment&quot;:true&#xd;
+   }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">/api/v1/private/jsonrpc/</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что получили ссылку для оплаты" enabled="true">
+                    <collectionProp name="Asserion.test_strings">
+                      <stringProp name="-1249411077">https://yoomoney.ru/checkout/payments/v2/contract?orderId=</stringProp>
+                    </collectionProp>
+                    <stringProp name="Assertion.custom_message"></stringProp>
+                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                    <boolProp name="Assertion.assume_success">false</boolProp>
+                    <intProp name="Assertion.test_type">16</intProp>
+                  </ResponseAssertion>
+                  <hashTree/>
+                  <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняемссылку на оплату" enabled="true">
+                    <stringProp name="JSONPostProcessor.referenceNames">yoomoney_link</stringProp>
+                    <stringProp name="JSONPostProcessor.jsonPathExprs">$.result</stringProp>
+                    <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                  </JSONPostProcessor>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="script"></stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Повторный запрос на подключение услуги TAX_COUNT" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+   &quot;id&quot;:&quot;${__UUID()}&quot;,&#xd;
+   &quot;jsonrpc&quot;:&quot;2.0&quot;,&#xd;
+   &quot;method&quot;:&quot;connect_cap_service&quot;,&#xd;
+   &quot;params&quot;:{&#xd;
+      &quot;email&quot;:&quot;111@ya.ru&quot;,&#xd;
+      &quot;customer_code&quot;:&quot;${customer_code}&quot;,&#xd;
+      &quot;service_name&quot;:&quot;TAX_COUNT&quot;,&#xd;
+      &quot;to_acquiring_payment&quot;:true&#xd;
+   }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">/api/v1/private/jsonrpc/</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что получили ту же ссылку для оплаты" enabled="true">
+                    <stringProp name="JSON_PATH">$.result</stringProp>
+                    <stringProp name="EXPECTED_VALUE">https://yoomoney.ru/payments/external/confirmation?${__javaScript(&quot;${yoomoney_link}&quot;.substring(50))}</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="script"></stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг (active_connections_info)" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;active_connection_info&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">/api/v1/private/jsonrpc/</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Pending Service Assertion = &apos;TAX_COUNT&apos;" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.pending_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">TAX_COUNT</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="script"></stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг (get_active_connection_info)" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;get_active_connection_info&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">/api/v2/private/jsonrpc/</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Pending Service Assertion = &apos;TAX_COUNT&apos;" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.pending_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">TAX_COUNT</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="script"></stringProp>
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
@@ -2361,7 +2756,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11656&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.put(&quot;account_code&quot;,&quot;NOT_FOUND&quot;);</stringProp>
+                    <stringProp name="script">vars.put(&quot;account_code&quot;,&quot;NOT_FOUND&quot;);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2374,10 +2770,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;11656&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (account_code == NOT_FOUND)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(&quot;${account_code}&quot; == &quot;NOT_FOUND&quot;)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((&quot;${account_code}&quot; == &quot;NOT_FOUND&quot;)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">with st as (select sc.customer_code,   array_agg(c.status) as statuses
@@ -2714,44 +3118,6 @@ order by random() limit 1;</stringProp>
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
-                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9927&apos;)</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                  <stringProp name="resultSetMaxRows"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                </JDBCSampler>
-                <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 9900" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="810837740">connection_price
-9900.00</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отключаем клиенту услугу" enabled="true">
                   <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -2868,7 +3234,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11674&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,3000);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -2881,10 +3248,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;11674&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &lt;= 5000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &lt;= 5000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &lt;= 5000)&amp;&amp;(${counter}&lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">select sc.customer_code from stepler_customer sc
@@ -3363,14 +3738,12 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем наличие записи в БД" enabled="true">
                   <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9907&apos;)</stringProp>
+                  <stringProp name="query">select stepler_serviceconnection.* 
+	from stepler_serviceconnection 
+	join stepler_customer on stepler_customer.id = stepler_serviceconnection.customer_id and stepler_customer.customer_code=&apos;${customer_code}&apos; and  stepler_serviceconnection.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;);
+</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -3381,17 +3754,6 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <stringProp name="variableNames"></stringProp>
                 </JDBCSampler>
                 <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 2500" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="-1221237335">connection_price
-2500.00</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                     <stringProp name="cacheKey">false</stringProp>
                     <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -3469,7 +3831,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                 </hashTree>
               </hashTree>
             </hashTree>
-            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="connect_service" enabled="true"/>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="connect_service" enabled="false"/>
             <hashTree>
               <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Подключение REPORT (позитив без списания комиссии)" enabled="true">
                 <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -3514,7 +3876,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11669&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,500);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -3527,10 +3890,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;11669&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &gt;= 1000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &gt;= 1000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &gt;= 1000)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">select sc.customer_code from stepler_customer sc
@@ -3914,44 +4285,6 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
-                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9907&apos;)</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                  <stringProp name="resultSetMaxRows"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                </JDBCSampler>
-                <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 2500" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="-1221237335">connection_price
-2500.00</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                </hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отключаем клиенту услугу" enabled="true">
                   <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -4021,10 +4354,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="TAX_COUNT_EMPLOYEE" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TAX_COUNT_EMPLOYEE" enabled="true"/>
           <hashTree>
             <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="connect_service" enabled="true"/>
             <hashTree>
@@ -4071,7 +4401,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;13368&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,3000);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4084,10 +4415,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;13368&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &lt;= 5000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &lt;= 5000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &lt;= 5000)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">select sc.customer_code from stepler_customer sc
@@ -4580,7 +4919,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                   <stringProp name="query">select count(*) from stepler_connectioncomission sc 
 	where connection_id  in (select id from stepler_serviceconnection ss 
-		where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;));</stringProp>
+		where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;))and sc.created =&apos;${__time(yyyy-MM-dd,)}&apos;;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -4600,44 +4939,6 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                     <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                     <boolProp name="Assertion.assume_success">false</boolProp>
                     <intProp name="Assertion.test_type">2</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
-                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9920&apos;)</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                  <stringProp name="resultSetMaxRows"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                </JDBCSampler>
-                <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 2000" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="-1364383090">connection_price
-2000.00</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
                   </ResponseAssertion>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4759,7 +5060,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11670&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,3000);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -4772,10 +5074,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;11670&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &lt;= 5000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &lt;= 5000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &lt;= 5000)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">select sc.customer_code from stepler_customer sc
@@ -5364,7 +5674,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                   <stringProp name="query">select count(*) from stepler_connectioncomission sc 
 	where connection_id  in (select id from stepler_serviceconnection ss 
-		where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;));</stringProp>
+		where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;)) and sc.created =&apos;${__time(yyyy-MM-dd,)}&apos;;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -5473,7 +5783,8 @@ vars.put(&quot;AllureManualID&quot;,&quot;11659&quot;);</stringProp>
                     <stringProp name="parameters"></stringProp>
                     <stringProp name="filename"></stringProp>
                     <stringProp name="cacheKey">true</stringProp>
-                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);</stringProp>
+                    <stringProp name="script">vars.putObject(&quot;available_balance&quot;,5000);
+vars.putObject(&quot;counter&quot;,0);</stringProp>
                   </JSR223PostProcessor>
                   <hashTree/>
                   <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
@@ -5486,10 +5797,18 @@ vars.put(&quot;AllureManualID&quot;,&quot;11659&quot;);</stringProp>
                   <hashTree/>
                 </hashTree>
                 <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While (available_balance &lt;= 5000)" enabled="true">
-                  <stringProp name="WhileController.condition">${__javaScript(${available_balance} &lt;= 5000)}
-</stringProp>
+                  <stringProp name="WhileController.condition">${__javaScript((${available_balance} &lt;= 5000)&amp;&amp;(${counter} &lt; 5))}</stringProp>
                 </WhileController>
                 <hashTree>
+                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                    <stringProp name="CounterConfig.start">0</stringProp>
+                    <stringProp name="CounterConfig.end"></stringProp>
+                    <stringProp name="CounterConfig.incr">1</stringProp>
+                    <stringProp name="CounterConfig.name">counter</stringProp>
+                    <stringProp name="CounterConfig.format"></stringProp>
+                    <boolProp name="CounterConfig.per_user">false</boolProp>
+                  </CounterConfig>
+                  <hashTree/>
                   <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
                     <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                     <stringProp name="query">select sc.customer_code from stepler_customer sc
@@ -6072,7 +6391,7 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                   <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                   <stringProp name="query">select count(*) from stepler_connectioncomission sc 
 	where connection_id  in (select id from stepler_serviceconnection ss 
-		where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;));</stringProp>
+		where customer_id in (select id from stepler_customer sc where customer_code  = &apos;${customer_code}&apos;)) and sc.created =&apos;${__time(yyyy-MM-dd,)}&apos;;</stringProp>
                   <stringProp name="queryArguments"></stringProp>
                   <stringProp name="queryArgumentsTypes"></stringProp>
                   <stringProp name="queryTimeout"></stringProp>
@@ -6636,44 +6955,6 @@ inner join stepler_settlement ss on ss.customer_id  = sc.id
                     <stringProp name="filename">${_allure_config_path}</stringProp>
                     <stringProp name="cacheKey">false</stringProp>
                     <stringProp name="script"></stringProp>
-                  </JSR223Assertion>
-                  <hashTree/>
-                </hashTree>
-                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем цену подключенной услуги" enabled="true">
-                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                  <stringProp name="query">select connection_price 
-	from stepler_serviceconnection ss 
-	where customer_id =
-	(select id from stepler_customer sc where sc.customer_code=&apos;${customer_code}&apos;)
-	and status in(&apos;CONNECTED&apos;,&apos;CONNECTS&apos;)
-	and service_id =(select id from stepler_service ss2 where code=&apos;9913&apos;)</stringProp>
-                  <stringProp name="queryArguments"></stringProp>
-                  <stringProp name="queryArgumentsTypes"></stringProp>
-                  <stringProp name="queryTimeout"></stringProp>
-                  <stringProp name="queryType">Select Statement</stringProp>
-                  <stringProp name="resultSetHandler">Store as String</stringProp>
-                  <stringProp name="resultSetMaxRows"></stringProp>
-                  <stringProp name="resultVariable"></stringProp>
-                  <stringProp name="variableNames"></stringProp>
-                </JDBCSampler>
-                <hashTree>
-                  <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем цену подключения = 0" enabled="true">
-                    <collectionProp name="Asserion.test_strings">
-                      <stringProp name="738763744">connection_price
-0.00</stringProp>
-                    </collectionProp>
-                    <stringProp name="Assertion.custom_message"></stringProp>
-                    <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                    <boolProp name="Assertion.assume_success">false</boolProp>
-                    <intProp name="Assertion.test_type">16</intProp>
-                  </ResponseAssertion>
-                  <hashTree/>
-                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                    <stringProp name="cacheKey">false</stringProp>
-                    <stringProp name="filename">${_allure_config_path}</stringProp>
-                    <stringProp name="parameters">continue</stringProp>
-                    <stringProp name="script"></stringProp>
-                    <stringProp name="scriptLanguage">groovy</stringProp>
                   </JSR223Assertion>
                   <hashTree/>
                 </hashTree>
