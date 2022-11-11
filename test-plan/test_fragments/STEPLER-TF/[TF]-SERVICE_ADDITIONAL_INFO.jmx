@@ -2185,7 +2185,7 @@ now() ,
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение полной цены ИП на УСН 6% с тарифом 402" enabled="true">
                     <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;|| @.name == &apos;TAX_COUNT&apos;)].full_price_visible</stringProp>
-                    <stringProp name="EXPECTED_VALUE">[&quot;4 000 \u20BD&quot;]</stringProp>
+                    <stringProp name="EXPECTED_VALUE">[&quot;9 900 \u20BD&quot;]</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -2316,7 +2316,7 @@ order by random() limit 1;
   &quot;method&quot;: &quot;connect_discount&quot;,&#xd;
   &quot;params&quot;: {&#xd;
     &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
-    &quot;amount&quot;: ${__Random(100,600, discount )}&#xd;
+    &quot;amount&quot;: 411&#xd;
   }&#xd;
 }</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
@@ -2457,7 +2457,7 @@ now() ,
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение полной цены ИП на Патенте с тарифом 405" enabled="true">
                     <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;|| @.name == &apos;TAX_COUNT&apos;)].full_price_visible</stringProp>
-                    <stringProp name="EXPECTED_VALUE">[&quot;3 000 \u20BD&quot;]</stringProp>
+                    <stringProp name="EXPECTED_VALUE">[&quot;9 900 \u20BD&quot;]</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -2732,7 +2732,7 @@ now() ,
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение полной цены ИП на УСН 6%  на архивном тарифе" enabled="true">
                     <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;|| @.name == &apos;TAX_COUNT&apos;)].full_price_visible</stringProp>
-                    <stringProp name="EXPECTED_VALUE">[&quot;3 500 \u20BD&quot;]</stringProp>
+                    <stringProp name="EXPECTED_VALUE">[&quot;9 900 \u20BD&quot;]</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -4043,7 +4043,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение цены ИП на УСН 6% с тарифом 402" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;|| @.name == &apos;TAX_COUNT&apos;)].price_visible</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;Бесплатно&quot;,&quot;4 000 \u20BD в год&quot;]</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;Бесплатно&quot;,&quot;9 900 \u20BD в год&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -4314,7 +4314,7 @@ now() ,
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение цены ИП на УСН 6% с тарифом 402 с учетом скидки" enabled="true">
                     <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;|| @.name == &apos;TAX_COUNT&apos;)].price_visible</stringProp>
-                    <stringProp name="EXPECTED_VALUE">[&quot;Бесплатно&quot;,&quot;3 568 \u20BD в год&quot;]</stringProp>
+                    <stringProp name="EXPECTED_VALUE">[&quot;Бесплатно&quot;,&quot;9 468 \u20BD в год&quot;]</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -4429,6 +4429,47 @@ order by random() limit 1;
                   <stringProp name="filename">${_allure_config_path}</stringProp>
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем все скидки по клиенту" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="query">delete from stepler_discounttocustomer sd 
+	where customer_id in (
+		select id 
+			from stepler_customer sc 
+		where customer_code = &apos;${customer_code}&apos;);
+
+delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 0 -&gt; &apos;value&apos; -&gt; 0 = &apos;&quot;${customer_code}&quot;&apos;;
+
+
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Update Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Updates Assertion" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-234430262">updates</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">2</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>

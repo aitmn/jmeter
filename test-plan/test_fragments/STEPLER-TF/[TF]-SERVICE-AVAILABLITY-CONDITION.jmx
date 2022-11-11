@@ -118,6 +118,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступных услуг &apos;FREE_TAX_COUNT/TAX_COUNT&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;0&quot;,&quot;9900.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
@@ -279,6 +288,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступных услуг &apos;FREE_TAX_COUNT/TAX_COUNT&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;0&quot;,&quot;9900.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
@@ -359,15 +377,23 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИП на УСН Д-Р и с 403 тарифом" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                <stringProp name="query">select customer_code from stepler_customer 
-	where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;)
-				and organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and taxation_type_id in (select id from stepler_taxationtype st where name =&apos;УСН доходы - расходы&apos;)
-				and created &gt;= TO_TIMESTAMP(&apos;${__timeShift(yyyy-MM-dd,,-P60D,yesterday)}&apos;, &apos;YYYY/MM/DD&apos;)
-		and customer_code not in (&apos;302711141&apos;)
-		order by random() limit 1 </stringProp>
+                <stringProp name="query">with st as (select sc.customer_code, array_agg (ss.tariff_code) as tariff_code
+from stepler_customer sc join stepler_settlement ss  on sc.id =ss.customer_id 
+where organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id  in 
+	(select id 
+		from stepler_taxationtype
+		where name in 
+		(&apos;УСН доходы - расходы&apos;)
+	)
+	and ss.state =&apos;REG&apos;  group by customer_code)
+	
+select *
+from st
+where  (&apos;403&apos; = any (tariff_code)) and not (&apos;405&apos; = any (tariff_code))
+order by random() limit 1;
+	</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -434,6 +460,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;TAX_COUNT_IN_EXP&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;TAX_COUNT_IN_EXP&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;TAX_COUNT_IN_EXP&apos; = 3500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;3500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -559,6 +594,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/TAX_COUNT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступных услуг &apos;FREE_TAX_COUNT/TAX_COUNT&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;0&quot;,&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -726,6 +770,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступных услуг &apos;FREE_TAX_COUNT/TAX_COUNT&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;0&quot;,&quot;9900.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по FREE_TAX_COUNT для веба" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;FREE_TAX_COUNT&apos;)].service_features..[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;]</stringProp>
@@ -887,6 +940,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -1021,6 +1083,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -1149,6 +1220,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -1291,6 +1371,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для веба" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].features[*].[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
@@ -1424,6 +1513,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для веба" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].features[*].[?(@.visible_area == &apos;ONLY_WEB&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Расчёт налогов и взносов (учёт валюты)&quot;,&quot;Оптимизация налогов за счёт уплаты взносов&quot;,&quot;Подготовка отчётности&quot;,&quot;Редактирование и добавление операций вручную&quot;,&quot;Загрузка выписки из другого банка в формате 1С&quot;,&quot;Консультация бухгалтера&quot;,&quot;Восстановление налогового учёта&quot;,&quot;Копилка на налоги и автоматическая уплата&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;,&quot;Получение и ведение патента&quot;]</stringProp>
@@ -1477,15 +1575,23 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИП на УСН Д-Р и с 403 тарифом" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                <stringProp name="query">select customer_code from stepler_customer 
-	where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;)
-				and organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and taxation_type_id in (select id from stepler_taxationtype st where name =&apos;УСН доходы - расходы&apos;)
-				and created &gt;= TO_TIMESTAMP(&apos;${__timeShift(yyyy-MM-dd,,-P60D,yesterday)}&apos;, &apos;YYYY/MM/DD&apos;)
-		and customer_code not in (&apos;302711141&apos;)
-		order by random() limit 1 </stringProp>
+                <stringProp name="query">with st as (select sc.customer_code, array_agg (ss.tariff_code) as tariff_code
+from stepler_customer sc join stepler_settlement ss  on sc.id =ss.customer_id 
+where organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id  in 
+	(select id 
+		from stepler_taxationtype
+		where name in 
+		(&apos;УСН доходы - расходы&apos;)
+	)
+	and ss.state =&apos;REG&apos;  group by customer_code)
+	
+select *
+from st
+where  (&apos;403&apos; = any (tariff_code)) and not (&apos;405&apos; = any (tariff_code))
+order by random() limit 1;
+	</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -1551,6 +1657,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;TAX_COUNT_IN_EXP&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;TAX_COUNT_IN_EXP&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;TAX_COUNT_IN_EXP&apos; = 3500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT_IN_EXP&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;3500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -1699,6 +1814,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по TAX_COUNT для мобилки" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].features[*].[?(@.visible_area == &apos;ONLY_MOBILE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Мы рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках&quot;,&quot;Учтём ваши доходы в валюте в соответствии с законодательством&quot;,&quot;Опытные бухгалтеры ответят на ваши вопросы и помогут во всем разобраться&quot;,&quot;Подключайте Копилку: мы накопим в ней деньги с ваших доходов и уплатим налоги в срок&quot;,&quot;Заполняйте заявления на патент и ведите его с нами&quot;,&quot;Сверяйтесь с налоговой вместе с сервисом «Сверка»&quot;,&quot;Отправляйте документы в налоговую прямо из бухгалтерии&quot;,&quot;Загружайте выписки из другого банка в формате 1С или добавляйте операции вручную&quot;]</stringProp>
@@ -1817,6 +1941,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -1956,6 +2089,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].features[*].[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -2089,6 +2231,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].features[*].[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -2216,6 +2367,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2772,19 +2932,32 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;,&quot;REPORT&quot;]</stringProp>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="603754290">TAX_COUNT_EMPLOYEE</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2891,19 +3064,32 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;,&quot;REPORT&quot;]</stringProp>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="603754290">TAX_COUNT_EMPLOYEE</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2936,15 +3122,23 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента без подключенной услуги в БД" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИП на УСН Д-Р и с 403 тарифом" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
-                <stringProp name="query">select customer_code from stepler_customer 
-	where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;)
-				and organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
-				and taxation_type_id in (select id from stepler_taxationtype st where name =&apos;УСН доходы - расходы&apos;)
-				and created &gt;= TO_TIMESTAMP(&apos;${__timeShift(yyyy-MM-dd,,-P60D,yesterday)}&apos;, &apos;YYYY/MM/DD&apos;)
-		and customer_code not in (&apos;302711141&apos;)
-		order by random() limit 1 </stringProp>
+                <stringProp name="query">with st as (select sc.customer_code, array_agg (ss.tariff_code) as tariff_code
+from stepler_customer sc join stepler_settlement ss  on sc.id =ss.customer_id 
+where organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id  in 
+	(select id 
+		from stepler_taxationtype
+		where name in 
+		(&apos;УСН доходы - расходы&apos;)
+	)
+	and ss.state =&apos;REG&apos;  group by customer_code)
+	
+select *
+from st
+where  (&apos;403&apos; = any (tariff_code)) and not (&apos;405&apos; = any (tariff_code))
+order by random() limit 1;
+	</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -3010,10 +3204,6 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
                     </elementProp>
@@ -3023,6 +3213,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг - TAX_COUNT_IN_EXP/ REPORT" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;TAX_COUNT_IN_EXP&quot;,&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;TAX_COUNT_IN_EXP&apos; = 3500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT_IN_EXP&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;3500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -3126,9 +3325,25 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;REPORT&quot;]</stringProp>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -3137,10 +3352,6 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -3248,19 +3459,31 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;REPORT&quot;]</stringProp>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость услуги TAX_COUNT = 9900.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;TAX_COUNT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;9900.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -3373,12 +3596,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -3492,12 +3720,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -3611,12 +3844,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -3720,21 +3958,25 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;,&quot;REPORT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="603754290">TAX_COUNT_EMPLOYEE</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
                 <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -3838,21 +4080,25 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;TAX_COUNT_EMPLOYEE&quot;,&quot;REPORT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="603754290">TAX_COUNT_EMPLOYEE</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
                 <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -3959,24 +4205,27 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;REPORT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
@@ -4077,24 +4326,27 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
                     <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
-                    <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
                     </elementProp>
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;FREE_TAX_COUNT&quot;,&quot;BUNDLE_BASE_TAX_COUNT&quot;,&quot;BUNDLE_PATENT_TAX_COUNT&quot;,&quot;BUNDLE_WB_TAX_COUNT&quot;,&quot;BUNDLE_MONEYBOX_TAX_COUNT&quot;,&quot;TAX_COUNT&quot;,&quot;REPORT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем наличие доступных услуг &apos;FREE_TAX_COUNT/BUNDLE_BASE_TAX_COUNT/BUNDLE_WB_TAX_COUNT/BUNDLE_MONEYBOX_TAX_COUNT/TAX_COUNT/TAX_COUNT_EMPLOYEE/REPORT&apos;" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-1881192140">REPORT</stringProp>
+                    <stringProp name="-608769221">TAX_COUNT</stringProp>
+                    <stringProp name="-1576507420">BUNDLE_MONEYBOX_TAX_COUNT</stringProp>
+                    <stringProp name="1555388260">BUNDLE_WB_TAX_COUNT</stringProp>
+                    <stringProp name="-1942111423">BUNDLE_PATENT_TAX_COUNT</stringProp>
+                    <stringProp name="229099690">BUNDLE_BASE_TAX_COUNT</stringProp>
+                    <stringProp name="-535110360">FREE_TAX_COUNT</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">16</intProp>
+                </ResponseAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
@@ -4207,6 +4459,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -4348,6 +4609,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -4477,6 +4747,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -4618,6 +4897,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -4747,6 +5035,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных услуг &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -4888,6 +5185,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -5023,6 +5329,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT для всех платформ" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].service_features..[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -5152,6 +5467,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[*].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.available_services.[*].price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -5294,6 +5618,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].features[*].[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -5421,6 +5754,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -5560,6 +5902,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].features[*].[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -5687,6 +6038,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -5826,6 +6186,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].features[*].[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -5953,6 +6322,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -6092,6 +6470,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступных фич по REPORT на всех платформах" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].features[*].[?(@.visible_area == &apos;ANYWHERE&apos;)].name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;Электронная отправка отчётов в ФНС, ПФР, ФСС, РОССТАТ&quot;,&quot;Электронная переписка с налоговой&quot;,&quot;Сверки с налоговой об отсутствии долгов&quot;]</stringProp>
@@ -6219,6 +6606,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -6361,12 +6757,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -6471,6 +6872,15 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем наличие доступной услуги &apos;REPORT&apos;" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].service.name</stringProp>
                   <stringProp name="EXPECTED_VALUE">[&quot;REPORT&quot;]</stringProp>
@@ -6482,10 +6892,6 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                 <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -6599,12 +7005,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -6718,12 +7129,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -6837,12 +7253,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -6956,12 +7377,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -7075,12 +7501,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
@@ -7194,12 +7625,17 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на докуме�
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем стоимость доступной услуги &apos;REPORT&apos; = 2500.00" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].service.[?(@.name == &apos;REPORT&apos;)].full_price</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;2500.00&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                   <collectionProp name="HeaderManager.headers">
-                    <elementProp name="" elementType="Header">
-                      <stringProp name="Header.name">Content-Type</stringProp>
-                      <stringProp name="Header.value">application/json</stringProp>
-                    </elementProp>
                     <elementProp name="" elementType="Header">
                       <stringProp name="Header.name">Authorization</stringProp>
                       <stringProp name="Header.value">${STEPLER_BASIC_ADMIN}</stringProp>
