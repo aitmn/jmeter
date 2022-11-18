@@ -19,9 +19,10 @@
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Настройки для TAX_COUNT" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Настройки для TAX_COUNT (9909)" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
+            <stringProp name="TestPlan.comments">Архивная услуга</stringProp>
           </TransactionController>
           <hashTree>
             <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
@@ -30,7 +31,7 @@
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Настройки услуг&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Хранение настроек в БД&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Настройки для TAX_COUNT&quot;);</stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Настройки для TAX_COUNT(архивная)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -38,7 +39,7 @@ vars.put(&quot;AllureCaseName&quot;,&quot;Настройки для TAX_COUNT&qu
               <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
               <stringProp name="query">select ss.allowed_organization_type 
   from stepler_service ss 
-where ss.name =&apos;TAX_COUNT&apos;
+where ss.code =&apos;9909&apos;
 </stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -74,7 +75,7 @@ where ss.name =&apos;TAX_COUNT&apos;
               <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
               <stringProp name="query">select ss.name, array_agg(st.name) as allowed_tax_type 
 from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.service_id =ss.id join stepler_taxationtype st on ssatt.taxationtype_id =st.id
-  where ss.name =&apos;TAX_COUNT&apos;
+  where ss.code =&apos;9909&apos;
   group by ss.name</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -99,6 +100,214 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
                 <intProp name="Assertion.test_type">16</intProp>
               </ResponseAssertion>
               <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9909&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение имени = &apos;Персональная бухгалтерия&apos; и описания услуги" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1931030774">Персональная бухгалтерия</stringProp>
+                  <stringProp name="208506717">Для ИП на УСН «Доходы» без сотрудников</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение фич для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.code, ss.name from stepler_servicefeature ss 
+  	join stepler_servicefeature_choice_services sscs on ss.id=sscs.servicefeature_id 
+  	join stepler_service ss2 on sscs.service_id =ss2.id
+where ss2.code=&apos;9909&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Настройки для TAX_COUNT(9927)" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Настройки услуг&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Хранение настроек в БД&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Настройки для TAX_COUNT&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение типа организаций для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.allowed_organization_type 
+  from stepler_service ss 
+where ss.code =&apos;9927&apos;
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги тип компании" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="209667892">allowed_organization_type
+{I}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение доступных СНО для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.name, array_agg(st.name) as allowed_tax_type 
+from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.service_id =ss.id join stepler_taxationtype st on ssatt.taxationtype_id =st.id
+  where ss.code =&apos;9927&apos;
+  group by ss.name</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1051519">УСН</stringProp>
+                  <stringProp name="1162539657">Патент</stringProp>
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
+                  <stringProp name="-1734815052">УСН доходы 6%</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9927&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение имени = &apos;Всё включено&apos; и описания услуги" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-2046884408">Всё включено</stringProp>
+                  <stringProp name="208506717">Для ИП на УСН «Доходы» без сотрудников</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение фич для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.code, ss.name from stepler_servicefeature ss 
+  	join stepler_servicefeature_choice_services sscs on ss.id=sscs.servicefeature_id 
+  	join stepler_service ss2 on sscs.service_id =ss2.id
+where ss2.code=&apos;9927&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
@@ -455,6 +664,40 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1931031911">TAX_COUNT_IN_EXP</stringProp>
                   <stringProp name="-982062551">УСН доходы - расходы</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9912&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение полного названия = &apos;Бухподдержка на «Доходы минус расходы»&apos; и описания" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1365880530">Бухподдержка на «Доходы минус расходы»</stringProp>
+                  <stringProp name="-1820843633">Для ИП на УСН «Доходы - Расходы» без сотрудников</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -895,6 +1138,89 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
                   <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9923&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение имени = &apos;Бесплатно на «Доходы»&apos; и описания услуги" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-623858193">Бесплатно на «Доходы»</stringProp>
+                  <stringProp name="208506717">Для ИП на УСН «Доходы» без сотрудников</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение фич для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.code, ss.name from stepler_servicefeature ss 
+  	join stepler_servicefeature_choice_services sscs on ss.id=sscs.servicefeature_id 
+  	join stepler_service ss2 on sscs.service_id =ss2.id
+where ss2.code=&apos;9923&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1044357673">COUNT_TAXES</stringProp>
+                  <stringProp name="2144640899">CURRENCY_ACCOUNTING</stringProp>
+                  <stringProp name="1776253730">STATEMENT_1C</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="555558982">Рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках</stringProp>
+                  <stringProp name="-1347559521">Учтём доходы в валюте в соответствии с законом</stringProp>
+                  <stringProp name="485456962">Учтём доход по выписке из другого банка в формате 1С для расчёта налогов</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1745,6 +2071,104 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9924&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение полного названия = &apos;Бухподдержка на патенте&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="620571344">Бухподдержка на патенте</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение описания = &apos;Для ИП на УСН «Доходы» без сотрудников&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="208506717">Для ИП на УСН «Доходы» без сотрудников</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение фич для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.code, ss.name from stepler_servicefeature ss 
+  	join stepler_servicefeature_choice_services sscs on ss.id=sscs.servicefeature_id 
+  	join stepler_service ss2 on sscs.service_id =ss2.id
+where ss2.code=&apos;9924&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1044357673">COUNT_TAXES</stringProp>
+                  <stringProp name="2144640899">CURRENCY_ACCOUNTING</stringProp>
+                  <stringProp name="1776253730">STATEMENT_1C</stringProp>
+                  <stringProp name="-1837188186">SVERKA</stringProp>
+                  <stringProp name="1167883269">ACCOUNTING_SUPPORT</stringProp>
+                  <stringProp name="-417699961">PATENT_CARD</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="555558982">Рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках</stringProp>
+                  <stringProp name="-1347559521">Учтём доходы в валюте в соответствии с законом</stringProp>
+                  <stringProp name="485456962">Учтём доход по выписке из другого банка в формате 1С для расчёта налогов</stringProp>
+                  <stringProp name="-642649533">Запрашивайте сверки и ведите переписку с налоговой</stringProp>
+                  <stringProp name="575196823">Опытные бухгалтеры ответят на ваши вопросы и помогут во всём разобраться</stringProp>
+                  <stringProp name="-503254162">Сформируем заявление, вовремя напомним об оплате и поможем уменьшить патент</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
                 <stringProp name="parameters">stop</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
@@ -1835,6 +2259,106 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9925&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение полного названия = &apos;Маркетплейсы на «Доходы»&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1901234744">Маркетплейсы на «Доходы»</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение описания = &apos;Для ИП на УСН «Доходы» без сотрудников&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="208506717">Для ИП на УСН «Доходы» без сотрудников</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение фич для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.code, ss.name from stepler_servicefeature ss 
+  	join stepler_servicefeature_choice_services sscs on ss.id=sscs.servicefeature_id 
+  	join stepler_service ss2 on sscs.service_id =ss2.id
+where ss2.code=&apos;9925&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1044357673">COUNT_TAXES</stringProp>
+                  <stringProp name="2144640899">CURRENCY_ACCOUNTING</stringProp>
+                  <stringProp name="1776253730">STATEMENT_1C</stringProp>
+                  <stringProp name="-1837188186">SVERKA</stringProp>
+                  <stringProp name="1167883269">ACCOUNTING_SUPPORT</stringProp>
+                  <stringProp name="-1239373944">MARKETPLACES</stringProp>
+                  <stringProp name="450270475">MONEYBOX</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="555558982">Рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках</stringProp>
+                  <stringProp name="-1347559521">Учтём доходы в валюте в соответствии с законом</stringProp>
+                  <stringProp name="485456962">Учтём доход по выписке из другого банка в формате 1С для расчёта налогов</stringProp>
+                  <stringProp name="-642649533">Запрашивайте сверки и ведите переписку с налоговой</stringProp>
+                  <stringProp name="575196823">Опытные бухгалтеры ответят на ваши вопросы и помогут во всём разобраться</stringProp>
+                  <stringProp name="1522674629">Накопим деньги с ваших доходов и  уплатим налоги в срок</stringProp>
+                  <stringProp name="-2078010343">Учтём доходы и комиссии от WildBerries для расчёта налогов</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
                 <stringProp name="parameters">stop</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
@@ -1915,6 +2439,104 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
                   <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение имени и описания услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select full_name, explanation 
+	from stepler_service ss where ss.code =&apos;9926&apos;;	</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение полного названия = &apos;Копилка на «Доходы»&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="887324535">Копилка на «Доходы»</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение описания = &apos;Для ИП на УСН «Доходы» без сотрудников&apos;" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="208506717">Для ИП на УСН «Доходы» без сотрудников</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение фич для услуги" enabled="true">
+              <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+              <stringProp name="query">select ss.code, ss.name from stepler_servicefeature ss 
+  	join stepler_servicefeature_choice_services sscs on ss.id=sscs.servicefeature_id 
+  	join stepler_service ss2 on sscs.service_id =ss2.id
+where ss2.code=&apos;9926&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1044357673">COUNT_TAXES</stringProp>
+                  <stringProp name="2144640899">CURRENCY_ACCOUNTING</stringProp>
+                  <stringProp name="1776253730">STATEMENT_1C</stringProp>
+                  <stringProp name="-1837188186">SVERKA</stringProp>
+                  <stringProp name="1167883269">ACCOUNTING_SUPPORT</stringProp>
+                  <stringProp name="450270475">MONEYBOX</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="555558982">Рассчитаем налоги и взносы, подготовим платежи, сформируем декларацию и напомним обо всех сроках</stringProp>
+                  <stringProp name="-1347559521">Учтём доходы в валюте в соответствии с законом</stringProp>
+                  <stringProp name="485456962">Учтём доход по выписке из другого банка в формате 1С для расчёта налогов</stringProp>
+                  <stringProp name="-642649533">Запрашивайте сверки и ведите переписку с налоговой</stringProp>
+                  <stringProp name="575196823">Опытные бухгалтеры ответят на ваши вопросы и помогут во всём разобраться</stringProp>
+                  <stringProp name="1522674629">Накопим деньги с ваших доходов и  уплатим налоги в срок</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
