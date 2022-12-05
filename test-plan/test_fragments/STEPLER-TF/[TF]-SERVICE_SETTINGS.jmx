@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -64,8 +64,8 @@ where ss.code =&apos;9909&apos;
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp> 
-                <stringProp name="parameters">start issues=[TAXDEV-452, TAXDEV-676]</stringProp> 
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-452, TAXDEV-676]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -89,10 +89,10 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1051519">УСН</stringProp> 
+                  <stringProp name="1051519">УСН</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
                   <stringProp name="1162539657">Патент</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -163,8 +163,8 @@ where ss2.code=&apos;9909&apos; and ss.is_functional is false and ss.visible_are
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1776253730">STATEMENT_1C</stringProp>
                   <stringProp name="450270475">MONEYBOX</stringProp>
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="-1837188186">SVERKA</stringProp>
+                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -219,7 +219,6 @@ where ss2.code=&apos;9909&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="1044357673">COUNT_TAXES</stringProp>
                   <stringProp name="-1263488346">TAX_DECLARATION</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
@@ -234,6 +233,8 @@ where ss2.code=&apos;9909&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="450270475">MONEYBOX</stringProp>
                   <stringProp name="-417699961">PATENT_CARD</stringProp>
                   <stringProp name="1585078872">STATEMENT_PATENT</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -243,7 +244,7 @@ where ss2.code=&apos;9909&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
+                  <stringProp name="1092538359">Получение писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -259,6 +260,7 @@ where ss2.code=&apos;9909&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="555338763">Работа с копилкой</stringProp>
                   <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                   <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
+                  <stringProp name="436615455">Отправка писем из налоговой</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -490,6 +492,8 @@ where ss2.code=&apos;9927&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="450270475">MONEYBOX</stringProp>
                   <stringProp name="-417699961">PATENT_CARD</stringProp>
                   <stringProp name="1585078872">STATEMENT_PATENT</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -499,7 +503,6 @@ where ss2.code=&apos;9927&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -515,6 +518,7 @@ where ss2.code=&apos;9927&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="555338763">Работа с копилкой</stringProp>
                   <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                   <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
+                  <stringProp name="436615455">Отправка писем из налоговой</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -576,8 +580,8 @@ where ss.name =&apos;FREE_TAX_COUNT&apos;
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp> 
-                <stringProp name="parameters">start issues=[TAXDEV-452,TAXDEV-676]</stringProp> 
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-452,TAXDEV-676]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -601,10 +605,10 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1051519">УСН</stringProp> 
+                  <stringProp name="1051519">УСН</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
                   <stringProp name="1162539657">Патент</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -645,8 +649,7 @@ where ss2.code=&apos;9913&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="71864003">KUDIR</stringProp>
                   <stringProp name="1177193256">NOTIFICATION_EMAIL</stringProp>
                   <stringProp name="-1804919247">SMS_NOTIFICATION</stringProp>
-                  <stringProp name="-1962877961">SEND_REPORT_GOS</stringProp>
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -709,8 +712,8 @@ where ss.name =&apos;REPORT&apos;
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp> 
-                <stringProp name="parameters">start issues=[TAXDEV-452, TAXDEV-676]</stringProp> 
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-452, TAXDEV-676]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -733,7 +736,7 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
             </JDBCSampler>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
-                <collectionProp name="Asserion.test_strings"> 
+                <collectionProp name="Asserion.test_strings">
                   <stringProp name="-1557416718">Неизвестный СНО</stringProp>
                   <stringProp name="1399124287">АУСН Доходы-Расходы</stringProp>
                   <stringProp name="-1262691733">АУСН Доходы</stringProp>
@@ -745,7 +748,7 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
                   <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                   <stringProp name="-1304511661">Общая система налогообложения (ОСНО, ОСН)</stringProp>
                   <stringProp name="-368088424">Единый сельскохозяйственный налог (ЕСХН)</stringProp>
-                  <stringProp name="1739444158">Неизвестная система налогооблажения</stringProp> 
+                  <stringProp name="1739444158">Неизвестная система налогооблажения</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -780,10 +783,11 @@ where ss2.code=&apos;9907&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение фичей для услуги для visible_area =&apos;ONLY_WEB&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
                   <stringProp name="-1837188186">SVERKA</stringProp>
                   <stringProp name="-1962877961">SEND_REPORT_GOS</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -932,8 +936,8 @@ where ss.name =&apos;TAX_COUNT_IN_EXP&apos;
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp> 
-                <stringProp name="parameters">start issues=[TAXDEV-452, TAXDEV-676]</stringProp> 
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-452, TAXDEV-676]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -956,8 +960,8 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
             </JDBCSampler>
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
-                <collectionProp name="Asserion.test_strings"> 
-                  <stringProp name="1931031911">TAX_COUNT_IN_EXP</stringProp> 
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1931031911">TAX_COUNT_IN_EXP</stringProp>
                   <stringProp name="-982062551">УСН доходы - расходы</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -1027,7 +1031,6 @@ where ss2.code=&apos;9912&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение фичей для услуги для visible_area =&apos;ONLY_WEB&apos;" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="1044357673">COUNT_TAXES</stringProp>
                   <stringProp name="-1263488346">TAX_DECLARATION</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
@@ -1041,6 +1044,8 @@ where ss2.code=&apos;9912&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                   <stringProp name="-417699961">PATENT_CARD</stringProp>
                   <stringProp name="1585078872">STATEMENT_PATENT</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1337,7 +1342,6 @@ where ss2.code=&apos;9920&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="1044357673">COUNT_TAXES</stringProp>
                   <stringProp name="-1263488346">TAX_DECLARATION</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
@@ -1350,6 +1354,8 @@ where ss2.code=&apos;9920&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-1962877961">SEND_REPORT_GOS</stringProp>
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                   <stringProp name="-1239373944">MARKETPLACES</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1359,7 +1365,7 @@ where ss2.code=&apos;9920&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение названия фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
+                  <stringProp name="1092538359">Получение писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -1372,6 +1378,7 @@ where ss2.code=&apos;9920&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                   <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
                   <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                  <stringProp name="436615455">Отправка писем из налоговой</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1521,8 +1528,8 @@ where ss.name =&apos;BUNDLE_BASE_TAX_COUNT&apos;
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp> 
-                <stringProp name="parameters">start issues=[TAXDEV-452,TAXDEV-676]</stringProp> 
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-452,TAXDEV-676]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1547,9 +1554,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1673,8 +1680,7 @@ where ss2.code=&apos;9923&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="71864003">KUDIR</stringProp>
                   <stringProp name="1177193256">NOTIFICATION_EMAIL</stringProp>
                   <stringProp name="-1804919247">SMS_NOTIFICATION</stringProp>
-                  <stringProp name="-1962877961">SEND_REPORT_GOS</stringProp>
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                   <stringProp name="1776253730">STATEMENT_1C</stringProp>
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                 </collectionProp>
@@ -1686,7 +1692,7 @@ where ss2.code=&apos;9923&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
+                  <stringProp name="1092538359">Получение писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -1694,7 +1700,6 @@ where ss2.code=&apos;9923&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="590461326">Загрузка выписки из 1С</stringProp>
                   <stringProp name="339955066">Напоминания об оплате налогов и взносов в email и telegram</stringProp>
                   <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
-                  <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                   <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
@@ -1783,9 +1788,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1908,9 +1913,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2033,9 +2038,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2158,7 +2163,7 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
                   <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
@@ -2283,9 +2288,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2408,9 +2413,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2533,9 +2538,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2668,7 +2673,6 @@ where ss2.code=&apos;9924&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="1044357673">COUNT_TAXES</stringProp>
                   <stringProp name="-1263488346">TAX_DECLARATION</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
@@ -2682,6 +2686,8 @@ where ss2.code=&apos;9924&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                   <stringProp name="-417699961">PATENT_CARD</stringProp>
                   <stringProp name="1585078872">STATEMENT_PATENT</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2691,7 +2697,7 @@ where ss2.code=&apos;9924&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
+                  <stringProp name="1092538359">Получение писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -2705,6 +2711,7 @@ where ss2.code=&apos;9924&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
                   <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                   <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
+                  <stringProp name="436615455">Отправка писем из налоговой</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2792,9 +2799,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>  
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2929,7 +2936,6 @@ where ss2.code=&apos;9925&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="1044357673">COUNT_TAXES</stringProp>
                   <stringProp name="-1263488346">TAX_DECLARATION</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
@@ -2943,6 +2949,8 @@ where ss2.code=&apos;9925&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                   <stringProp name="-1239373944">MARKETPLACES</stringProp>
                   <stringProp name="450270475">MONEYBOX</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -2952,7 +2960,7 @@ where ss2.code=&apos;9925&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
+                  <stringProp name="1092538359">Получение писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -2966,6 +2974,7 @@ where ss2.code=&apos;9925&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
                   <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
                   <stringProp name="555338763">Работа с копилкой</stringProp>
+                  <stringProp name="436615455">Отправка писем из налоговой</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3053,9 +3062,9 @@ from stepler_service_allowed_tax_type ssatt join stepler_service ss on ssatt.ser
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем полученный для услуги список доступных СНО" enabled="true">
                 <collectionProp name="Asserion.test_strings">
                   <stringProp name="1051519">УСН</stringProp>
-                  <stringProp name="1162539657">Патент</stringProp> 
+                  <stringProp name="1162539657">Патент</stringProp>
                   <stringProp name="-1734815052">УСН доходы 6%</stringProp>
-                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp> 
+                  <stringProp name="-1450047820">Единый налог на временный доход (ЕНВД)</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3188,7 +3197,6 @@ where ss2.code=&apos;9926&apos; and ss.is_functional is true and ss.visible_area
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение кода фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1746654450">LETTER_FNS</stringProp>
                   <stringProp name="1044357673">COUNT_TAXES</stringProp>
                   <stringProp name="-1263488346">TAX_DECLARATION</stringProp>
                   <stringProp name="-1695347989">TAX_CLAIMS</stringProp>
@@ -3201,6 +3209,8 @@ where ss2.code=&apos;9926&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-1962877961">SEND_REPORT_GOS</stringProp>
                   <stringProp name="-607570632">ENVD_CARD</stringProp>
                   <stringProp name="450270475">MONEYBOX</stringProp>
+                  <stringProp name="-696323403">LETTER_FNS_SEND</stringProp>
+                  <stringProp name="-376018826">LETTER_FNS_RECEIVE</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3210,7 +3220,7 @@ where ss2.code=&apos;9926&apos; and ss.is_functional is true and ss.visible_area
               <hashTree/>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем заполнение название фичей" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1924863900">Получение и отправка писем из налоговой</stringProp>
+                  <stringProp name="1092538359">Получение писем из налоговой</stringProp>
                   <stringProp name="332231611">Расчет налогов и взносов</stringProp>
                   <stringProp name="380065887">Формирование и отправка декларации</stringProp>
                   <stringProp name="1870157882">Получение и ознакомление с требованиями от налоговой</stringProp>
@@ -3223,6 +3233,7 @@ where ss2.code=&apos;9926&apos; and ss.is_functional is true and ss.visible_area
                   <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                   <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
                   <stringProp name="555338763">Работа с копилкой</stringProp>
+                  <stringProp name="436615455">Отправка писем из налоговой</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
