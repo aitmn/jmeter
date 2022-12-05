@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -1129,7 +1129,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                 <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
                 <stringProp name="query">select oc.customer_code
 	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
-where  pp.start_date BETWEEN&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and &apos;${__time(yyyy,)}-12-01&apos; 
+where  pp.start_date BETWEEN &apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and &apos;${__timeShift(yyyy,,-P365D,,)}-12-31&apos; 
 and pp.deactivated is false and oc.closing_date is null
 and oc.is_active is true and oc.tax_regime_id in 
 	(select id 
@@ -2436,13 +2436,18 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
                 <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-                <stringProp name="query">select oc.customer_code
+                <stringProp name="query">with st as (select oc.customer_code, array_agg(pp.deactivated) as deactivated
 	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
-where  pp.start_date &gt;&apos;${__time(yyyy,)}-01-01&apos; and pp.deactivated is false and oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+where  pp.start_date &gt;&apos;${__time(yyyy,)}-01-01&apos;  and oc.closing_date is null and oc.is_active is true 
+and oc.tax_regime_id in 
 	(select id 
 		from orders_taxregime ot
 		where ot.description in 
 		(&apos;ИП на УСН Доходы&apos;))
+		group by oc.customer_code)
+select *
+from st
+where  not(&apos;true&apos; =  any (deactivated))
 order by random() limit 1;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -2556,15 +2561,19 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               <hashTree/>
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
                 <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-                <stringProp name="query">select oc.customer_code
+                <stringProp name="query">with st as (select oc.customer_code, array_agg(pp.deactivated) as deactivated
 	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
-where  pp.start_date BETWEEN&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and &apos;${__time(yyyy,)}-12-01&apos; 
-and pp.deactivated is false and oc.closing_date is null
-and oc.is_active is true and oc.tax_regime_id in 
+where  pp.start_date BETWEEN &apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and &apos;${__timeShift(yyyy,,-P365D,,)}-12-31&apos;
+and oc.closing_date is null and oc.is_active is true 
+and oc.tax_regime_id in 
 	(select id 
 		from orders_taxregime ot
 		where ot.description in 
-		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; 
+		(&apos;ИП на УСН Доходы&apos;))
+		group by oc.customer_code)
+select *
+from st
+where  not(&apos;true&apos; =  any (deactivated))
 order by random() limit 1;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
@@ -3739,6 +3748,148 @@ order by random() limit 1;</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">48</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Скачивание КУДиРа по патенту за год без патента" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Скачивание КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Скачивание КУДиРа по патенту за год без патента&quot;);   
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+
+/*
+ * to create case report with single step
+ * do not use parameters start/continue/stop
+ * and do not create variable AllureCaseName
+ */</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">with st as (select oc.customer_code, array_agg(pp.deactivated) as deactivated
+	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
+where  pp.start_date not BETWEEN &apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and &apos;${__timeShift(yyyy,,-P365D,,)}-12-31&apos;
+and oc.closing_date is null and oc.is_active is true 
+and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;))
+		group by oc.customer_code)
+select *
+from st
+where  not(&apos;true&apos; =  any (deactivated))
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+        &quot;year&quot;: ${__timeShift(yyyy,,-P365D,,)},&#xd;
+        &quot;book_type&quot;:&quot;patent&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки - invalid_parameter" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">invalid_parameter</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание ошибки - Not in range" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Not in range</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем место ошибки - year" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..object_name</stringProp>
+                  <stringProp name="EXPECTED_VALUE">year</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
