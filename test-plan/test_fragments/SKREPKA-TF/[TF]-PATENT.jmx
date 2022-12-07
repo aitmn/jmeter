@@ -32,7 +32,7 @@
 vars.put(&quot;AllureStory&quot;,&quot;Получение списка патентов в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Получение списка актуальных патентов&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;Список добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nСписок добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -68,7 +68,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -277,7 +277,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Получение списка патентов в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Получение списка истекших патентов&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;Список добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nСписок добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -313,7 +313,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -522,7 +522,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Получение списка патентов в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Получение списка актуальных патентов у клиента без них&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;Список добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nСписок добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -558,7 +558,118 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию о патенте " enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">&#xd;
+{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_list&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;:&quot;expired&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">patent_detail</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список полученных патентов - []" enabled="true">
+                <stringProp name="JSON_PATH">.result</stringProp>
+                <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение списка истекших патентов у клиента без них" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка патентов в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получение списка истекших патентов у клиента без них&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nСписок добавленных патентов можно полученить через метод [patent_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_list.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos; 
+		and pp.company_id is null
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -639,7 +750,7 @@ order by random() limit 1;
 vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Добавление патента со сроком на год&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;Сейчас патент выдается с любого числа месяца, указанного ИП в заявлении на получение патента, на любое количество дней, но не менее месяца и в пределах календарного года выдачи.\\n\\nТо есть минимальный срок патента - месяц, а дальше он может быть выдан на месяц + любое количество дней. \\n\\nЕсли в месяце начала действия патента 31 день - минимальный срок патента 31 день. \\n\\nЕсли в месяце начала действия патента 28 дней - минимальный срок патента 28 дней\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -675,7 +786,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -908,7 +1019,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Добавление патента со сроком от полугода&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент от месяца до полугода оплачиваентся одним платежом: срок уплаты – последний день действия патента. Патент на срок от полугода до года оплачивайте двумя платежами - 1/3 в течение 90 календарных дней после начала действия патента и 2/3 в течение срока действия патента\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -944,7 +1055,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1176,7 +1287,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Добавление патента со сроком от месяца до полугода&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент от месяца до полугода оплачиваентся одним платежом: срок уплаты – последний день действия патента. Патент на срок от полугода до года оплачивайте двумя платежами - 1/3 в течение 90 календарных дней после начала действия патента и 2/3 в течение срока действия патента\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -1212,7 +1323,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1431,6 +1542,988 @@ where id=&apos;${patent_id}&apos;;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Добавление патента без необязательных полей" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Добавление патента без необязательных полей&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos; 
+		and pp.company_id is null
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Добавляем клиенту патент" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_add&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: { &#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;number&quot;: &quot;${__Random(1,9999,patent_number)}&quot;,&#xd;
+    &quot;region_code&quot;:99,&#xd;
+    &quot;tax_base&quot;: &quot;${__Random(90000,120000,tax_base)}&quot;,&#xd;
+    &quot;tax_rate&quot;: &quot;6&quot;,&#xd;
+    &quot;start_date&quot;: &quot;${__time(yyyy,)}-01-01&quot;,&#xd;
+    &quot;end_date&quot;: &quot;${__RandomDate(,${__time(yyyy,)}-02-01,${__time(yyyy,)}-06-01,,end_date)}&quot;,&#xd;
+    &quot;activity_kind_code&quot;:&quot;019901&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">create_patent_profile</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result.patent_id</stringProp>
+                <stringProp name="EXPECTED_VALUE"></stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">true</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняем ИД заявления" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем создание записи с патентом в БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select pp.start_date, pp.end_date_manual, oc.customer_code, pp.tax_base 
+	from patent_patent pp 
+	join orders_company oc 
+			on pp.company_id =oc.id 
+where pp.id=&apos;${patent_id}&apos;   </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата начала действия патента - ${__time(yyyy,)}-01-01" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1457044036">${__time(yyyy,)}-01-01</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата окончания действия патента - ${end_date}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1024581836">${end_date}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Код клиента, кому добавлен патент" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="610220404">${customer_code_1}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Налоговая база - ${tax_base}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1315030849">${tax_base}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем заполнение не указанных полей в БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select tax_agency_code, address, kbk, oktmo
+	from patent_patent pp 
+where pp.id=&apos;${patent_id}&apos;   </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Код налоговой, адресс и ОКТМО пустые, кбк - null" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-421979560">tax_agency_code	address	kbk	oktmo
+		null	
+</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем патент из БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">delete from patent_patent  
+where id=&apos;${patent_id}&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запись удалена" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1329970139">1 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Патент c уплатой первой части налога" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Добавление патента c уплатой первой части налога&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos; 
+		and pp.company_id is null
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Добавляем клиенту патент" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_add&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: { &#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;number&quot;: &quot;${__Random(1,9999,patent_number)}&quot;,&#xd;
+    &quot;region_code&quot;:99,&#xd;
+    &quot;tax_base&quot;: &quot;${__Random(90000,120000,tax_base)}&quot;,&#xd;
+    &quot;tax_rate&quot;: &quot;6&quot;,&#xd;
+    &quot;start_date&quot;: &quot;${__time(yyyy,)}-01-01&quot;,&#xd;
+    &quot;end_date&quot;: &quot;${__RandomDate(,${__time(yyyy,)}-02-01,${__time(yyyy,)}-06-01,,end_date)}&quot;,&#xd;
+    &quot;activity_kind_code&quot;:&quot;019901&quot;,&#xd;
+    &quot;payment_status&quot;: &quot;paid_first&quot;, &#xd;
+    &quot;address&quot;: &quot;127422, РОССИЯ, МОСКВА г, ДМИТРОВСКИЙ проезд, ДОМ 6 корп 1, кв 50&quot;,&#xd;
+    &quot;oktmo&quot;: &quot;45346000&quot;,&#xd;
+    &quot;tax_agency_code&quot;: &quot;9999&quot;,&#xd;
+    &quot;kbk&quot;: &quot;18210504010021000110&quot;,&#xd;
+    &quot;reduction&quot;: &quot;0&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">create_patent_profile</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result.patent_id</stringProp>
+                <stringProp name="EXPECTED_VALUE"></stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">true</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняем ИД заявления" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем создание записи с патентом в БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select pp.start_date, pp.end_date_manual, oc.customer_code, pp.tax_base, pp.is_payed_first_manual 
+	from patent_patent pp 
+	join orders_company oc 
+			on pp.company_id =oc.id 
+where pp.id=&apos;${patent_id}&apos;   </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата начала действия патента - ${__time(yyyy,)}-01-01" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1457044036">${__time(yyyy,)}-01-01</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата окончания действия патента - ${end_date}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1024581836">${end_date}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Код клиента, кому добавлен патент" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="610220404">${customer_code_1}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Налоговая база - ${tax_base}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1315030849">${tax_base}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Флаг оплаты первой части патента - true" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="3569038">true</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем патент из БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">delete from patent_patent  
+where id=&apos;${patent_id}&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запись удалена" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1329970139">1 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Патент с уплаченным налогом" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Добавление патента с уплаченным налогом&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos; 
+		and pp.company_id is null
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Добавляем клиенту патент" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_add&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: { &#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;number&quot;: &quot;${__Random(1,9999,patent_number)}&quot;,&#xd;
+    &quot;region_code&quot;:99,&#xd;
+    &quot;tax_base&quot;: &quot;${__Random(90000,120000,tax_base)}&quot;,&#xd;
+    &quot;tax_rate&quot;: &quot;6&quot;,&#xd;
+    &quot;start_date&quot;: &quot;${__time(yyyy,)}-01-01&quot;,&#xd;
+    &quot;end_date&quot;: &quot;${__RandomDate(,${__time(yyyy,)}-02-01,${__time(yyyy,)}-06-01,,end_date)}&quot;,&#xd;
+    &quot;activity_kind_code&quot;:&quot;019901&quot;,&#xd;
+    &quot;payment_status&quot;: &quot;paid&quot;, &#xd;
+    &quot;address&quot;: &quot;127422, РОССИЯ, МОСКВА г, ДМИТРОВСКИЙ проезд, ДОМ 6 корп 1, кв 50&quot;,&#xd;
+    &quot;oktmo&quot;: &quot;45346000&quot;,&#xd;
+    &quot;tax_agency_code&quot;: &quot;9999&quot;,&#xd;
+    &quot;kbk&quot;: &quot;18210504010021000110&quot;,&#xd;
+    &quot;reduction&quot;: &quot;0&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">create_patent_profile</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result.patent_id</stringProp>
+                <stringProp name="EXPECTED_VALUE"></stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">true</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняем ИД заявления" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем создание записи с патентом в БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select pp.start_date, pp.end_date_manual, oc.customer_code, pp.tax_base, pp.is_payed_first_manual, pp.is_payed_manual
+	from patent_patent pp 
+	join orders_company oc 
+			on pp.company_id =oc.id 
+where pp.id=&apos;${patent_id}&apos;   </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата начала действия патента - ${__time(yyyy,)}-01-01" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1457044036">${__time(yyyy,)}-01-01</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата окончания действия патента - ${end_date}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1024581836">${end_date}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Код клиента, кому добавлен патент" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="610220404">${customer_code_1}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Налоговая база - ${tax_base}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1315030849">${tax_base}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Флаг оплаты первой части патента - true" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="3569038">true</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Флаг оплаты патента - true" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="3569038">true</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем патент из БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">delete from patent_patent  
+where id=&apos;${patent_id}&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запись удалена" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1329970139">1 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Патент с уменьшением налога взносами" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Добавление патента в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Патент с уменьшением налога взносами&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nНалог на ПСН можно уменьшить на размер взносов. ИП без работников может уменьшать стоимость патентов до 100%\\n\\nМетод для добавления патента [patent_add](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_add.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos; 
+		and pp.company_id is null
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Добавляем клиенту патент" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_add&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: { &#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;number&quot;: &quot;${__Random(1,9999,patent_number)}&quot;,&#xd;
+    &quot;region_code&quot;:99,&#xd;
+    &quot;tax_base&quot;: &quot;${__Random(90000,120000,tax_base)}&quot;,&#xd;
+    &quot;tax_rate&quot;: &quot;6&quot;,&#xd;
+    &quot;start_date&quot;: &quot;${__time(yyyy,)}-01-01&quot;,&#xd;
+    &quot;end_date&quot;: &quot;${__RandomDate(,${__time(yyyy,)}-02-01,${__time(yyyy,)}-06-01,,end_date)}&quot;,&#xd;
+    &quot;activity_kind_code&quot;:&quot;019901&quot;,&#xd;
+    &quot;payment_status&quot;: &quot;not_paid&quot;, &#xd;
+    &quot;address&quot;: &quot;127422, РОССИЯ, МОСКВА г, ДМИТРОВСКИЙ проезд, ДОМ 6 корп 1, кв 50&quot;,&#xd;
+    &quot;oktmo&quot;: &quot;45346000&quot;,&#xd;
+    &quot;tax_agency_code&quot;: &quot;9999&quot;,&#xd;
+    &quot;kbk&quot;: &quot;18210504010021000110&quot;,&#xd;
+    &quot;reduction&quot;: &quot;${__Random(90000,120000,reduction)}&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">create_patent_profile</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result.patent_id</stringProp>
+                <stringProp name="EXPECTED_VALUE"></stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">true</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняем ИД заявления" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем создание записи с патентом в БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select pp.start_date, pp.end_date_manual, oc.customer_code, pp.tax_base, pp.reduction
+	from patent_patent pp 
+	join orders_company oc 
+			on pp.company_id =oc.id 
+where pp.id=&apos;${patent_id}&apos;   </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата начала действия патента - ${__time(yyyy,)}-01-01" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1457044036">${__time(yyyy,)}-01-01</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Дата окончания действия патента - ${end_date}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1024581836">${end_date}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Код клиента, кому добавлен патент" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="610220404">${customer_code_1}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Налоговая база - ${tax_base}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1315030849">${tax_base}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Сумма взносов уменьшающих патент - ${reduction}" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1464057985">${reduction}</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем патент из БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">delete from patent_patent  
+where id=&apos;${patent_id}&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запись удалена" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1329970139">1 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
         </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение информации о патенте" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -1450,7 +2543,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации о патенте в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Получение информации о не удаленном патенте&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента информацию о нём можно запросить через метод [patent_detail](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_detail.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента информацию о нём можно запросить через метод [patent_detail](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_detail.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -1486,7 +2579,7 @@ vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1573,6 +2666,150 @@ vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение информации о патенте без номера" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение информации о патенте в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получение информации о патенте без номера&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента информацию о нём можно запросить через метод [patent_detail](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_detail.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим клиента с патентом без номера" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code, pp.id, pp.start_date, pp.end_date_manual, pp.tax_base 
+	from orders_company oc  join patent_patent pp on oc.id = pp.company_id 
+		where oc.is_active is true 
+		and pp.end_date_manual is not null
+		and pp.&quot;number&quot; is null
+		and pp.deactivated is false
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code,patent_id,start_date,end_date,tax_base</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])
+vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию о патенте " enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">&#xd;
+{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_detail&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;patent_id&quot;: ${patent_id}  &#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">patent_detail</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату начала патента в ответе - ${start_date_1}" enabled="true">
+                <stringProp name="JSON_PATH">.result.start_date</stringProp>
+                <stringProp name="EXPECTED_VALUE">${start_date_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату завершения патента в ответе - ${end_date_1}" enabled="true">
+                <stringProp name="JSON_PATH">.result.end_date</stringProp>
+                <stringProp name="EXPECTED_VALUE">${end_date_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что налоговая база - ${tax_base_1}" enabled="true">
+                <stringProp name="JSON_PATH">.result.tax_base</stringProp>
+                <stringProp name="EXPECTED_VALUE">${tax_base_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем номер патента в ответе - null" enabled="true">
+                <stringProp name="JSON_PATH">.result.number</stringProp>
+                <stringProp name="EXPECTED_VALUE"></stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">true</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняем ИД патента" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение информации об удаленном патенте" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
@@ -1586,7 +2823,7 @@ vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации о патенте в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Получение информации об удаленном патенте&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента информацию о нём можно запросить через метод [patent_detail](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_detail.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента информацию о нём можно запросить через метод [patent_detail](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_detail.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -1622,7 +2859,7 @@ vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1693,6 +2930,152 @@ vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение информации об уплаченном патенте" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение информации о патенте в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получение информации об уплаченном патенте&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента информацию о нём можно запросить через метод [patent_detail](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_detail.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим клиента с оплаченным патентом" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code, pp.id, pp.start_date, pp.end_date_manual, pp.tax_base
+	from orders_company oc  join patent_patent pp on oc.id = pp.company_id 
+		where oc.is_active is true 
+		and pp.end_date_manual is not null
+		and (pp.is_payed_manual is true or pp.is_payed_auto is true)
+		and pp.deactivated is false
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code,patent_id,start_date,end_date,tax_base</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])
+vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию о патенте " enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">&#xd;
+{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_detail&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;patent_id&quot;: ${patent_id}  &#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">patent_detail</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату начала патента в ответе - ${start_date_1}" enabled="true">
+                <stringProp name="JSON_PATH">.result.start_date</stringProp>
+                <stringProp name="EXPECTED_VALUE">${start_date_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем дату завершения патента в ответе - ${end_date_1}" enabled="true">
+                <stringProp name="JSON_PATH">.result.end_date</stringProp>
+                <stringProp name="EXPECTED_VALUE">${end_date_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что налоговая база - ${tax_base_1}" enabled="true">
+                <stringProp name="JSON_PATH">.result.tax_base</stringProp>
+                <stringProp name="EXPECTED_VALUE">${tax_base_1}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем флаг оплаты первой части налога патента в ответе - true" enabled="true">
+                <stringProp name="JSON_PATH">.result.is_payed_first</stringProp>
+                <stringProp name="EXPECTED_VALUE">true</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем флаг оплаты патента в ответе - true" enabled="true">
+                <stringProp name="JSON_PATH">.result.is_payed</stringProp>
+                <stringProp name="EXPECTED_VALUE">true</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
         </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Редактирование патента" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -1712,7 +3095,7 @@ vars.put(&quot;patent_id&quot;,vars[&apos;patent_id_1&apos;]) </stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Редактирование патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Именение налоговой базы патента&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -1748,7 +3131,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -1977,7 +3360,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Редактирование патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Именение срока действия патента&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -2013,7 +3396,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2253,7 +3636,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Редактирование патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Именение номера патента&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -2289,7 +3672,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2505,13 +3888,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-        </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Удаление патента" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
-        <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Удаление действующего патента" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Именение кода вида деятельности патента" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
@@ -2521,10 +3898,10 @@ where id=&apos;${patent_id}&apos;;</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
-vars.put(&quot;AllureStory&quot;,&quot;Удаление патента в Точке X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Удаление действующего патента&quot;);  
+vars.put(&quot;AllureStory&quot;,&quot;Редактирование патента в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Именение кода вида деятельности патента&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_edit](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_edit.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -2560,7 +3937,280 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Добавляем клиенту патент" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">&#xd;
+{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_add&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: { &#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;number&quot;: &quot;${__Random(1,9999,patent_number)}&quot;,&#xd;
+    &quot;region_code&quot;:99,&#xd;
+    &quot;tax_base&quot;: &quot;${__Random(90000,120000,tax_base)}&quot;,&#xd;
+    &quot;tax_rate&quot;: &quot;6&quot;,&#xd;
+    &quot;start_date&quot;: &quot;${__time(yyyy,)}-01-01&quot;,&#xd;
+    &quot;end_date&quot;: &quot;${__time(yyyy,)}-12-31&quot;,&#xd;
+    &quot;activity_kind_code&quot;:&quot;019901&quot;,&#xd;
+    &quot;payment_status&quot;: &quot;not_paid&quot;, &#xd;
+    &quot;address&quot;: &quot;127422, РОССИЯ, МОСКВА г, ДМИТРОВСКИЙ проезд, ДОМ 6 корп 1, кв 50&quot;,&#xd;
+    &quot;oktmo&quot;: &quot;45346000&quot;,&#xd;
+    &quot;tax_agency_code&quot;: &quot;9999&quot;,&#xd;
+    &quot;kbk&quot;: &quot;18210504010021000110&quot;,&#xd;
+    &quot;reduction&quot;: &quot;0&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">create_patent_profile</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result.patent_id</stringProp>
+                <stringProp name="EXPECTED_VALUE"></stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">true</boolProp>
+                <boolProp name="INVERT">true</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Сохраняем ИД патента" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.patent_id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">0</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Редактируем клиенту патент" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">&#xd;
+{&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;patent_edit&quot;,&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;params&quot;: { &#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;patent_id&quot;:${patent_id},&#xd;
+    &quot;number&quot;: &quot;${__Random(1,9999,patent_number)}&quot;,&#xd;
+    &quot;region_code&quot;:99,&#xd;
+    &quot;tax_base&quot;: &quot;${tax_base}&quot;,&#xd;
+    &quot;tax_rate&quot;: &quot;6&quot;,&#xd;
+    &quot;start_date&quot;: &quot;${__time(yyyy,)}-01-01&quot;,&#xd;
+    &quot;end_date&quot;: &quot;${__time(yyyy,)}-12-31&quot;,&#xd;
+    &quot;activity_kind_code&quot;:&quot;462901&quot;,&#xd;
+    &quot;payment_status&quot;: &quot;not_paid&quot;, &#xd;
+    &quot;address&quot;: &quot;127422, РОССИЯ, МОСКВА г, ДМИТРОВСКИЙ проезд, ДОМ 6 корп 1, кв 50&quot;,&#xd;
+    &quot;oktmo&quot;: &quot;45346000&quot;,&#xd;
+    &quot;tax_agency_code&quot;: &quot;9999&quot;,&#xd;
+    &quot;kbk&quot;: &quot;18210504010021000110&quot;,&#xd;
+    &quot;reduction&quot;: &quot;0&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">create_patent_profile</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем , что получен ИД патента" enabled="true">
+                <stringProp name="JSON_PATH">.result.patent_id</stringProp>
+                <stringProp name="EXPECTED_VALUE">${patent_id}</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Проверяем изменение записи с патента в БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select pr.code, pr.region_code, pr.num 
+	from patent_regionactivitykind pr  
+	join patent_patent pp on pp.region_activity_kind_id=pr.id
+	where  pp.id=&apos;${patent_id}&apos;  </stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем код вида деятельности патента в БД" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-932612748">code	region_code	num
+46	99	01</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем патент из БД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">delete from patent_patent  
+where id=&apos;${patent_id}&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запись удалена" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="1329970139">1 updates</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Удаление патента" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Удаление действующего патента" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Патент&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Удаление патента в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Удаление действующего патента&quot;);  
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos; 
+		and pp.company_id is null
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&apos;customer_code_1&apos;])</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -2859,7 +4509,7 @@ where pp.id=&apos;${patent_id}&apos;   </stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Удаление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Удаление патента за прошлый год&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -2895,7 +4545,7 @@ order by random() limit 1;
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-               <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -3196,21 +4846,19 @@ where pp.id=&apos;${patent_id}&apos;   </stringProp>
 vars.put(&quot;AllureStory&quot;,&quot;Удаление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Удаление удаленного патента&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим клиента с удалённым патентом" enabled="true">
                 <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-                <stringProp name="query">select oc.customer_code 
+                <stringProp name="query">select oc.customer_code
 	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
 		where oc.closing_date is null 
 		and oc.is_active is true 
 		and oc.tax_regime_id =&apos;2&apos; 
-		and pp.company_id is null
-order by random() limit 1;
-
-</stringProp>
+		and pp.deactivated is true 
+order by random() limit 1;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -3232,7 +4880,7 @@ order by random() limit 1;
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
-                 <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
@@ -3315,7 +4963,7 @@ order by random() limit 1;
 vars.put(&quot;AllureStory&quot;,&quot;Удаление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Пустой ИД патента&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
@@ -3351,7 +4999,7 @@ order by random() limit 1;
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
-                 <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
@@ -3434,7 +5082,7 @@ order by random() limit 1;
 vars.put(&quot;AllureStory&quot;,&quot;Удаление патента в Точке X&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;ИД патента не указан&quot;);  
 vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
-vars.put(&quot;AllureCaseDescription&quot;, &quot;После добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Патент — это документ, который дает ИП право заниматься определенным видом деятельности. ИП платит за патент и как бы покупает это право. Стоимость патента — это и есть налог, который уплачивает предприниматель.\\n\\nПосле добавления патента его можно удалить через метод [patent_delete](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_patent_delete.md)&quot;);</stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
@@ -3470,7 +5118,7 @@ order by random() limit 1;
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
-                 <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
