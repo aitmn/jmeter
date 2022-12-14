@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -14,10 +14,7 @@
     <hashTree>
       <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
       <hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Задачи по патенту в акварели" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Задачи в акварели" enabled="true"/>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Задачи налога по патенту со сроком год" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -2039,12 +2036,12 @@ where id=&apos;${patent_id}&apos;;</stringProp>
             </hashTree>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Задачи по патенту в точке X" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Задачи в точке X" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="tasks" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Задачи для клиента" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Задачи налога по патенту со сроком год" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -3693,7 +3690,7 @@ where id=&apos;${patent_id}&apos;;</stringProp>
               </hashTree>
             </hashTree>
           </hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="get_tasks_info" enabled="true"/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Список открытых ззадач для клиента" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Задачи налога по патенту со сроком год" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
