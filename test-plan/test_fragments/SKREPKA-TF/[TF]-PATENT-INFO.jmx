@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -14,10 +14,7 @@
     <hashTree>
       <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
       <hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение списка регионов" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение списка регионов" enabled="true"/>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Запрос списка регионов для активного клиента" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -102,13 +99,14 @@ order by random() limit 5;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_region_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    {&#xd;
+    	&quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
   }&#xd;
 }</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
@@ -255,13 +253,14 @@ order by random() limit 5;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_region_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    {&#xd;
+    	&quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
   }&#xd;
 }</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
@@ -408,13 +407,12 @@ order by random() limit 5;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_region_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    {&quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
   }&#xd;
 }</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
@@ -527,8 +525,7 @@ order by random() limit 5;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_region_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -644,8 +641,7 @@ order by random() limit 5;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_region_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot; &#xd;
@@ -703,10 +699,7 @@ order by random() limit 5;</stringProp>
             </hashTree>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение списка видов деятельности" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение списка видов деятельности" enabled="true"/>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Запрос списка видов деятельности для активного клиента" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -824,13 +817,12 @@ order by random() limit 5;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
     &quot;region_code&quot;:&quot;${region_code}&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -1047,13 +1039,12 @@ order by random() limit 5;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
     &quot;region_code&quot;:&quot;${region_code}&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -1270,13 +1261,12 @@ order by random() limit 5;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
     &quot;region_code&quot;:&quot;${region_code}&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -1438,13 +1428,12 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
     &quot;region_code&quot;:&quot;80&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -1558,13 +1547,12 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;,&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
     &quot;region_code&quot;:&quot;&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -1678,13 +1666,12 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    {&quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
   }&#xd;
 }</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
@@ -1818,8 +1805,7 @@ order by random() limit 5;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2041,13 +2027,12 @@ order by random() limit 5;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
   &quot;params&quot;: {&#xd;
-    &quot;customer_code&quot;: &quot;${customer_code_1}1&quot;,&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}1&quot;,&#xd;
     &quot;region_code&quot;:&quot;${region_code}&quot;&#xd;
   }&#xd;
 }</stringProp>
@@ -2207,8 +2192,7 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_activity_kind_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2269,10 +2253,7 @@ order by random() limit 1;</stringProp>
             </hashTree>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение адреса регистрации" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение адреса регистрации" enabled="true"/>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Запрос адреса регистрации для активного клиента" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -2335,8 +2316,7 @@ vars.put(&quot;address&quot;,vars[&quot;address_1&quot;])</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;company_registration_address&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2447,8 +2427,7 @@ vars.put(&quot;address&quot;,vars[&quot;address_1&quot;])</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;company_registration_address&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2559,8 +2538,7 @@ vars.put(&quot;address&quot;,vars[&quot;address_1&quot;])</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;company_registration_address&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2670,8 +2648,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;company_registration_address&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2746,8 +2723,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;company_registration_address&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -2827,8 +2803,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;patent_region_list&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot; &#xd;
@@ -2886,10 +2861,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
             </hashTree>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение списка возможных адресов" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение списка возможных адресов" enabled="true"/>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получение списка возможных адресов по названию города" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -2957,8 +2929,7 @@ order by random() limit 1;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3087,8 +3058,7 @@ order by random() limit 1;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3217,8 +3187,7 @@ order by random() limit 1;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3347,8 +3316,7 @@ order by random() limit 1;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3477,8 +3445,7 @@ order by random() limit 1;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3596,8 +3563,7 @@ order by random() limit 1;</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&#xd;
-{&#xd;
+                    <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3717,8 +3683,7 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3836,8 +3801,7 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -3963,8 +3927,7 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -4091,8 +4054,7 @@ order by random() limit 1;</stringProp>
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -4177,8 +4139,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
@@ -4264,8 +4225,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">&#xd;
-{&#xd;
+                      <stringProp name="Argument.value">&#xd;{&#xd;
   &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
   &quot;method&quot;: &quot;address_suggestions&quot;,&#xd;
   &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
