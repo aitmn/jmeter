@@ -25,7 +25,9 @@
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
-              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+              <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Запрос на подключение услуги клиенту&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v3.connect_api.connect_service_by_account)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\nДолжно быть достаточно денег для подключение услуги (пополнить счёт можно через [https://stand-helper.bank24.int](https://stand-helper.bank24.int))&quot;);</stringProp>
@@ -883,7 +885,9 @@ and sc.customer_code =&apos;${customer_code}&apos;;</stringProp>
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
-              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+              <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Запрос на подключение услуги клиенту&quot;); 
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nУ клиента должен быть открытый рублевый расчетный счет 40802810*\\nДолжно быть достаточно денег для подключение услуги (пополнить счёт можно через [https://stand-helper.bank24.int](https://stand-helper.bank24.int))&quot;);
@@ -1682,7 +1686,9 @@ and sc.customer_code =&apos;${customer_code}&apos;;</stringProp>
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
-              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+              <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Запрос на подключение услуги клиенту&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service с оплатой картой&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%&quot;);</stringProp>
@@ -2057,7 +2063,9 @@ limit 1;</stringProp>
               <stringProp name="cacheKey">false</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
-              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+              <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Запрос на подключение услуги клиенту&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение REPORT через connect_cap_service, без указания счета&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНайти клиента без подключенной услуги, подходящих под услугу Отчетность и ИП:\\n select customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;INDIVIDUAL_ENTITY&apos; and taxation_type_id=&apos;1&apos; or taxation_type_id=&apos;4&apos;;\\nЮР лицо: select customer_code from stepler_customer where id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) and organization_type=&apos;LEGAL_ENTITY&apos;;\\nПроверить, что у клиента есть открытый рублевый счет (для запроса нужна авторизация)\\nhttps://apibank-http.query.consul-pre/v3/short/account?bankCode=044525999&amp;owner=customer_code&amp;showClosed=false\\nПроверить, что на счете достаточно денег\\nhttps://apibank-http.query.consul-pre/v3/short/account/bankCode/code(из пункта выше)/balances\\nПополнить счет, при необходимости, можно на https://stand-helper.bank24.int/&quot;);
@@ -2821,7 +2829,9 @@ and sc.customer_code =&apos;${customer_code}&apos;;</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT через connect_cap_service. Счёт валютный&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем ошибку валидации на валютный счет&quot;);
@@ -3145,7 +3155,9 @@ and sc.customer_code =&apos;${customer_code}&apos;;</stringProp>
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT с невалидным параметром счета&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -3389,7 +3401,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT с пустым номером счета&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -3690,7 +3704,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Валидация параметров запроса connect_cap_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -3990,7 +4006,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT с невалидным БИКом&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -4243,7 +4261,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT с пустым БИКом&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -4544,7 +4564,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT без параметра БИКа&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -4844,7 +4866,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT с пустым кодом клиента&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -5088,7 +5112,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение TAX_COUNT без параметра клиента&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -5322,7 +5348,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Валидация параметров запроса connect_cap_service&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
@@ -5566,7 +5594,9 @@ limit 1;
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
+                <stringProp name="script">
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);
+vars.put(&quot;AllureFeature&quot;,&quot;Подключение услуги&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Валидация параметров&quot;);
 vars.put(&quot;AllureCaseName&quot;,&quot;Подключение услуги без патаметра имени услуги&quot;);
 vars.put(&quot;AllureCaseDescription&quot;,&quot;Ссылка на документацию: [https://tar.pages.tochka-tech.com/stepler](https://tar.pages.tochka-tech.com/stepler/modules/stepler.api.html#stepler.api.v1.connect_api.public_connect_service)\\n\\n---\\nНужен клиент подходящий под персональную бухгалтерию для УСН 6%\\nПроверяем валидации&quot;);
