@@ -1,0 +1,2168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Запрос виджета" enabled="true"/>
+        <hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Показ виджета ОБ" enabled="true"/>
+          <hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Услуга активна" enabled="true"/>
+            <hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН доходы. ОБ включена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН доходы. ОБ включена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14356&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на УСН Доходы, с включенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code
+	from stepler_customer sc  join stepler_serviceconnection ss2 on sc.id=ss2.customer_id 
+		where status=&apos;CONNECTED&apos; 
+		and service_id in (select id from stepler_service ss where name =&apos;TAX_COUNT&apos;)
+		and organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+		and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН доходы 6%&apos;,
+			 &apos;УСН&apos;)
+			 )
+		order by random() limit 1</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН. ОБ включена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН с подключенной ОБ&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на УСН с подключенной ОБ" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer sc  join stepler_serviceconnection ss on sc.id =ss.customer_id 
+	where ss.status=&apos;CONNECTED&apos;
+	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+	and sc.taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН&apos;) 
+			)
+	and ss.service_id in (select id from stepler_service ss2 where ss2.name = &apos;TAX_COUNT&apos;)
+	order by random() limit 1</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на Патент. ОБ включена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на Патент с подключенной ОБ&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на Патенте с подключенной ОБ" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer sc  join stepler_serviceconnection ss on sc.id =ss.customer_id 
+	where ss.status=&apos;CONNECTED&apos;
+	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+	and sc.taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;Патент&apos;) 
+			)
+	and ss.service_id in (select id from stepler_service ss2 where ss2.name = &apos;TAX_COUNT&apos;)
+	order by random() limit 1</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на ЕНВД. ОБ включена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на ЕНВД с подключенной ОБ&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на ЕНВД с подключенной ОБ" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer sc  join stepler_serviceconnection ss on sc.id =ss.customer_id 
+	where ss.status=&apos;CONNECTED&apos;
+	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+	and sc.taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;Единый налог на временный доход (ЕНВД)&apos;) 
+			)
+	and ss.service_id in (select id from stepler_service ss2 where ss2.name = &apos;TAX_COUNT&apos;)
+	order by random() limit 1</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на АУСН Доходы, АУСН включена" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на АУСН Доходы, АУСН включена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14577&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на АУСН с подключенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer
+	where id in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) 
+	and organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+	and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;АУСН Доходы&apos;,
+			&apos;АУСН Доходы-Расходы&apos;)
+		) order by random() limit 1 </stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на АУСН Д-Р, АУСН включена" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на АУСН Д-Р, АУСН включена&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на АУСН Доходы-Расходы, с включенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer 
+		where id in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) 
+		and organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+		and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;АУСН Доходы-Расходы&apos;)
+		) 
+	order by random() limit 1
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем виджет для клиента" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ООО на АУСН Доходы, АУСН включена" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ООО на АУСН Доходы, АУСН Включена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14353&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ООО на АУСН Доходы, с включенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code
+	from stepler_customer 
+		where id in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) 
+		and organization_type=&apos;LEGAL_ENTITY&apos; 
+		and  taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;АУСН Доходы&apos; )
+			)
+	order by random() limit 1
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ООО на АУСН Доходы-Расходы, АУСН Включена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ООО на АУСН Доходы-Расходы, АУСН Включена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14354&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ООО  на АУСН Доходы-Расходы, с включенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer
+		where id in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;)
+		and organization_type=&apos;LEGAL_ENTITY&apos;
+		and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;АУСН Доходы-Расходы&apos;)
+		) order by random() limit 1
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">true</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+            <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Услуга отключена" enabled="true"/>
+            <hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН доходы. ОБ выключена" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН доходы. ОБ выключена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14361&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на УСН и УСН Доходы, с включенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code 
+	from stepler_customer
+		where id in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos; 
+		and service_id in (select id from stepler_service ss where name =&apos;TAX_COUNT&apos;)) 
+			and organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+			and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН доходы 6%&apos;,
+			 &apos;УСН&apos;)
+			 )
+		order by random() limit 1
+</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Выключаем клиенту услугу" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    },&#xd;
+    &quot;method&quot;: &quot;disconnect_service&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain">${__P(layer)}-stepler.bank24.int</stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/v1/private/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Задаем переменную для customer_code" enabled="false">
+                    <stringProp name="dataSource">customer_code</stringProp>
+                    <stringProp name="query">select status  from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code_1}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="resultSetMaxRows"></stringProp>
+                    <stringProp name="resultVariable">DISCONNECTED</stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                  </JDBCPreProcessor>
+                  <hashTree/>
+                  <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="Авторизация для запроса" enabled="true">
+                    <collectionProp name="AuthManager.auth_list">
+                      <elementProp name="" elementType="Authorization">
+                        <stringProp name="Authorization.url"></stringProp>
+                        <stringProp name="Authorization.username">noga</stringProp>
+                        <stringProp name="Authorization.password">Nb123^^7</stringProp>
+                        <stringProp name="Authorization.domain"></stringProp>
+                        <stringProp name="Authorization.realm"></stringProp>
+                      </elementProp>
+                    </collectionProp>
+                    <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
+                  </AuthManager>
+                  <hashTree/>
+                  <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="false">
+                    <collectionProp name="CookieManager.cookies">
+                      <elementProp name="csrftoken" elementType="Cookie" testname="csrftoken">
+                        <stringProp name="Cookie.value">xhwOh825Mxs1Oh3UJG5feNLoxzIVITuqKLNlC3fv992j9N0kuhHyhKy9zlvEwIeR</stringProp>
+                        <stringProp name="Cookie.domain"></stringProp>
+                        <stringProp name="Cookie.path"></stringProp>
+                        <boolProp name="Cookie.secure">false</boolProp>
+                        <longProp name="Cookie.expires">0</longProp>
+                        <boolProp name="Cookie.path_specified">true</boolProp>
+                        <boolProp name="Cookie.domain_specified">true</boolProp>
+                      </elementProp>
+                    </collectionProp>
+                    <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+                    <boolProp name="CookieManager.controlledByThreadGroup">false</boolProp>
+                  </CookieManager>
+                  <hashTree/>
+                  <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="Проверяем статус подключения в БД степлера" enabled="true">
+                    <stringProp name="dataSource">customer_code</stringProp>
+                    <stringProp name="query">select status  from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code_1}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="resultSetMaxRows"></stringProp>
+                    <stringProp name="resultVariable">DISCONNECTED</stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                  </JDBCPostProcessor>
+                  <hashTree/>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Добавляем заголовок для запроса" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">false</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">continue</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Включаем клиенту услугу" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+        &quot;service_name&quot;: &quot;TAX_COUNT&quot;,&#xd;
+        &quot;start_date&quot;: &quot;${__time(yyyy-MM-dd,)}&quot;,&#xd;
+        &quot;to_charge_commission&quot;: false&#xd;
+    },&#xd;
+    &quot;method&quot;: &quot;connect_service&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain">${__P(layer)}-stepler.bank24.int</stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/v1/private/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JDBCPreProcessor guiclass="TestBeanGUI" testclass="JDBCPreProcessor" testname="Задаем переменную для customer_code" enabled="false">
+                    <stringProp name="dataSource">customer_code</stringProp>
+                    <stringProp name="query">select status  from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code_1}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="resultSetMaxRows"></stringProp>
+                    <stringProp name="resultVariable">DISCONNECTED</stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                  </JDBCPreProcessor>
+                  <hashTree/>
+                  <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="Авторизация для запроса" enabled="true">
+                    <collectionProp name="AuthManager.auth_list">
+                      <elementProp name="" elementType="Authorization">
+                        <stringProp name="Authorization.url"></stringProp>
+                        <stringProp name="Authorization.username">noga</stringProp>
+                        <stringProp name="Authorization.password">Nb123^^7</stringProp>
+                        <stringProp name="Authorization.domain"></stringProp>
+                        <stringProp name="Authorization.realm"></stringProp>
+                      </elementProp>
+                    </collectionProp>
+                    <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
+                  </AuthManager>
+                  <hashTree/>
+                  <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="false">
+                    <collectionProp name="CookieManager.cookies">
+                      <elementProp name="csrftoken" elementType="Cookie" testname="csrftoken">
+                        <stringProp name="Cookie.value">xhwOh825Mxs1Oh3UJG5feNLoxzIVITuqKLNlC3fv992j9N0kuhHyhKy9zlvEwIeR</stringProp>
+                        <stringProp name="Cookie.domain"></stringProp>
+                        <stringProp name="Cookie.path"></stringProp>
+                        <boolProp name="Cookie.secure">false</boolProp>
+                        <longProp name="Cookie.expires">0</longProp>
+                        <boolProp name="Cookie.path_specified">true</boolProp>
+                        <boolProp name="Cookie.domain_specified">true</boolProp>
+                      </elementProp>
+                    </collectionProp>
+                    <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+                    <boolProp name="CookieManager.controlledByThreadGroup">false</boolProp>
+                  </CookieManager>
+                  <hashTree/>
+                  <JDBCPostProcessor guiclass="TestBeanGUI" testclass="JDBCPostProcessor" testname="Проверяем статус подключения в БД степлера" enabled="true">
+                    <stringProp name="dataSource">customer_code</stringProp>
+                    <stringProp name="query">select status  from stepler_serviceconnection join  stepler_customer on stepler_serviceconnection.customer_id = stepler_customer.id and customer_code =&apos;${customer_code_1}&apos; order by stepler_serviceconnection.date_fact_end desc limit 1;</stringProp>
+                    <stringProp name="queryArguments"></stringProp>
+                    <stringProp name="queryArgumentsTypes"></stringProp>
+                    <stringProp name="queryTimeout"></stringProp>
+                    <stringProp name="queryType">Select Statement</stringProp>
+                    <stringProp name="resultSetHandler">Store as String</stringProp>
+                    <stringProp name="resultSetMaxRows"></stringProp>
+                    <stringProp name="resultVariable">DISCONNECTED</stringProp>
+                    <stringProp name="variableNames"></stringProp>
+                  </JDBCPostProcessor>
+                  <hashTree/>
+                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Добавляем заголовок для запроса" enabled="true">
+                    <collectionProp name="HeaderManager.headers">
+                      <elementProp name="" elementType="Header">
+                        <stringProp name="Header.name">Content-Type</stringProp>
+                        <stringProp name="Header.value">application/json</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </HeaderManager>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на АУСН Доходы ОБ выключена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на АУСН Доходы ОБ выключена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14362&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на АУСН Доходы с выключенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code
+	from stepler_customer sc  
+	left join stepler_serviceconnection ss 
+		on sc.id=ss.customer_id 
+		where  ss.id is not null 
+			and sc.id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) 
+			and organization_type=&apos;INDIVIDUAL_ENTITY&apos; 
+			and taxation_type_id in (
+				select id from stepler_taxationtype st where name in 
+				(&apos;АУСН Доходы&apos; )
+				) group by customer_code 
+	order by random() limit 1</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">false</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.description</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Отключена</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ООО на АУСН Доходы-Расходы, АУСН Выключена " enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ООО на АУСН Доходы-Расходы, АУСН Выключена&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14565&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ООО  на АУСН Доходы-Расходы, с выключенной услугой" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select customer_code
+	from stepler_customer sc  
+	left join stepler_serviceconnection ss 
+	on sc.id=ss.customer_id 
+	where  ss.id is not null 
+		and sc.id not in (select customer_id from stepler_serviceconnection where status=&apos;CONNECTED&apos;) 
+		and organization_type=&apos;LEGAL_ENTITY&apos; 
+		and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;АУСН Доходы-Расходы&apos; )
+			) group by customer_code 
+	order by random() limit 1</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">false</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                    <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.description</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Отключена</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+              <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН доходы, у которого никогда не было подключений" enabled="true">
+                <boolProp name="TransactionController.includeTimers">false</boolProp>
+                <boolProp name="TransactionController.parent">true</boolProp>
+              </TransactionController>
+              <hashTree>
+                <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН доходы, у которого никогда не было подключений&quot;);
+vars.put(&quot;AllureManualID&quot;,&quot;14437&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Sampler>
+                <hashTree/>
+                <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого никогда не было подключений" enabled="true">
+                  <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                  <stringProp name="queryType">Select Statement</stringProp>
+                  <stringProp name="query">select sc.customer_code 
+from stepler_serviceconnection c
+         right join stepler_customer sc on c.customer_id = sc.id
+	where c.id is null 
+	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos; 
+	and sc.taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН доходы 6%&apos;,
+			 &apos;УСН&apos;) 
+			 )
+order by random() limit 1;</stringProp>
+                  <stringProp name="queryArguments"></stringProp>
+                  <stringProp name="queryArgumentsTypes"></stringProp>
+                  <stringProp name="variableNames">customer_code</stringProp>
+                  <stringProp name="resultVariable"></stringProp>
+                  <stringProp name="queryTimeout"></stringProp>
+                  <stringProp name="resultSetMaxRows"></stringProp>
+                  <stringProp name="resultSetHandler">Store as String</stringProp>
+                </JDBCSampler>
+                <hashTree>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                  <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                    <collectionProp name="Arguments.arguments">
+                      <elementProp name="" elementType="HTTPArgument">
+                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                        <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                        <stringProp name="Argument.metadata">=</stringProp>
+                      </elementProp>
+                    </collectionProp>
+                  </elementProp>
+                  <stringProp name="HTTPSampler.domain"></stringProp>
+                  <stringProp name="HTTPSampler.port"></stringProp>
+                  <stringProp name="HTTPSampler.protocol"></stringProp>
+                  <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                  <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                  <stringProp name="HTTPSampler.method">POST</stringProp>
+                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                </HTTPSamplerProxy>
+                <hashTree>
+                  <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.title</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение виджета" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.description</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Начните работать с бухгалтерией</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса" enabled="true">
+                    <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                    <stringProp name="EXPECTED_VALUE">false</stringProp>
+                    <boolProp name="JSONVALIDATION">true</boolProp>
+                    <boolProp name="EXPECT_NULL">false</boolProp>
+                    <boolProp name="INVERT">false</boolProp>
+                    <boolProp name="ISREGEX">false</boolProp>
+                  </JSONPathAssertion>
+                  <hashTree/>
+                  <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                    <stringProp name="cacheKey">false</stringProp>
+                    <stringProp name="filename">${_allure_config_path}</stringProp>
+                    <stringProp name="parameters">stop</stringProp>
+                    <stringProp name="script"></stringProp>
+                    <stringProp name="scriptLanguage">groovy</stringProp>
+                  </JSR223Assertion>
+                  <hashTree/>
+                </hashTree>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН. ОБ подключается" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Показ виджета Бухгалтерия&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП, ОБ подключается&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на УСН Доходы, с активной ОБ" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select customer_code
+	from stepler_customer sc  join stepler_serviceconnection ss on sc.id =ss.customer_id 
+	where ss.status=&apos;CONNECTS&apos;
+	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+	and ss.service_id in (select id from stepler_service ss2 where ss2.name = &apos;TAX_COUNT&apos;)
+order by random() limit 1</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение заголовка виджета - Бухгалтерия" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Бухгалтерия</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем установку флага сервиса - false" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.is_enabled</stringProp>
+                  <stringProp name="EXPECTED_VALUE">false</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение описания виджета - Подключаем бухгалтерию" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.description</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Подключаем бухгалтерию</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем урл, по которому откроется сервис - tar/main" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.web_link_service</stringProp>
+                  <stringProp name="EXPECTED_VALUE">tar/main</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Не показываем виджет" enabled="true"/>
+          <hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН доходы-расходы с подключенной ОБ" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Не показываем виджет&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН Д-Р с подключенной ОБ&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на УСН Доходы-Расходы, с включенной услугой" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select customer_code
+	from stepler_customer sc  join stepler_serviceconnection ss2 on sc.id=ss2.customer_id 
+		where  status=&apos;CONNECTED&apos; 
+		and service_id =(select id from stepler_service ss where name =&apos;TAX_COUNT_IN_EXP&apos;)
+		and organization_type=&apos;INDIVIDUAL_ENTITY&apos;
+		and taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН доходы - расходы&apos;)
+			 )
+		order by random() limit 1</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем текст сообщения об ошибке" enabled="true">
+                  <stringProp name="JSON_PATH">$.error.message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Клиент ${customer_code_1} не имеет виджета</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">$.error.code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">6001</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН Д-Р без подключенной услуги" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Не показываем виджет&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН Д-Р без подключенной услуги&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП на УСН Доходы-Расходы, с включенной услугой" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select sc.customer_code from stepler_customer sc
+inner join stepler_settlement ss on ss.customer_id  = sc.id
+	where sc.id not in (select ssc.customer_id from stepler_serviceconnection ssc where ssc.status in (&apos;CONNECTED&apos;,&apos;CONNECTS&apos;))
+				and sc.organization_type = &apos;INDIVIDUAL_ENTITY&apos; 
+	and sc.taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН доходы - расходы&apos;) 
+			) 
+				and ss.is_closed = false 
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем текст сообщения об ошибке" enabled="true">
+                  <stringProp name="JSON_PATH">$.error.message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Клиент ${customer_code_1} не имеет виджета</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">$.error.code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">6001</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ИП на УСН Д-Р, у которого никогда не было подключений" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение виджета&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Не показываем виджет&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;ИП на УСН Д-Р, у которого никогда не было подключений&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента, у которого никогда не было подключений" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">select sc.customer_code 
+from stepler_serviceconnection c
+         right join stepler_customer sc on c.customer_id = sc.id
+	where c.id is null 
+	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos; 
+	and sc.taxation_type_id in (
+			select id from stepler_taxationtype st where name in 
+			(&apos;УСН доходы - расходы&apos; )
+			 )
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-692]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем информацию по виджету" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;get_widget&quot;,&#xd;
+    &quot;params&quot;: { &#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем текст сообщения об ошибке" enabled="true">
+                  <stringProp name="JSON_PATH">$.error.message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Клиент ${customer_code_1} не имеет виджета</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">$.error.code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">6001</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
