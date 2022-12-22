@@ -27,7 +27,9 @@
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на УСН 6%&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на УСН 6%&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -51,13 +53,13 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -76,9 +78,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -90,11 +92,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_usn6&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_usn6</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -103,7 +107,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - УСН «Доходы»" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">УСН «Доходы»</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -112,7 +116,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.06" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.06</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -160,7 +164,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на УСН 15%&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на УСН 15%&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -184,13 +190,13 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -209,9 +215,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -223,11 +229,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_usn15&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_usn15</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -236,7 +244,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - УСН «Доходы-расходы»" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">УСН «Доходы-расходы»</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -245,7 +253,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.15" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.15</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -293,7 +301,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на ЕНВД&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на ЕНВД&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -317,7 +327,7 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -356,7 +366,7 @@ limit 1;</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -375,9 +385,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -389,11 +399,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_envd&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_envd</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -402,7 +414,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - ЕНВД" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">ЕНВД</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -411,7 +423,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.06" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.06</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -525,7 +537,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на Патенте&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на Патенте&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -549,7 +563,7 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
@@ -588,7 +602,7 @@ limit 1;</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -607,9 +621,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -621,11 +635,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_patent&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_patent</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -634,7 +650,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - Патентная" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">Патентная</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -643,7 +659,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.06" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.06</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -767,7 +783,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на ОСНО&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на ОСНО&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -791,13 +809,13 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -816,9 +834,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -830,11 +848,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_osno&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_osno</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -843,7 +863,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - ОСНО" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">ОСНО</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -852,7 +872,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.06" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.06</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -900,7 +920,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на ЕСХН&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на ЕСХН&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -924,13 +946,13 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -949,9 +971,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -963,11 +985,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_eshn&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_eshn</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -976,7 +1000,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - ЕСХН" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">ЕСХН</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -985,7 +1009,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.06" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.06</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1023,7 +1047,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на АУСН «Доходы»&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на АУСН «Доходы»&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -1047,13 +1073,13 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1072,9 +1098,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -1086,11 +1112,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_ausn8&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_ausn8</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1099,7 +1127,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - АУСН «Доходы»" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">АУСН «Доходы»</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1108,7 +1136,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.08" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.08</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1156,7 +1184,9 @@ limit 1;</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Получение информации о компании&quot;);
 vars.put(&quot;AllureStory&quot;,&quot;Получение информации из Точки X&quot;);
-vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на АУСН «Доходы-расходы»&quot;); </stringProp>
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос данных по ИП на АУСН «Доходы-расходы»&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Получить информацию о состоянии клиента в сервисе скрепка можно через метод [get_company_info](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/get_company_info.md)&quot;);</stringProp>
               <stringProp name="scriptLanguage">groovy</stringProp>
             </JSR223Sampler>
             <hashTree/>
@@ -1180,13 +1210,13 @@ limit 1;</stringProp>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
                 <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">start [TAXDEV-596]</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-596]</stringProp>
                 <stringProp name="script"></stringProp>
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Отправка запроса на добавление ставки" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Получение данных о компании для точки x" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1205,9 +1235,9 @@ limit 1;</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-skrepka.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -1219,11 +1249,13 @@ limit 1;</stringProp>
               <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
+              <stringProp name="TestPlan.comments">get_company_info</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся код СНО - &apos;ip_ausn20&apos;" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_type</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_type</stringProp>
                 <stringProp name="EXPECTED_VALUE">ip_ausn20</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1232,7 +1264,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулось описание СНО - АУСН «Доходы-расходы»" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_description</stringProp>
+                <stringProp name="JSON_PATH">.result.current_sno.sno_description</stringProp>
                 <stringProp name="EXPECTED_VALUE">АУСН «Доходы-расходы»</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
@@ -1241,7 +1273,7 @@ limit 1;</stringProp>
               </JSONPathAssertion>
               <hashTree/>
               <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что максимальная ставка - 0.2" enabled="true">
-                <stringProp name="JSON_PATH">.result.sno_tax_rate_max</stringProp>
+               <stringProp name="JSON_PATH">.result.current_sno.sno_tax_rate_max</stringProp>
                 <stringProp name="EXPECTED_VALUE">0.2</stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">false</boolProp>
