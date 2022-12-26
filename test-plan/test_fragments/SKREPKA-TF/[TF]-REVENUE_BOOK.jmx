@@ -1320,6 +1320,15 @@ order by random() limit 1;</stringProp>
                 <stringProp name="TestPlan.comments">text_storage_get</stringProp>
               </HTTPSamplerProxy>
               <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть КУДиР за ${__time(yyyy,)} год" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе есть КУДИР для Патента за прошлый год" enabled="true">
                   <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].book_type</stringProp>
                   <stringProp name="EXPECTED_VALUE">patent</stringProp>
