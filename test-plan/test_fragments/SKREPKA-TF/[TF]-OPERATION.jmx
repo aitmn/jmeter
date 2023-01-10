@@ -191,32 +191,17 @@ order by random() limit 1;</stringProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
               <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе нет типа операции - expenses" enabled="true">
-                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;expenses&apos;)].type</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">false</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что нет имени для типа операции expenses" enabled="true">
-                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;expenses&apos;)].name</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">false</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что нет названия для типа операции expenses" enabled="true">
-                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;expenses&apos;)].order_title</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">false</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет типа операции Расходы " enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1935391973">expenses</stringProp>
+                  <stringProp name="-1728917855">Расходы</stringProp>
+                  <stringProp name="1594638407">Расходная операция</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">20</intProp>
+              </ResponseAssertion>
               <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                 <stringProp name="cacheKey">false</stringProp>
