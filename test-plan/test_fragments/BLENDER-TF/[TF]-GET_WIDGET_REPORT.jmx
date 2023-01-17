@@ -7000,11 +7000,23 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента ИП с подключающейся отчётностью" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select customer_code
-	from stepler_customer sc  join stepler_serviceconnection ss on sc.id =ss.customer_id 
-	where ss.status=&apos;CONNECTS&apos;
-	and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos;
-	and ss.service_id in (select id from stepler_service ss2 where ss2.name = &apos;REPORT&apos;)
+                <stringProp name="query">with taxationtype as (
+    select id
+        from stepler_taxationtype st 
+    where  name in (
+    &apos;Единый сельскохозяйственный налог (ЕСХН)&apos;,
+    &apos;Общая система налогообложения (ОСНО, ОСН)&apos;,
+    &apos;Неизвестный СНО&apos;,
+    &apos;Неизвестная система налогооблажения&apos;,
+    &apos;НПД&apos;,
+    &apos;АУСН Доходы&apos;,
+    &apos;АУСН Доходы-Расходы&apos;) )
+select customer_code
+    from stepler_customer sc  join stepler_serviceconnection ss on sc.id =ss.customer_id 
+    join taxationtype on taxationtype.id=sc.taxation_type_id 
+    where ss.status=&apos;CONNECTS&apos;
+    and sc.organization_type=&apos;INDIVIDUAL_ENTITY&apos; 
+    and ss.service_id in (select id from stepler_service ss2 where ss2.name = &apos;REPORT&apos;)
 order by random() limit 1</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
