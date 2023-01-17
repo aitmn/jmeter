@@ -1173,6 +1173,299 @@ vars.put(&quot;AllureCaseDescription&quot;,&quot;**Логика tasks в бле�
               <hashTree/>
             </hashTree>
           </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="ca (reports) &amp; blender (reports in tasks)" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Запрос tasks&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Логика работы&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Интеграция с сервисом ca. Статус задач отчётов&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;**Логика tasks в блендере.**\\nС фронта дергается метод tasks сервиса блендер. \\nПод капотом блендер дергает метод tasks скрепки, get_declaration_info и get_info ЦА, get_blender_info ca-gateway.\\nПолученные ответы от сервисов обрабатывает каждый своей логикой. \\n**tasks скрепки**\\nзапрашивается с параметрами kind (актуальные, завершенные или все задачи - зависит от запроса tasks в блендер) и customer_code и полученный список задач сохраняется для дальнейшей обработки. \\n**get_declaration_info**\\nзапрашиваем с customer_code и токетом клиента (ЦА нужны сессии для запросов). В ответ получаем список всех деклараций клиента. \\nМаппим статусы деклараций, полученных из ЦА следующим образом: \\n- Если декларация удалена или успешно сдана - в блендере присваиваем статус &apos;done&apos;\\n- Если декларция просрочена(не отправлена в срок) - в блендере присваиваем статус &apos;overdue&apos;\\n- Для всех остальных в блендере присваиваем статус new\\nДальше определяем в актуальных или завершенных задачах показывать декларацию:\\n- В завершенных - со статусом done\\n- В актуальных - со статусом new или overdue\\n- Заголовок задачи декларации всегда &apos;Декларация УСН за {report_year} год&apos;\\nПодзаголовок задачи декларации зависит от статуса: \\n```\\ndef sub_title(self):\\n        if self.is_deleted:\\n            return &apos;Удалена&apos;\\n        match self._state:\\n            case DeclarationState.NEW:\\n                end_date = self.end_date\\n                month = MONTHS[end_date.month]\\n                return f&apos;до {end_date.day} {month}&apos;\\n            case self.ERROR_STATES:\\n                return &apos;Ошибка&apos;\\n            case DeclarationState.SUCCESS:\\n                return &apos;Сдана&apos;\\n            case self.SENDED_STATES:\\n                return &apos;Отправлена&apos;\\n            case DeclarationState.GOVERMENT_ACCEPTED:\\n                return &apos;На рассмотрении&apos; \\n\\nПод ERROR_STATES понимается набор статусов:  &apos;ERROR&apos;, &apos;FAIL&apos;, &apos;BAD_SMS&apos;\\nПод SENDED_STATES понимается набор статусов:  &apos;PENDING&apos;, &apos;SENDED&apos;,\\n&apos;TRANSPORT_ACCEPTED&apos;\\n```\\nСтатус декларации в ЦА можно посмотреть в базе ЦА или админке [https://слой-cap-helper-dcdp.bank24.int/](https://stage-cap-helper-dcdp.bank24.int/)\\n**get_info ЦА**\\nЗапрашиваем с customer_code и токеном клиента (ЦА нужны сессии для запросов). В ответ получаем информацию о текущем сертификате.\\nВ этом ответе мы ориентируемся на поле state и front_state  [https://confluence.bank24.int/pages/viewpage.action?pageId=147226663](https://confluence.bank24.int/pages/viewpage.action?pageId=147226663), на AccessMode и key_type.\\nЕсли AccessMode не FULL (например, если физик с правами доверенного лица), то задачи скрываем. \\n- Если key_type MY_DSS - в задаче укажем key - cert\\n- Если key_type CLOUD - в задаче укажем key - cloud-cert \\n- Если key_type HARD - в задаче укажем key - iron-cert\\n- Если key_type не указан - в задаче укажем key - cert\\n\\nНа key ориентируется фронт для отображения экрана задачи \\nЕсли у клиента нет активной подписи ЖКЭП, то рисуем задачу на добавление\\nЗаголовок &apos;Добавьте электронную подпись&apos;\\nПодзаголовок &apos;Принимайте и подписывайте документы от госорганов&apos;\\nВозможные статусы задач, которые должны показываться пользователю можно посмотреть здесь: [https://www.figma.com/](https://www.figma.com/file/p7tG6jM3C7GPuZe4nkankM/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F-%D0%BF%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D1%8C-(%D0%9A%D0%AD%D0%9F)-Web?node-id=37%3A29281)\\nОбщие советы\\nтип сертификата можно сменить в ASTRAL_CUSTOMER.KEY_TYPE в БД RS. Найти запись можно по BUSINESS_ID = customer_code\\nСтатус сертификата не храниться в явном виде в БД RS, а присваивается на основании разных параметров.\\nСтатусы декларации можно менять в админке cap-helper\\nблендер живет только в 1.5, поэтому не забываем добавлять физику фичу tochka15 и менять СНО клиенту на УСН 6% и его производные&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос в ca, получаем информацию по отчётам" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;101&quot;,&#xd;
+  &quot;method&quot;: &quot;get_all&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;filter&quot;: &quot;ACTIVE&quot;,&#xd;
+    &quot;page&quot;: 0,&#xd;
+    &quot;page_size&quot;: 0&#xd;
+  },&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-gf-ca.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/v2/report</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сохраняем кол-во элементов → Expexted: кол-во элементов сохранили " enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">if (1 == 1){
+	prev.setSuccessful(true);
+}</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Actual Declaration id Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">report_actual_task_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result[?(@.report_state == &apos;NEW&apos; &amp;&amp; @.state == &apos;DEFAULT&apos; )].id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос в ca, получаем информацию по сданным отчётам" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;101&quot;,&#xd;
+  &quot;method&quot;: &quot;get_all&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;filter&quot;: &quot;ENDED&quot;,&#xd;
+    &quot;page&quot;: 0,&#xd;
+    &quot;page_size&quot;: 0&#xd;
+  },&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${__lowercase(${__P(layer)})}-gf-ca.bank24.int</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/v2/report</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сохраняем кол-во элементов → Expexted: кол-во элементов сохранили " enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">if (1 == 1){
+	prev.setSuccessful(true);
+}</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Completed and Deleted report id Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">report_completed_task_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result[?(@.report_state == &apos;SUCCESS&apos; &amp;&amp;@.state == &apos;SUCCESS&apos; )].id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос в blender, получаем actual таски, сравниваем с ответом от CA" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;: &quot;actual&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${tochka20_host}</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/v1/blender/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Actual Declaration Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">report_blender_actual_task_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[?(@.service == &apos;ca&apos; &amp;&amp; @.type == &apos;ca_report&apos; &amp;&amp; @.state nin [&apos;done&apos;])].id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во элементов активных деклараций из сервиса ca с сервисом blender → Expexted: кол-во одинаковое \\nca count: ${declarations_actual_task_id_matchNr} == blender count: ${declarations_blender_actual_task_id_matchNr}" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">//Ответ от скрепки, его нужно потом сравнить с блендером
+// Ответ от блендера, его нужно потом сравнить со скрепки
+report_actual_task_id_matchNr          = Integer.parseInt(vars.get(&quot;report_actual_task_id_matchNr&quot;));
+report_blender_actual_task_id_matchNr  = Integer.parseInt(vars.get(&quot;report_blender_actual_task_id_matchNr&quot;));
+
+
+String errorMsg = &quot;&quot;;
+
+if (report_actual_task_id_matchNr == report_blender_actual_task_id_matchNr){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + report_actual_task_id_matchNr + &quot; But found: &quot; + report_blender_actual_task_id_matchNr + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">continue</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос в blender, получаем competed таски, сравниваем с ответом от CA" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+  &quot;method&quot;: &quot;tasks&quot;,&#xd;
+  &quot;params&quot;: {&#xd;
+    &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+    &quot;kind&quot;: &quot;completed&quot;&#xd;
+  }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${tochka20_host}</stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/api/v1/blender/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Completed Declaration Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">declarations_blender_report_task_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">.result.[?( @.type == &apos;ca_report&apos; &amp;&amp; @.state ==&apos;done&apos;)].id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во элементов активных деклараций из сервиса ca с сервисом blender → Expexted: кол-во одинаковое  \\nca count: ${declarations_completed_task_id_matchNr} == blender count ${declarations_blender_completed_task_id_matchNr}" enabled="true">
+                <stringProp name="scriptLanguage">groovy</stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="script">//Ответ от скрепки, его нужно потом сравнить с блендером
+// Ответ от блендера, его нужно потом сравнить со скрепки
+report_completed_task_id_matchNr          = Integer.parseInt(vars.get(&quot;report_completed_task_id_matchNr&quot;));
+report_blender_completed_task_id_matchNr  = Integer.parseInt(vars.get(&quot;report_completed_task_id_matchNr&quot;));
+
+
+String errorMsg = &quot;&quot;;
+
+if (report_completed_task_id_matchNr == report_blender_completed_task_id_matchNr){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + report_completed_task_id_matchNr + &quot; But found: &quot; + report_blender_completed_task_id_matchNr + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
         </hashTree>
       </hashTree>
     </hashTree>
