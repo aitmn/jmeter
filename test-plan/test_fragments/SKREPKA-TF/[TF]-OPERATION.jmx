@@ -1,0 +1,1360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Test Fragment" enabled="false"/>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получить список типов операций  " enabled="true"/>
+        <hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получить список типов операций для ИП на УСН 6%" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получить список типов операций для ИП на УСН 6%&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента на УСН 6%" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code
+	from orders_company oc 
+where oc.closing_date is null 
+	 and oc.is_active is true 
+	 and oc.tax_regime_id in 
+	 (select id 
+		from orders_taxregime ot
+		where ot.description in (
+		&apos;ИП на УСН Доходы&apos;)
+	 )
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">tasks</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - income" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">income</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции income - Доходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции income - Доходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - tax" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">tax</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции tax - Налоговые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Налоговые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции tax - Уплаченный налог" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Уплаченный налог</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - undefined" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">undefined</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции undefined - Неопределённые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределённые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции undefined - Неопределенная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределенная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет типа операции Расходы " enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1935391973">expenses</stringProp>
+                  <stringProp name="-1728917855">Расходы</stringProp>
+                  <stringProp name="1594638407">Расходная операция</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">20</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получить список типов операций для ИП на УСН 15%" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получить список типов операций для ИП на УСН 15%&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента на УСН 6%" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code
+	from orders_company oc 
+where oc.closing_date is null 
+	 and oc.is_active is true 
+	 and oc.tax_regime_id in 
+	 (select id 
+		from orders_taxregime ot
+		where ot.description in (
+		&apos;ИП на УСН Д-Р&apos;)
+	 )
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">tasks</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - income" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">income</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции income - Доходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции income - Доходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - tax" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">tax</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции tax - Налоговые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Налоговые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции tax - Уплаченный налог" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Уплаченный налог</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - undefined" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">undefined</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции undefined - Неопределённые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределённые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции undefined - Неопределенная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределенная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе нет типа операции - expenses" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;expenses&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">expenses</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что имz для типа операции expenses - Расходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;expenses&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Расходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что название для типа операции expenses - Расходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;expenses&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Расходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получить список типов операций для ИП на ЕНВД" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получить список типов операций для ИП на ЕНВД&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента на ЕНВД" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select customer_code from orders_company oc2 
+	join orders_taxregime ot3 on oc2.tax_regime_id =ot3.id 
+where ot3.key=&apos;ip_envd&apos;
+	  and oc2.is_active is true
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">tasks</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - income" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">income</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции income - Доходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции income - Доходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - tax" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">tax</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции tax - Налоговые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Налоговые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции tax - Уплаченный налог" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Уплаченный налог</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - undefined" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">undefined</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции undefined - Неопределённые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределённые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции undefined - Неопределенная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределенная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет типа операции Расходы " enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1935391973">expenses</stringProp>
+                  <stringProp name="-1728917855">Расходы</stringProp>
+                  <stringProp name="1594638407">Расходная операция</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">20</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получить список типов операций для ИП на Патенте" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получить список типов операций для ИП на Патенте&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента на Патенте" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select customer_code from orders_company oc2 
+	join orders_taxregime ot3 on oc2.tax_regime_id =ot3.id 
+where ot3.key=&apos;ip_patent&apos;
+	  and oc2.is_active is true
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">tasks</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - income" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">income</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции income - Доходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции income - Доходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - tax" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">tax</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции tax - Налоговые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Налоговые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции tax - Уплаченный налог" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Уплаченный налог</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - undefined" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">undefined</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции undefined - Неопределённые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределённые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции undefined - Неопределенная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределенная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет типа операции Расходы " enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1935391973">expenses</stringProp>
+                  <stringProp name="-1728917855">Расходы</stringProp>
+                  <stringProp name="1594638407">Расходная операция</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">20</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получить список типов операций для ИП на ОСНО" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получить список типов операций для ИП на ОСНО&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента на ОСНО" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select customer_code from orders_company oc2 
+	join orders_taxregime ot3 on oc2.tax_regime_id =ot3.id 
+where ot3.key=&apos;ip_osno&apos;
+	  and oc2.is_active is true
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">tasks</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - income" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">income</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции income - Доходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции income - Доходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - tax" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">tax</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции tax - Налоговые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Налоговые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции tax - Уплаченный налог" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Уплаченный налог</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - undefined" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">undefined</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции undefined - Неопределённые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределённые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции undefined - Неопределенная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределенная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет типа операции Расходы " enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1935391973">expenses</stringProp>
+                  <stringProp name="-1728917855">Расходы</stringProp>
+                  <stringProp name="1594638407">Расходная операция</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">20</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Получить список типов операций для ИП на ЕСХН" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Получить список типов операций для ИП на ЕСХН&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента на ЕСХН" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select customer_code from orders_company oc2 
+	join orders_taxregime ot3 on oc2.tax_regime_id =ot3.id 
+where ot3.key=&apos;ip_eshn&apos;
+	  and oc2.is_active is true
+order by random() limit 1;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список задач клиента" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="TestPlan.comments">tasks</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - income" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">income</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции income - Доходы" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходы</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции income - Доходная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;income&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Доходная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - tax" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">tax</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции tax - Налоговые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Налоговые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции tax - Уплаченный налог" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;tax&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Уплаченный налог</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть тип операции - undefined" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].type</stringProp>
+                <stringProp name="EXPECTED_VALUE">undefined</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем имя для типа операции undefined - Неопределённые платежи" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].name</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределённые платежи</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем название для типа операции undefined - Неопределенная операция" enabled="true">
+                <stringProp name="JSON_PATH">.result.[?(@.type== &apos;undefined&apos;)].order_title</stringProp>
+                <stringProp name="EXPECTED_VALUE">Неопределенная операция</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем, что в ответе нет типа операции Расходы " enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="-1935391973">expenses</stringProp>
+                  <stringProp name="-1728917855">Расходы</stringProp>
+                  <stringProp name="1594638407">Расходная операция</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">20</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Валидация" enabled="true"/>
+          <hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Запрос типа операций с пустым кодом клиента" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters">issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос типа операций с пустым кодом клиента&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос типа операций с пустым кодом клиента" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки - customer_not_found" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">customer_not_found</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание ошибки - Customer not found" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Customer not found</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Запрос типа операций без кода клиента" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters">issues=[TAXDEV-817]</stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Операции&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получить список типов операций в точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Запрос типа операций без кода клиента&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Операции могут иметь разный тип: Доход, Налоговый платёж, Неопределено или Расход. Чтобы получить список возвможных типов операций для клиента используем метод [operation_kinds](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_operation_kinds.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос типа операций без кода клиента" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;operation_kinds&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+    }&#xd;
+}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol"></stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип ошибки - TypeError" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание ошибки - operation_kinds() missing 1 required positional argument: &apos;customer_code&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;operation_kinds() missing 1 required positional argument: &apos;customer_code&apos;&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
