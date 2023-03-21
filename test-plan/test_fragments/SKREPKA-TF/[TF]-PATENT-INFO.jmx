@@ -665,18 +665,18 @@ order by random() limit 5;</stringProp>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип полученной ошибки - TypeError" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
-                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код полученной ошибки - -32700" enabled="true">
+                  <stringProp name="JSON_PATH">.error.code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">-32700</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание полученной ошибки - patent_region_list() missing 1 required positional argument: &apos;customer_code&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
-                  <stringProp name="EXPECTED_VALUE">patent_region_list() missing 1 required positional argument: &apos;customer_code&apos;</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание полученной ошибки - Parse error" enabled="true">
+                  <stringProp name="JSON_PATH">.error.message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Parse error</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -1695,18 +1695,27 @@ order by random() limit 1;</stringProp>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип ошибки - TypeError" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
-                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки - value_error.missing" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">value_error.missing</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание ошибки - patent_activity_kind_list() missing 1 required positional argument: &apos;region_code&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;patent_activity_kind_list() missing 1 required positional argument: &apos;region_code&apos;&quot;]</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сообщение ошибки - field required" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">field required</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем объект ошибки - region_code" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].object_name</stringProp>
+                  <stringProp name="EXPECTED_VALUE">region_code</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2221,18 +2230,27 @@ order by random() limit 1;</stringProp>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип ошибки - TypeError" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
-                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки - value_error.missing" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">value_error.missing</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание ошибки - patent_activity_kind_list() missing 1 required positional argument: &apos;customer_code&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;patent_activity_kind_list() missing 1 required positional argument: &apos;customer_code&apos;&quot;]</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сообщение ошибки - field required" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">field required</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем объект ошибки - customer_code" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].object_name</stringProp>
+                  <stringProp name="EXPECTED_VALUE">customer_code</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2829,18 +2847,18 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем тип полученной ошибки - TypeError" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
-                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код полученной ошибки - -32700" enabled="true">
+                  <stringProp name="JSON_PATH">.error.code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">-32700</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание полученной ошибки - patent_region_list() missing 1 required positional argument: &apos;customer_code&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
-                  <stringProp name="EXPECTED_VALUE">patent_region_list() missing 1 required positional argument: &apos;customer_code&apos;</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание полученной ошибки - Parse error" enabled="true">
+                  <stringProp name="JSON_PATH">.error.message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Parse error</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -3831,18 +3849,27 @@ order by random() limit 1;</stringProp>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученный тип ошибки - TypeError" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
-                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки - value_error.missing" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">value_error.missing</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученное описание ошибки - address_suggestions() missing 1 required positional argument: &apos;address&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
-                  <stringProp name="EXPECTED_VALUE">address_suggestions() missing 1 required positional argument: &apos;address&apos;</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сообщение ошибки - field required" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">field required</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем объект ошибки - address" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].object_name</stringProp>
+                  <stringProp name="EXPECTED_VALUE">address</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -4255,18 +4282,27 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученный тип ошибки - TypeError" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.type</stringProp>
-                  <stringProp name="EXPECTED_VALUE">TypeError</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код ошибки - value_error.missing" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">value_error.missing</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученное описание ошибки - address_suggestions() missing 1 required positional argument: &apos;customer_code&apos;" enabled="true">
-                  <stringProp name="JSON_PATH">.error.data.message</stringProp>
-                  <stringProp name="EXPECTED_VALUE">address_suggestions() missing 1 required positional argument: &apos;customer_code&apos;</stringProp>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем сообщение ошибки - field required" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].message</stringProp>
+                  <stringProp name="EXPECTED_VALUE">field required</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем объект ошибки - customer_code" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors.[*].object_name</stringProp>
+                  <stringProp name="EXPECTED_VALUE">customer_code</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
