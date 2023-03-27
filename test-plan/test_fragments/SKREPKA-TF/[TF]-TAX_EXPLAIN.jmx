@@ -2003,6 +2003,116 @@ order by random() limit 1;
               <hashTree/>
             </hashTree>
           </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Как рассчитаны взносы прошлый год" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;Задачи для клиента&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;«Как рассчитаны налоги/взносы» в Точке X&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;Как рассчитаны взносы прошлый год&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;, &quot;Страховые взносы - это обязательные платежи на пенсионное, медицинское и социальное страхование работников и индивидуальных предпринимателей.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;);</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента" enabled="true">
+              <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+              <stringProp name="query">select oc.customer_code 
+	from orders_company oc  
+		where oc.closing_date is null 
+		and oc.is_active is true 
+		and oc.tax_regime_id =&apos;2&apos;  
+order by random() limit 1;
+
+</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames">customer_code</stringProp>
+            </JDBCSampler>
+            <hashTree>
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
+                <stringProp name="cacheKey">true</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223PostProcessor>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-1090]</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем Как рассчитан платеж для взносов за прошлый год" enabled="true">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;method&quot;: &quot;tax_fee_explain&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code}&quot;,&#xd;
+        &quot;unique_key&quot;:&quot;fee-4-${__timeShift(yyyy,,-P365D,,)}-foms-pfr&quot;&#xd;
+    }&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+              <hashTree/>
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем описание - Закон позволяет уменьшить налог на сумму обязательных взносов. Это работает в том случае, если взносы уплачиваются в тот же период, за который планируется уменьшить налог. Например, для уменьшения налога за IV квартал, нужно уплатить взносы в период с 1 октября по 31 декабря.Если до конца квартала увеличится налог, мы предложим вам уплатить страховые взносы на эту образовавшуюся сумму. " enabled="true">
+                <stringProp name="JSON_PATH">.result[2].content</stringProp>
+                <stringProp name="EXPECTED_VALUE">[[&quot;Закон позволяет уменьшить налог на сумму обязательных взносов. Это работает в том случае, если взносы уплачиваются в тот же период, за который планируется уменьшить налог. Например, для уменьшения налога за IV квартал, нужно уплатить взносы в период с 1 октября по 31 декабря.&quot;,&quot;Если до конца квартала увеличится налог, мы предложим вам уплатить страховые взносы на эту образовавшуюся сумму.&quot;]]</stringProp>
+                <boolProp name="JSONVALIDATION">true</boolProp>
+                <boolProp name="EXPECT_NULL">false</boolProp>
+                <boolProp name="INVERT">false</boolProp>
+                <boolProp name="ISREGEX">false</boolProp>
+              </JSONPathAssertion>
+              <hashTree/>
+              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename">${_allure_config_path}</stringProp>
+                <stringProp name="parameters">stop</stringProp>
+                <stringProp name="script"></stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Assertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Валидация" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Как рассчитаны платежи с пустым ИД задачи" enabled="true">
@@ -2272,45 +2382,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
-                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-                <stringProp name="query">select oc.customer_code 
-	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
-		where oc.closing_date is null 
-		and oc.is_active is true 
-		and oc.tax_regime_id =&apos;2&apos; 
-		and pp.company_id is null
-order by random() limit 1;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames">customer_code</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223PostProcessor>
-                <hashTree/>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">start issues=[TAXDEV-1090]</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем Как рассчитан платеж для первой части патента" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Как рассчитаны платежи для пустого клиента " enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
@@ -2378,7 +2450,7 @@ order by random() limit 1;
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="parameters"></stringProp>
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
@@ -2402,45 +2474,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
                 <stringProp name="scriptLanguage">groovy</stringProp>
               </JSR223Sampler>
               <hashTree/>
-              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Находим активного клиента без патента" enabled="true">
-                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-                <stringProp name="query">select oc.customer_code 
-	from orders_company oc left join patent_patent pp on oc.id = pp.company_id 
-		where oc.closing_date is null 
-		and oc.is_active is true 
-		and oc.tax_regime_id =&apos;2&apos; 
-		and pp.company_id is null
-order by random() limit 1;
-
-</stringProp>
-                <stringProp name="queryArguments"></stringProp>
-                <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="queryTimeout"></stringProp>
-                <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="resultSetHandler">Store as String</stringProp>
-                <stringProp name="resultSetMaxRows"></stringProp>
-                <stringProp name="resultVariable"></stringProp>
-                <stringProp name="variableNames">customer_code</stringProp>
-              </JDBCSampler>
-              <hashTree>
-                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменные без постфикса" enabled="true">
-                  <stringProp name="cacheKey">true</stringProp>
-                  <stringProp name="filename"></stringProp>
-                  <stringProp name="parameters"></stringProp>
-                  <stringProp name="script">vars.put(&quot;customer_code&quot;,vars[&quot;customer_code_1&quot;])</stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223PostProcessor>
-                <hashTree/>
-                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                  <stringProp name="cacheKey">false</stringProp>
-                  <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">start issues=[TAXDEV-1090]</stringProp>
-                  <stringProp name="script"></stringProp>
-                  <stringProp name="scriptLanguage">groovy</stringProp>
-                </JSR223Assertion>
-                <hashTree/>
-              </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем Как рассчитан платеж без кода клиента" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Как рассчитаны платежи для не указанного клиента " enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
@@ -2507,7 +2541,7 @@ order by random() limit 1;
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="cacheKey">false</stringProp>
                   <stringProp name="filename">${_allure_config_path}</stringProp>
-                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="parameters"></stringProp>
                   <stringProp name="script"></stringProp>
                   <stringProp name="scriptLanguage">groovy</stringProp>
                 </JSR223Assertion>
