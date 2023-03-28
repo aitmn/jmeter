@@ -2599,6 +2599,15 @@ and ss2.code =&apos;9909&apos;
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на другой услуге - пустой" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.next_features</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
                   <stringProp name="parameters">stop</stringProp>
@@ -2868,10 +2877,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
 String DB_web_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
-    DB_web_feature_code = DB_web_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_web_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_web_feature_code = DB_web_feature_code +vars.get(&quot;DB_web_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_web_feature_code){
-        DB_web_feature_code=DB_web_feature_code + &quot;,&quot; 
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -2927,10 +2936,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
 String DB_mobile_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
-    DB_mobile_feature_code = DB_mobile_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_mobile_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_mobile_feature_code){
-        DB_mobile_feature_code=DB_mobile_feature_code + &quot;,&quot; 
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -3100,7 +3109,7 @@ for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
 	{
 		for (int j = 1; j &lt;= count_mobile_feature_code;)
 			{
-				if  (vars.get(&quot;mobile_feature_code_matchNr&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
 					{
 						j++;  
 						count_compare++; 
@@ -3253,10 +3262,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
 String DB_web_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
-    DB_web_feature_code = DB_web_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_web_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_web_feature_code = DB_web_feature_code +vars.get(&quot;DB_web_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_web_feature_code){
-        DB_web_feature_code=DB_web_feature_code + &quot;,&quot; 
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -3312,10 +3321,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
 String DB_mobile_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
-    DB_mobile_feature_code = DB_mobile_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_mobile_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_mobile_feature_code){
-        DB_mobile_feature_code=DB_mobile_feature_code + &quot;,&quot; 
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -3461,24 +3470,6 @@ vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</strin
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT в вебе - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;PATENT_CARD&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT на мобилке - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;PATENT_CARD&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -3828,10 +3819,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
 String DB_web_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
-    DB_web_feature_code = DB_web_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_web_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_web_feature_code = DB_web_feature_code + vars.get(&quot;DB_web_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_web_feature_code){
-        DB_web_feature_code=DB_web_feature_code + &quot;,&quot; 
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -3887,10 +3878,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
 String DB_mobile_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
-    DB_mobile_feature_code = DB_mobile_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_mobile_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_mobile_feature_code){
-        DB_mobile_feature_code=DB_mobile_feature_code + &quot;,&quot; 
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -4010,24 +4001,6 @@ vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</strin
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT в вебе - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT на мобилке - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;PATENT_CARD&quot;,&quot;MARKETPLACES&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_PATENT&quot;,&quot;STATEMENT_USN&quot;,&quot;SVERKA&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;LETTER_FNS_SEND&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -4227,10 +4200,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
 String DB_mobile_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
-    DB_mobile_feature_code = DB_mobile_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_mobile_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_mobile_feature_code = DB_mobile_feature_code  + vars.get(&quot;DB_mobile_feature_code_&quot; + i)
 
     if (i &lt; count_DB_mobile_feature_code){
-        DB_mobile_feature_code=DB_mobile_feature_code + &quot;,&quot; 
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -4286,10 +4259,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
 String DB_web_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
-    DB_web_feature_code = DB_web_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_web_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_web_feature_code = DB_web_feature_code  + vars.get(&quot;DB_web_feature_code_&quot; + i)
 
     if (i &lt; count_DB_web_feature_code){
-        DB_web_feature_code=DB_web_feature_code + &quot;,&quot; 
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -4446,24 +4419,6 @@ vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT в вебе - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;MARKETPLACES&quot;,&quot;MONEYBOX&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT на мобилке - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;MARKETPLACES&quot;,&quot;MONEYBOX&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -4663,10 +4618,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
 String DB_mobile_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
-    DB_mobile_feature_code = DB_mobile_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_mobile_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_mobile_feature_code){
-        DB_mobile_feature_code=DB_mobile_feature_code + &quot;,&quot; 
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -4722,10 +4677,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
 String DB_web_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
-    DB_web_feature_code = DB_web_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_web_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_web_feature_code = DB_web_feature_code  + vars.get(&quot;DB_web_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_web_feature_code){
-        DB_web_feature_code=DB_web_feature_code + &quot;,&quot; 
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -4883,24 +4838,6 @@ vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT в вебе - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;PATENT_CARD&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT на мобилке - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;SVERKA&quot;,&quot;STATEMENT_1C&quot;,&quot;MONEYBOX&quot;,&quot;STATEMENT_USN&quot;,&quot;LETTER_FNS_SEND&quot;,&quot;SEND_REPORT_GOS&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;PATENT_CARD&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -5100,10 +5037,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
 String DB_mobile_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
-    DB_mobile_feature_code = DB_mobile_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_mobile_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_mobile_feature_code = DB_mobile_feature_code  + vars.get(&quot;DB_mobile_feature_code_&quot; + i)   
 
     if (i &lt; count_DB_mobile_feature_code){
-        DB_mobile_feature_code=DB_mobile_feature_code + &quot;,&quot; 
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -5159,10 +5096,10 @@ ORDER BY  ss.id ;</stringProp>
                   <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
 String DB_web_feature_code=&apos;&apos;;
 for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
-    DB_web_feature_code = DB_web_feature_code +&quot;\&quot;&quot; + vars.get(&quot;DB_web_feature_code_&quot; + i) + &quot;\&quot;&quot; 
+    DB_web_feature_code = DB_web_feature_code + vars.get(&quot;DB_web_feature_code_&quot; + i) 
 
     if (i &lt; count_DB_web_feature_code){
-        DB_web_feature_code=DB_web_feature_code + &quot;,&quot; 
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
     }
     i++;
 };
@@ -5318,24 +5255,6 @@ vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT в вебе - &quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;MARKETPLACES&quot;,&quot;PATENT_CARD&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
-                <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на TAX_COUNT на мобилке - &quot;PATENT_CARD&quot;,&quot;MARKETPLACES&quot;,&quot;STATEMENT_PATENT&quot;" enabled="true">
-                  <stringProp name="JSON_PATH">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;PATENT_CARD&quot;,&quot;MARKETPLACES&quot;,&quot;STATEMENT_PATENT&quot;]</stringProp>
-                  <boolProp name="JSONVALIDATION">true</boolProp>
-                  <boolProp name="EXPECT_NULL">false</boolProp>
-                  <boolProp name="INVERT">false</boolProp>
-                  <boolProp name="ISREGEX">false</boolProp>
-                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
