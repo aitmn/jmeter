@@ -345,7 +345,7 @@ where status=&apos;CONNECTED&apos;
 and service_id =(
 	select id 
 		from stepler_service 
-	where name =&apos;TAX_COUNT_IN_EXP&apos;
+	where code =&apos;9928&apos;
 		order by   random() limit 1)
 	order by   random() limit 1 </stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -419,9 +419,9 @@ and service_id =(
                     <boolProp name="ISREGEX">false</boolProp>
                   </JSONPathAssertion>
                   <hashTree/>
-                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - &apos;Бухподдержка на Доходы минус расходы&apos;" enabled="true">
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - Бухподдержка на «Доходы - расходы»" enabled="true">
                     <stringProp name="JSON_PATH">$.result.service_full_name</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы минус расходы»</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы - расходы»</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -874,7 +874,7 @@ and service_id =(
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось верное описание услуги" enabled="true">
                     <stringProp name="JSON_PATH">$.result.service_full_name</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Отправка отчётности</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Отчётность</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -1602,7 +1602,7 @@ where status=&apos;CONNECTED&apos;
 and service_id =(
 	select id 
 		from stepler_service 
-	where name =&apos;TAX_COUNT_IN_EXP&apos;
+	where code =&apos;9928&apos;
 		order by   random() limit 1)
 	order by   random() limit 1 </stringProp>
                   <stringProp name="queryArguments"></stringProp>
@@ -1677,9 +1677,9 @@ and service_id =(
                     <boolProp name="ISREGEX">false</boolProp>
                   </JSONPathAssertion>
                   <hashTree/>
-                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - &apos;Бухподдержка на Доходы минус расходы&apos;" enabled="true">
+                  <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - Бухподдержка на «Доходы - расходы»" enabled="true">
                     <stringProp name="JSON_PATH">$.result.service_full_name</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы минус расходы»</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы - расходы»</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -2161,7 +2161,7 @@ and service_id =(
                   <hashTree/>
                   <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось верное описание услуги" enabled="true">
                     <stringProp name="JSON_PATH">$.result.service_full_name</stringProp>
-                    <stringProp name="EXPECTED_VALUE">Отправка отчётности</stringProp>
+                    <stringProp name="EXPECTED_VALUE">Отчётность</stringProp>
                     <boolProp name="JSONVALIDATION">true</boolProp>
                     <boolProp name="EXPECT_NULL">false</boolProp>
                     <boolProp name="INVERT">false</boolProp>
@@ -2391,7 +2391,7 @@ and ss2.code =&apos;9927&apos;
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                     <stringProp name="555338763">Работа с копилкой</stringProp>
                     <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                     <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
@@ -2401,6 +2401,15 @@ and ss2.code =&apos;9927&apos;
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на другой услуге - пустой" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.next_features</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -2579,7 +2588,7 @@ and ss2.code =&apos;9909&apos;
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                     <stringProp name="555338763">Работа с копилкой</stringProp>
                     <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                     <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
@@ -2589,6 +2598,15 @@ and ss2.code =&apos;9909&apos;
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на другой услуге - пустой" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.next_features</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -2633,7 +2651,7 @@ where status=&apos;CONNECTED&apos;
 and service_id =(
 	select id 
 		from stepler_service 
-	where name =&apos;TAX_COUNT_IN_EXP&apos;
+	where code =&apos;9928&apos;
 		order by   random() limit 1)
 	order by   random() limit 1 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -2698,9 +2716,9 @@ and service_id =(
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - &apos;Бухподдержка на Доходы минус расходы&apos;" enabled="true">
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги -  Бухподдержка на «Доходы - расходы»" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.full_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы минус расходы»</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы - расходы»</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -2747,6 +2765,15 @@ and service_id =(
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список фич доступных на другой услуге - пустой" enabled="true">
+                  <stringProp name="JSON_PATH">$.result.next_features</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -2810,6 +2837,124 @@ and service_id =(
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для веба" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_WEB&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_WEB&apos;
+			AND ss2.name =&apos;FREE_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_web_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для веба в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+String DB_web_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
+    DB_web_feature_code = DB_web_feature_code +vars.get(&quot;DB_web_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_web_feature_code){
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для мобилки" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+			AND ss2.name =&apos;FREE_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_mobile_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для мобилки в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+String DB_mobile_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_mobile_feature_code){
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг " enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -2844,6 +2989,22 @@ and service_id =(
               </HTTPSamplerProxy>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для веба" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">web_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для мобилки" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">mobile_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулась активная услуга - FREE_TAX_COUNT" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.name</stringProp>
@@ -2898,6 +3059,106 @@ and service_id =(
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+
+
+if (count_DB_web_feature_code == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_web_feature_code + &quot; But found: &quot; + count_web_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+
+
+if (count_DB_mobile_feature_code == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_mobile_feature_code + &quot; But found: &quot; + count_mobile_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для мобилки есть ${DB_mobile_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_mobile_feature_code;)
+			{
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_mobile_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для веба есть ${DB_web_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_web_feature_code;)
+			{
+				if  (vars.get(&quot;web_feature_code_&quot; + j)== vars.get(&quot;DB_web_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_web_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -2961,6 +3222,124 @@ and service_id =(
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для веба" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_WEB&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_WEB&apos;
+			AND ss2.name =&apos;TAX_COUNT_EMPLOYEE&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_web_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для веба в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+String DB_web_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
+    DB_web_feature_code = DB_web_feature_code +vars.get(&quot;DB_web_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_web_feature_code){
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для мобилки" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+			AND ss2.name =&apos;TAX_COUNT_EMPLOYEE&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_mobile_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для мобилки в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+String DB_mobile_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_mobile_feature_code){
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -2995,6 +3374,22 @@ and service_id =(
               </HTTPSamplerProxy>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для веба" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">web_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для мобилки" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">mobile_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулась активная услуга - TAX_COUNT_EMPLOYEE" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.name</stringProp>
@@ -3068,13 +3463,113 @@ and service_id =(
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+
+
+if (count_DB_mobile_feature_code == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_mobile_feature_code + &quot; But found: &quot; + count_mobile_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+
+
+if (count_DB_web_feature_code == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_web_feature_code + &quot; But found: &quot; + count_web_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для веба есть ${DB_web_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_web_feature_code;)
+			{
+				if  (vars.get(&quot;web_feature_code_&quot; + j)== vars.get(&quot;DB_web_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_web_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для мобилки есть ${DB_mobile_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_mobile_feature_code;)
+			{
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_mobile_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -3184,7 +3679,7 @@ and service_id =(
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось верное описание услуги" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.full_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">Отправка отчётности</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Отчётность</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -3284,6 +3779,124 @@ and service_id =(
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для веба" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_WEB&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_WEB&apos;
+			AND ss2.name =&apos;BUNDLE_BASE_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_web_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для веба в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+String DB_web_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
+    DB_web_feature_code = DB_web_feature_code + vars.get(&quot;DB_web_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_web_feature_code){
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для мобилки" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+			AND ss2.name =&apos;BUNDLE_BASE_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_mobile_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для мобилки в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+String DB_mobile_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_mobile_feature_code){
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг " enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -3318,6 +3931,22 @@ and service_id =(
               </HTTPSamplerProxy>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для веба" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">web_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для мобилки" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">mobile_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулась активная услуга - BUNDLE_BASE_TAX_COUNT" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.name</stringProp>
@@ -3372,6 +4001,106 @@ and service_id =(
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+
+
+if (count_DB_web_feature_code == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_web_feature_code + &quot; But found: &quot; + count_web_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+
+
+if (count_DB_mobile_feature_code == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_mobile_feature_code + &quot; But found: &quot; + count_mobile_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для веба есть ${DB_web_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_web_feature_code;)
+			{
+				if  (vars.get(&quot;web_feature_code_&quot; + j)== vars.get(&quot;DB_web_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_web_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для мобилки есть ${DB_mobile_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_mobile_feature_code;)
+			{
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_mobile_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -3431,6 +4160,124 @@ and ss2.code =&apos;9924&apos;
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для мобилки" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+			AND ss2.name =&apos;BUNDLE_PATENT_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_mobile_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для мобилки в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+String DB_mobile_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
+    DB_mobile_feature_code = DB_mobile_feature_code  + vars.get(&quot;DB_mobile_feature_code_&quot; + i)
+
+    if (i &lt; count_DB_mobile_feature_code){
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для веба" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_WEB&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_WEB&apos;
+			AND ss2.name =&apos;BUNDLE_PATENT_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_web_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для веба в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+String DB_web_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
+    DB_web_feature_code = DB_web_feature_code  + vars.get(&quot;DB_web_feature_code_&quot; + i)
+
+    if (i &lt; count_DB_web_feature_code){
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -3465,6 +4312,22 @@ and ss2.code =&apos;9924&apos;
               </HTTPSamplerProxy>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для веба" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">web_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для мобилки" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">mobile_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулась активная услуга - TAX_COUNT" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.name</stringProp>
@@ -3557,6 +4420,106 @@ and ss2.code =&apos;9924&apos;
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
                 <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+
+
+if (count_DB_mobile_feature_code == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_mobile_feature_code + &quot; But found: &quot; + count_mobile_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+
+
+if (count_DB_web_feature_code == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_web_feature_code + &quot; But found: &quot; + count_web_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для веба есть ${DB_web_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_web_feature_code;)
+			{
+				if  (vars.get(&quot;web_feature_code_&quot; + j)== vars.get(&quot;DB_web_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_web_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для мобилки есть ${DB_mobile_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_mobile_feature_code;)
+			{
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_mobile_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
                   <stringProp name="parameters">stop</stringProp>
@@ -3615,6 +4578,124 @@ and ss2.code =&apos;9925&apos;
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для мобилки" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+			AND ss2.name =&apos;BUNDLE_WB_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_mobile_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для мобилки в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+String DB_mobile_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
+    DB_mobile_feature_code = DB_mobile_feature_code + vars.get(&quot;DB_mobile_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_mobile_feature_code){
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для веба" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_WEB&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_WEB&apos;
+			AND ss2.name =&apos;BUNDLE_WB_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_web_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для веба в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+String DB_web_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
+    DB_web_feature_code = DB_web_feature_code  + vars.get(&quot;DB_web_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_web_feature_code){
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -3649,6 +4730,22 @@ and ss2.code =&apos;9925&apos;
               </HTTPSamplerProxy>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для веба" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">web_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для мобилки" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">mobile_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулась активная услуга - BUNDLE_WB_TAX_COUNT" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.name</stringProp>
@@ -3733,7 +4830,7 @@ and ss2.code =&apos;9925&apos;
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                     <stringProp name="555338763">Работа с копилкой</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
@@ -3741,6 +4838,106 @@ and ss2.code =&apos;9925&apos;
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+
+
+if (count_DB_mobile_feature_code == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_mobile_feature_code + &quot; But found: &quot; + count_mobile_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+
+
+if (count_DB_web_feature_code == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_web_feature_code + &quot; But found: &quot; + count_web_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для веба есть ${DB_web_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_web_feature_code;)
+			{
+				if  (vars.get(&quot;web_feature_code_&quot; + j)== vars.get(&quot;DB_web_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_web_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для мобилки есть ${DB_mobile_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_mobile_feature_code;)
+			{
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_mobile_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -3800,6 +4997,124 @@ and ss2.code =&apos;9926&apos;
                 </JSR223Assertion>
                 <hashTree/>
               </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для мобилки" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_MOBILE&apos;
+			AND ss2.name =&apos;BUNDLE_MONEYBOX_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_mobile_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для мобилки в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+String DB_mobile_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;){ 
+    DB_mobile_feature_code = DB_mobile_feature_code  + vars.get(&quot;DB_mobile_feature_code_&quot; + i)   
+
+    if (i &lt; count_DB_mobile_feature_code){
+        DB_mobile_feature_code=DB_mobile_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_mobile_feature_code_list&quot;,DB_mobile_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем список будующих фичей для веба" enabled="true">
+                <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="query">SELECT ss.code
+FROM stepler_servicefeature ss
+JOIN stepler_servicefeature_choice_services sscs
+	ON ss.id =sscs.servicefeature_id
+JOIN stepler_service ss2
+	ON ss2.id = sscs.service_id
+WHERE is_functional is true
+		AND ss.visible_area =&apos;ONLY_WEB&apos;
+		AND ss2.code =&apos;9927&apos;
+		AND ss.code NOT IN 
+	(SELECT ss.code
+	FROM stepler_servicefeature ss
+	JOIN stepler_servicefeature_choice_services sscs
+		ON ss.id =sscs.servicefeature_id
+	JOIN stepler_service ss2
+		ON ss2.id = sscs.service_id
+	WHERE is_functional is true
+			AND ss.visible_area =&apos;ONLY_WEB&apos;
+			AND ss2.name =&apos;BUNDLE_MONEYBOX_TAX_COUNT&apos;)
+ORDER BY  ss.id ;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="variableNames">DB_web_feature_code</stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Сохраняем фичи для веба в список" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+String DB_web_feature_code=&apos;&apos;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;){ 
+    DB_web_feature_code = DB_web_feature_code + vars.get(&quot;DB_web_feature_code_&quot; + i) 
+
+    if (i &lt; count_DB_web_feature_code){
+        DB_web_feature_code=DB_web_feature_code + &quot;, &quot; 
+    }
+    i++;
+};
+vars.put(&quot;DB_web_feature_code_list&quot;,DB_web_feature_code);</stringProp>
+                </JSR223PostProcessor>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters">continue</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="script"></stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
               <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрос на список подключенных услуг" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -3834,6 +5149,22 @@ and ss2.code =&apos;9926&apos;
               </HTTPSamplerProxy>
               <hashTree>
                 <com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.gui.JSONFormatterGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonformatter.JSONFormatter" testname="jp@gc - JSON Format Post Processor" enabled="true"/>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для веба" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">web_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_WEB&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
+                <hashTree/>
+                <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Получаем список будующих фичей для мобилки" enabled="true">
+                  <stringProp name="JSONPostProcessor.referenceNames">mobile_feature_code</stringProp>
+                  <stringProp name="JSONPostProcessor.jsonPathExprs">$.result.next_features.[?(@.service.name == &apos;TAX_COUNT&apos; &amp;&amp; @.feature.visible_area == &apos;ONLY_MOBILE&apos;) ].feature.code</stringProp>
+                  <stringProp name="JSONPostProcessor.match_numbers">-1</stringProp>
+                  <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND</stringProp>
+                  <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+                </JSONPostProcessor>
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулась активная услуга - BUNDLE_MONEYBOX_TAX_COUNT" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.name</stringProp>
@@ -3924,6 +5255,106 @@ and ss2.code =&apos;9926&apos;
                   <boolProp name="Assertion.assume_success">false</boolProp>
                   <intProp name="Assertion.test_type">16</intProp>
                 </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для веба: ${DB_web_feature_code_#} и ${web_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+
+
+if (count_DB_web_feature_code == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_web_feature_code + &quot; But found: &quot; + count_web_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для веба есть ${DB_web_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_web_feature_code = Integer.parseInt(vars.get(&quot;DB_web_feature_code_#&quot;));
+int count_web_feature_code = Integer.parseInt(vars.get(&quot;web_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_web_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_web_feature_code;)
+			{
+				if  (vars.get(&quot;web_feature_code_&quot; + j)== vars.get(&quot;DB_web_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_web_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_web_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Сравниваем кол-во будующих фич для мобилки ${DB_mobile_feature_code_#} и ${mobile_feature_code_matchNr}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+
+
+if (count_DB_mobile_feature_code == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во элементов tasks (completed) сервиса ca не сошлось с кол-вом сервиса blender.&quot; + &quot; Expected: &quot; + count_DB_mobile_feature_code + &quot; But found: &quot; + count_mobile_feature_code + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Проверяем, что в списке будующих фич для мобилки есть ${DB_mobile_feature_code_list}" enabled="true">
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="cacheKey">true</stringProp>
+                  <stringProp name="script">int count_DB_mobile_feature_code = Integer.parseInt(vars.get(&quot;DB_mobile_feature_code_#&quot;));
+int count_mobile_feature_code = Integer.parseInt(vars.get(&quot;mobile_feature_code_matchNr&quot;));
+int count_compare = 0;
+String errorMsg = &quot;&quot;;
+for (int i = 1; i &lt;= count_DB_mobile_feature_code;)
+	{
+		for (int j = 1; j &lt;= count_mobile_feature_code;)
+			{
+				if  (vars.get(&quot;mobile_feature_code_&quot; + j)== vars.get(&quot;DB_mobile_feature_code_&quot; + i))
+					{
+						j++;  
+						count_compare++; 
+					} 
+			j++;
+			} 
+	i++;
+	};
+
+if (count_compare == count_mobile_feature_code){
+        prev.setSuccessful(true);
+}else {
+    AssertionResult.setFailure(true);
+    errorMsg+=&quot;Кол-во совпадений не совпадает с кол-вом фич&quot; + &quot; Expected: &quot; +  count_mobile_feature_code + &quot; But found: &quot; + count_compare + &quot;. &quot;
+    AssertionResult.setFailureMessage(errorMsg)
+}</stringProp>
+                </JSR223Assertion>
                 <hashTree/>
                 <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
                   <stringProp name="scriptLanguage">groovy</stringProp>
@@ -4372,14 +5803,14 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента с подключенной услугой в БД" enabled="true">
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Select Statement</stringProp>
-                <stringProp name="query">select sc.customer_code, ss.date_begin, ss.date_end 
+                <stringProp name="query">select ss.id, sc.customer_code, ss.date_begin, ss.date_end 
 from stepler_serviceconnection ss  join stepler_customer sc on sc.id=ss.customer_id join stepler_service ss2 on ss.service_id =ss2.id 
 where ss.status=&apos;CONNECTED&apos;
 and ss2.code =&apos;9927&apos;
 	order by   random() limit 1;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
-                <stringProp name="variableNames">customer_code, date_begin, date_end</stringProp>
+                <stringProp name="variableNames">connection_id, customer_code, date_begin, date_end</stringProp>
                 <stringProp name="resultVariable"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
                 <stringProp name="resultSetMaxRows"></stringProp>
@@ -4399,8 +5830,7 @@ and ss2.code =&apos;9927&apos;
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">update stepler_serviceconnection set status=&apos;CONNECTS&apos; 
-	where customer_id = (select id from stepler_customer where customer_code = &apos;${customer_code_1}&apos;)
-	and date_begin =&apos;${date_begin_1}&apos; and service_id=(select id from stepler_service where code =&apos;9927&apos;)</stringProp>
+	where  id = &apos;${connection_id_1}&apos;;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -4529,7 +5959,7 @@ and ss2.code =&apos;9927&apos;
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                     <stringProp name="555338763">Работа с копилкой</stringProp>
                     <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                     <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
@@ -4553,8 +5983,7 @@ and ss2.code =&apos;9927&apos;
                 <stringProp name="dataSource">STEPLER_${__P(layer)}</stringProp>
                 <stringProp name="queryType">Update Statement</stringProp>
                 <stringProp name="query">update stepler_serviceconnection set status=&apos;CONNECTED&apos; 
-	where customer_id = (select id from stepler_customer where customer_code = &apos;${customer_code_1}&apos;)
-	and date_begin =&apos;${date_begin_1}&apos; and service_id=(select id from stepler_service where code =&apos;9927&apos;)</stringProp>
+	where  id = &apos;${connection_id_1}&apos;;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="variableNames"></stringProp>
@@ -4766,7 +6195,7 @@ and ss2.code =&apos;9909&apos;
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                     <stringProp name="555338763">Работа с копилкой</stringProp>
                     <stringProp name="1727798796">Добавление карточки патента и учет расчетов по патенту</stringProp>
                     <stringProp name="1202698941">Формирование и отправка заявления на патент</stringProp>
@@ -4852,7 +6281,7 @@ where status=&apos;CONNECTS&apos;
 and service_id =(
 	select id 
 		from stepler_service 
-	where name in (&apos;TAX_COUNT_IN_EXP&apos;)
+	where code =&apos;9928&apos;
 		order by   random() limit 1)
 	order by   random() limit 1 </stringProp>
                 <stringProp name="queryArguments"></stringProp>
@@ -4917,9 +6346,9 @@ and service_id =(
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - Бухподдержка на «Доходы минус расходы»" enabled="true">
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - Бухподдержка на «Доходы - расходы»" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.full_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы минус расходы»</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Бухподдержка на «Доходы - расходы»</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -5118,7 +6547,7 @@ and service_id =(
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
                   <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -5232,9 +6661,9 @@ and service_id =(
                   <boolProp name="ISREGEX">false</boolProp>
                 </JSONPathAssertion>
                 <hashTree/>
-                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - Отправка отчётности" enabled="true">
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что вернулось описание услуги - Отчётность" enabled="true">
                   <stringProp name="JSON_PATH">$.result.service.full_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">Отправка отчётности</stringProp>
+                  <stringProp name="EXPECTED_VALUE">Отчётность</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -5818,7 +7247,7 @@ and ss2.code =&apos;9925&apos;
                     <stringProp name="-1219293633">Напоминание об оплате налогов и взносов в смс</stringProp>
                     <stringProp name="-1090089736">Отправка отчета в госорганы</stringProp>
                     <stringProp name="-236075902">Добавление карточки ЕНВД</stringProp>
-                    <stringProp name="1285204736">Работа с Wildberries и другими маркетплейсами</stringProp>
+                    <stringProp name="-152179718">Работа с маркетплейсами</stringProp>
                     <stringProp name="555338763">Работа с копилкой</stringProp>
                   </collectionProp>
                   <stringProp name="Assertion.custom_message"></stringProp>
