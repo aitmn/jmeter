@@ -1,0 +1,2016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="КУДиР" enabled="true"/>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение списка КУДиР " enabled="true"/>
+        <hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение списка КУДИР УСН " enabled="true"/>
+          <hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Ручная дата начала расчета налога текущий" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная дата начала расчета налога = текущий год&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16813&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__time(yyyy,)}-01-01&apos; 
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе = &apos;КУДиР по УСН за ${__time(yyyy,)}&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе есть КУДИР для УСН" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">usn</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе нет КУДИРа для Патента" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = прошлый год, автоматическая дата = текущий год" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН Д-Р. Ручная дата начала расчета налога = прошлый год, автоматическая дата = текущий год&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16810&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">
+select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and  oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description =&apos;ИП на УСН Д-Р&apos;) 
+		and oc.tax_calc_start_date =&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and oc.tax_calc_start_date_auto =&apos;${__time(yyyy,)}-01-01&apos;
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__time(yyyy,)} года - КУДиР по УСН за ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P365D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе нет КУДИРа для Патента" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Ручная дата начала расчета налога = текущий, автоматическая дата = прошлый" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента. Ручная дата начала расчета налога = текущий, автоматическая дата = прошлый год&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16811&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">
+select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and oc.closing_date is null 
+	and oc.is_active is true
+	and oc.tax_calc_start_date =&apos;${__time(yyyy,)}-01-01&apos; and oc.tax_calc_start_date_auto =&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos;
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__time(yyyy,)} года - КУДиР по УСН за ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что нет другого года в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе нет КУДИРа для Патента" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Ручная и автоматическая дата начала расчета налога = 2020" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная и автоматическая дата начала расчета налога позапрошлый год&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16814&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">
+select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and  oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in (
+		&apos;ИП на УСН Доходы&apos;,
+		&apos;ИП на УСН 6% (Патент)&apos;,
+		&apos;ИП на УСН 6% (ЕНВД)&apos;,
+		&apos;ИП на УСН Д-Р&apos;)
+	)
+		and oc.tax_calc_start_date =&apos;${__timeShift(yyyy,,-P730D,,)}-01-01&apos; and oc.tax_calc_start_date_auto =&apos;${__timeShift(yyyy,,-P730D,,)}-01-01&apos;
+order by random() limit 1;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__time(yyyy,)} года - КУДиР по УСН за ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P365D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P730D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P730D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе нет КУДИРа для Патента" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Ручная дата начала расчета не установлена" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная дата начала расчета не установлена&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">		
+		
+select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and  oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in (
+		&apos;ИП на УСН Доходы&apos;,
+		&apos;ИП на УСН 6% (Патент)&apos;,
+		&apos;ИП на УСН 6% (ЕНВД)&apos;,
+		&apos;ИП на УСН Д-Р&apos;)
+	)
+		and oc.tax_calc_start_date is null and oc.tax_calc_start_date_auto =&apos;${__timeShift(yyyy,,-P730D,,)}-01-01&apos;
+order by random() limit 1;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для  ${__time(yyyy,)} года - КУДиР по УСН за ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P365D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P730D,,)}&apos;)].year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P730D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P730D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе нет КУДИРа для Патента" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Ручная и автоматическая дата начала расчета не установлена" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная и автоматическая дата начала расчета не установлена&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">		
+select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and  oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in (
+		&apos;ИП на УСН Доходы&apos;,
+		&apos;ИП на УСН 6% (Патент)&apos;,
+		&apos;ИП на УСН 6% (ЕНВД)&apos;,
+		&apos;ИП на УСН Д-Р&apos;)
+	)
+		and oc.tax_calc_start_date is null and oc.tax_calc_start_date_auto is null and incorporation_date between &apos;${__timeShift(yyyy,,-P730D,,)}-01-01&apos; and &apos;${__timeShift(yyyy,,-P730D,,)}-12-31&apos;
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__time(yyyy,)} года - КУДиР по УСН за ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P365D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P730D,,)}&apos;)].year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P730D,,)} года - КУДиР по УСН за ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P730D,,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__timeShift(yyyy,,-P730D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе нет КУДИРа для Патента" enabled="true">
+                  <stringProp name="JSON_PATH">.result..book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">true</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Ручная дата начала расчета налога -4 года" enabled="false">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН. Ручная дата начала расчета налога -4 года&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16813&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)\\n\\n Метод возвращает КУДиР с даты начала расчётов, но не старше последних трёх лет. В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.\\n\\n&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc left join patent_patent pp on oc.id =pp.company_id 
+where  pp.id is null and oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__timeShift(yyyy,,-P1095D,,)}-01-01&apos; 
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть последние 3 года: ${__time(yyyy,)}, ${__timeShift(yyyy,,-P365D,,)}, ${__timeShift(yyyy,,-P730D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*]..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[${__time(yyyy,)},${__timeShift(yyyy,,-P365D,,)},${__timeShift(yyyy,,-P730D,,)}]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Получение списка КУДИР Патент " enabled="true"/>
+          <hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН с добавленным патентом за текущий год" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН с добавленным патентом за текущий год&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md). Если у клиента в каком-то году был патент и он не помечен как удаленный, то метод отдаст для этого года возможность скачать КУДиР по Патенту.\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД с датой начала расчетов в этом году и с действующем патентом" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
+where  pp.start_date &gt;&apos;${__time(yyyy,)}-01-01&apos; and pp.deactivated is false and oc.closing_date is null and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;))
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе есть КУДИР для УСН и Патента за текущий год" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;usn&quot;,&quot;patent&quot;]</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__time(yyyy,)} года - КУДиР по Патенту за ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year ==&apos;${__time(yyyy,)}&apos; &amp;&amp; @.book_type==&apos;patent&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по Патенту за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН с добавленным патентом за прошлый год" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН с добавленным патентом за прошлый год&quot;); 
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md). Если у клиента в каком-то году был патент и он не помечен как удаленный, то метод отдаст для этого года возможность скачать КУДиР по Патенту.\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
+where  pp.start_date BETWEEN &apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; and &apos;${__timeShift(yyyy,,-P365D,,)}-12-31&apos; 
+and pp.deactivated is false and oc.closing_date is null
+and oc.is_active is true and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__timeShift(yyyy,,-P365D,,)}-01-01&apos; 
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем, что в ответе есть КУДиР за ${__time(yyyy,)} год" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что в ответе есть КУДИР для Патента за прошлый год" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__timeShift(yyyy,,-P365D,,)}&apos;)].book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">patent</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе для ${__timeShift(yyyy,,-P365D,,)} года - КУДиР по Патенту за ${__timeShift(yyyy,,-P365D,,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year ==&apos;${__timeShift(yyyy,,-P365D,,)}&apos; &amp;&amp; @.book_type==&apos;patent&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по Патенту за ${__timeShift(yyyy,,-P365D,,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для активного клиента на УСН с удаленным патентом за текущий год" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для активного клиента на УСН с удаленным патентом за текущий год&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md). Если у клиента в каком-то году был патент и он не помечен как удаленный, то метод отдаст для этого года возможность скачать КУДиР по Патенту.\\n\\n В качестве начальной даты используется дата начала расчётов: сначала ручная, потом автоматическая.&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); 
+</stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем клиента в БД с удалённым патентом за текущий год" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">with st as (select oc.customer_code, array_agg(pp.deactivated) as deactivated
+	from orders_company oc join patent_patent pp on oc.id =pp.company_id 
+where  pp.start_date &gt;&apos;${__time(yyyy,)}-01-01&apos;  and oc.closing_date is null and oc.is_active is true 
+and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;))
+		group by oc.customer_code)
+select *
+from st
+where  not(&apos;false&apos; =  any (deactivated))
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-804001588">customer_code deactivated
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем год в ответе = ${__time(yyyy,)}" enabled="true">
+                  <stringProp name="JSON_PATH">.result..year</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заголовок в ответе = &apos;КУДиР по УСН за ${__time(yyyy,)}&apos;" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].title</stringProp>
+                  <stringProp name="EXPECTED_VALUE">КУДиР по УСН за ${__time(yyyy,)}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем список КУДиРов в ответе - usn" enabled="true">
+                  <stringProp name="JSON_PATH">.result.[*].[?(@.year == &apos;${__time(yyyy,)}&apos;)].book_type</stringProp>
+                  <stringProp name="EXPECTED_VALUE">usn</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Валидация" enabled="true"/>
+          <hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для некорректного  кода клиента" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для некорректного кода клиента&quot;);   
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc  
+where oc.closing_date is null and oc.is_active is false and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description like &apos;%ОСНО%&apos;)
+order by random() limit 1;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}1&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код  ошибки в ответе = customer_not_found" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">customer_not_found</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код клиента в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..meta.customer_code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${customer_code_1}1</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР с пустым кодом клиента" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР с пустым кодом клиента&quot;);  
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)&quot;); 
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код  ошибки в ответе = customer_not_found" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">customer_not_found</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код клиента в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..meta.customer_code</stringProp>
+                  <stringProp name="EXPECTED_VALUE"></stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР без кода клиента" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР без кода клиента&quot;);   
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}1&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код  ошибки в ответе = customer_not_found" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">customer_not_found</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для неактивного клиента на ОСНО" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для неактивного клиента на ОСНО&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16809&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc  
+where oc.closing_date is null and oc.is_active is false and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description like &apos;%ОСНО%&apos;)
+order by random() limit 1;
+</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код  ошибки в ответе = revenue_book_feature_not_available" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">revenue_book_feature_not_available</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код клиента в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..meta.customer_code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${customer_code_1}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="КУДиР для клиента на УСН. С неактивным расчетом" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">true</boolProp>
+            </TransactionController>
+            <hashTree>
+              <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Declare allure annotations" enabled="true">
+                <stringProp name="cacheKey">false</stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="script">vars.put(&quot;AllureFeature&quot;,&quot;КУДиР&quot;);
+vars.put(&quot;AllureStory&quot;,&quot;Получение списка КУДиР&quot;);
+vars.put(&quot;AllureCaseName&quot;,&quot;КУДиР для клиента на УСН. С неактивным расчетом&quot;);  
+vars.put(&quot;AllureManualID&quot;,&quot;16812&quot;);
+vars.put(&quot;AllureCaseDescription&quot;,&quot;КУДиР — Книга учета доходов и расходов обязательна для ИП и ООО на УСН. Книга учета отражает все операции, на основании которых считается налоговая база и платятся налоги. Если налог платится с дохода, то расход можно не отражать в документе. Если в расчете налогооблагаемой базы учитывается как доход, так и расход, то в книге отражаются все операции. \\nТак как КУДиР заполняется на основании выполненых операций, то он может быть сформирован за прошлые и текущий год.\\nПеред скачивание КУДиР нужно получить список доступных книг - для этого используется метод [revenue_book_list](https://gitlab.tochka-tech.com/tar/tar-api/-/blob/master/skrepka/t15_revenue_book_list.md)&quot;);
+vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Владимировна&quot;); </stringProp>
+                <stringProp name="scriptLanguage">groovy</stringProp>
+              </JSR223Sampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем подходящего клиента в БД" enabled="true">
+                <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
+                <stringProp name="query">select oc.customer_code
+	from orders_company oc  
+where oc.closing_date is null and oc.is_active is false and oc.tax_regime_id in 
+	(select id 
+		from orders_taxregime ot
+		where ot.description in 
+		(&apos;ИП на УСН Доходы&apos;)) and oc.tax_calc_start_date =&apos;${__time(yyyy,)}-01-01&apos;
+order by random() limit 1;</stringProp>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames">customer_code</stringProp>
+              </JDBCSampler>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Проверяем что запрос вернул не пустой ответ" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="-2043603940">customer_code
+</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.custom_message"></stringProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">12</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">start issues=[TAXDEV-611]</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Запрашиваем список КУДиР" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">{&#xd;
+    &quot;id&quot;: &quot;${__UUID()}&quot;,&#xd;
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,&#xd;
+    &quot;method&quot;: &quot;revenue_book_list&quot;,&#xd;
+    &quot;params&quot;: {&#xd;
+        &quot;customer_code&quot;: &quot;${customer_code_1}&quot;&#xd;
+    }&#xd;
+} </stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain">${__P(layer)}-skrepka.bank24.int</stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.protocol">https</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+                <stringProp name="HTTPSampler.path">api/v5/jsonrpc</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="TestPlan.comments">text_storage_get</stringProp>
+              </HTTPSamplerProxy>
+              <hashTree>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код  ошибки в ответе = revenue_book_feature_not_available" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">revenue_book_feature_not_available</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем код клиента в ответе" enabled="true">
+                  <stringProp name="JSON_PATH">.error.data.errors..meta.customer_code</stringProp>
+                  <stringProp name="EXPECTED_VALUE">${customer_code_1}</stringProp>
+                  <boolProp name="JSONVALIDATION">true</boolProp>
+                  <boolProp name="EXPECT_NULL">false</boolProp>
+                  <boolProp name="INVERT">false</boolProp>
+                  <boolProp name="ISREGEX">false</boolProp>
+                </JSONPathAssertion>
+                <hashTree/>
+                <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
+                  <stringProp name="cacheKey">false</stringProp>
+                  <stringProp name="filename">${_allure_config_path}</stringProp>
+                  <stringProp name="parameters">stop</stringProp>
+                  <stringProp name="script"></stringProp>
+                  <stringProp name="scriptLanguage">groovy</stringProp>
+                </JSR223Assertion>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
