@@ -28,6 +28,16 @@
                   <stringProp name="Argument.value">${__UUID()}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
+                <elementProp name="id_Report" elementType="Argument">
+                  <stringProp name="Argument.name">id_Report</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="ID" elementType="Argument">
+                  <stringProp name="Argument.name">ID</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
               </collectionProp>
             </Arguments>
             <hashTree/>
@@ -131,20 +141,11 @@ ORDER BY   dbms_random.VALUE desc FETCH first 1 ROWS only  </stringProp>
               <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что не вернулся id патента" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся id патента" enabled="true">
                 <stringProp name="JSON_PATH">.result.id</stringProp>
                 <stringProp name="EXPECTED_VALUE"></stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">true</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученную ошибку" enabled="true">
-                <stringProp name="JSON_PATH">.error.message</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
@@ -210,51 +211,7 @@ ${patent_claim_id}	9999	${__time(yyyy-MM-dd,)}	${customer_code}	${__time(yyyy)}-
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИД заявления RS" enabled="true">
-              <stringProp name="dataSource">RS_${__P(layer)}</stringProp>
-              <stringProp name="query">SELECT  
-ad.ID ,
-ad.ID_PARENT AS id_Report
-FROM ASTRAL_DOCUMENT ad 
-JOIN ASTRAL_CUSTOMER ac 
-	ON ac.ID  =ad.ID_OWNER 
-WHERE 	
-	ac.BUSINESS_ID =&apos;${customer_code}&apos;
-	AND ad.TYPE =&apos;Send_FNS&apos;
-	ORDER BY ad.I_CREATION_TIME  DESC  FETCH first 1 ROWS only</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">ID, id_Report</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную без постфикса" enabled="true">
-                <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">vars.put(&quot;ID&quot;,vars[&apos;ID_1&apos;]);
-vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
-              </JSR223PostProcessor>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">9000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие в кролика" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие governmentDoc в q_esb_incoming_events" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -391,8 +348,8 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявление" enabled="true">
               <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-              <stringProp name="query">update patent_patentclaim  set deleted = True  
-	where id = &apos;${patent_claim_id}&apos;;</stringProp>
+              <stringProp name="query">DELETE FROM patent_patentclaimplace WHERE claim_id = &apos;${patent_claim_id}&apos;;
+DELETE FROM patent_patentclaim WHERE id = &apos;${patent_claim_id}&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -433,6 +390,16 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
                 <elementProp name="EventGuid" elementType="Argument">
                   <stringProp name="Argument.name">EventGuid</stringProp>
                   <stringProp name="Argument.value">${__UUID()}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="id_Report" elementType="Argument">
+                  <stringProp name="Argument.name">id_Report</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="ID" elementType="Argument">
+                  <stringProp name="Argument.name">ID</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -538,20 +505,11 @@ ORDER BY   dbms_random.VALUE desc FETCH first 1 ROWS only  </stringProp>
               <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что не вернулся id патента" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся id патента" enabled="true">
                 <stringProp name="JSON_PATH">.result.id</stringProp>
                 <stringProp name="EXPECTED_VALUE"></stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">true</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученную ошибку" enabled="true">
-                <stringProp name="JSON_PATH">.error.message</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
@@ -617,51 +575,7 @@ ${patent_claim_id}	9999	${__time(yyyy-MM-dd,)}	${customer_code}	${__time(yyyy)}-
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИД заявления RS" enabled="true">
-              <stringProp name="dataSource">RS_${__P(layer)}</stringProp>
-              <stringProp name="query">SELECT  
-ad.ID ,
-ad.ID_PARENT AS id_Report
-FROM ASTRAL_DOCUMENT ad 
-JOIN ASTRAL_CUSTOMER ac 
-	ON ac.ID  =ad.ID_OWNER 
-WHERE 	
-	ac.BUSINESS_ID =&apos;${customer_code}&apos;
-	AND ad.TYPE =&apos;Send_FNS&apos;
-	ORDER BY ad.I_CREATION_TIME  DESC  FETCH first 1 ROWS only</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">ID, id_Report</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную без постфикса" enabled="true">
-                <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">vars.put(&quot;ID&quot;,vars[&apos;ID_1&apos;]);
-vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
-              </JSR223PostProcessor>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">9000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие в кролика" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие governmentDoc в q_esb_incoming_events" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -798,8 +712,8 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявление" enabled="true">
               <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-              <stringProp name="query">update patent_patentclaim  set deleted = True  
-	where id = &apos;${patent_claim_id}&apos;;</stringProp>
+              <stringProp name="query">DELETE FROM patent_patentclaimplace WHERE claim_id = &apos;${patent_claim_id}&apos;;
+DELETE FROM patent_patentclaim WHERE id = &apos;${patent_claim_id}&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -840,6 +754,16 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
                 <elementProp name="EventGuid" elementType="Argument">
                   <stringProp name="Argument.name">EventGuid</stringProp>
                   <stringProp name="Argument.value">${__UUID()}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="id_Report" elementType="Argument">
+                  <stringProp name="Argument.name">id_Report</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="ID" elementType="Argument">
+                  <stringProp name="Argument.name">ID</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -945,20 +869,11 @@ ORDER BY   dbms_random.VALUE desc FETCH first 1 ROWS only  </stringProp>
               <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что не вернулся id патента" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся id патента" enabled="true">
                 <stringProp name="JSON_PATH">.result.id</stringProp>
                 <stringProp name="EXPECTED_VALUE"></stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">true</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученную ошибку" enabled="true">
-                <stringProp name="JSON_PATH">.error.message</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
@@ -1024,51 +939,7 @@ ${patent_claim_id}	9999	${__time(yyyy-MM-dd,)}	${customer_code}	${__time(yyyy)}-
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИД заявления RS" enabled="true">
-              <stringProp name="dataSource">RS_${__P(layer)}</stringProp>
-              <stringProp name="query">SELECT  
-ad.ID ,
-ad.ID_PARENT AS id_Report
-FROM ASTRAL_DOCUMENT ad 
-JOIN ASTRAL_CUSTOMER ac 
-	ON ac.ID  =ad.ID_OWNER 
-WHERE 	
-	ac.BUSINESS_ID =&apos;${customer_code}&apos;
-	AND ad.TYPE =&apos;Send_FNS&apos;
-	ORDER BY ad.I_CREATION_TIME  DESC  FETCH first 1 ROWS only</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">ID, id_Report</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную без постфикса" enabled="true">
-                <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">vars.put(&quot;ID&quot;,vars[&apos;ID_1&apos;]);
-vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
-              </JSR223PostProcessor>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">9000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие в кролика" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие governmentDoc в q_esb_incoming_events" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1205,8 +1076,8 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявление" enabled="true">
               <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-              <stringProp name="query">update patent_patentclaim  set deleted = True  
-	where id = &apos;${patent_claim_id}&apos;;</stringProp>
+              <stringProp name="query">DELETE FROM patent_patentclaimplace WHERE claim_id = &apos;${patent_claim_id}&apos;;
+DELETE FROM patent_patentclaim WHERE id = &apos;${patent_claim_id}&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1247,6 +1118,16 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
                 <elementProp name="EventGuid" elementType="Argument">
                   <stringProp name="Argument.name">EventGuid</stringProp>
                   <stringProp name="Argument.value">${__UUID()}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="id_Report" elementType="Argument">
+                  <stringProp name="Argument.name">id_Report</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="ID" elementType="Argument">
+                  <stringProp name="Argument.name">ID</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -1352,20 +1233,11 @@ ORDER BY   dbms_random.VALUE desc FETCH first 1 ROWS only  </stringProp>
               <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что не вернулся id патента" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся id патента" enabled="true">
                 <stringProp name="JSON_PATH">.result.id</stringProp>
                 <stringProp name="EXPECTED_VALUE"></stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">true</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученную ошибку" enabled="true">
-                <stringProp name="JSON_PATH">.error.message</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
@@ -1431,51 +1303,7 @@ ${patent_claim_id}	9999	${__time(yyyy-MM-dd,)}	${customer_code}	${__time(yyyy)}-
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИД заявления RS" enabled="true">
-              <stringProp name="dataSource">RS_${__P(layer)}</stringProp>
-              <stringProp name="query">SELECT  
-ad.ID ,
-ad.ID_PARENT AS id_Report
-FROM ASTRAL_DOCUMENT ad 
-JOIN ASTRAL_CUSTOMER ac 
-	ON ac.ID  =ad.ID_OWNER 
-WHERE 	
-	ac.BUSINESS_ID =&apos;${customer_code}&apos;
-	AND ad.TYPE =&apos;Send_FNS&apos;
-	ORDER BY ad.I_CREATION_TIME  DESC  FETCH first 1 ROWS only</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">ID, id_Report</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную без постфикса" enabled="true">
-                <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">vars.put(&quot;ID&quot;,vars[&apos;ID_1&apos;]);
-vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
-              </JSR223PostProcessor>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">9000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие в кролика" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие governmentDoc в q_esb_incoming_events" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -1612,8 +1440,8 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявление" enabled="true">
               <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-              <stringProp name="query">update patent_patentclaim  set deleted = True  
-	where id = &apos;${patent_claim_id}&apos;;</stringProp>
+              <stringProp name="query">DELETE FROM patent_patentclaimplace WHERE claim_id = &apos;${patent_claim_id}&apos;;
+DELETE FROM patent_patentclaim WHERE id = &apos;${patent_claim_id}&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1654,6 +1482,16 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
                 <elementProp name="EventGuid" elementType="Argument">
                   <stringProp name="Argument.name">EventGuid</stringProp>
                   <stringProp name="Argument.value">${__UUID()}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="id_Report" elementType="Argument">
+                  <stringProp name="Argument.name">id_Report</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="ID" elementType="Argument">
+                  <stringProp name="Argument.name">ID</stringProp>
+                  <stringProp name="Argument.value">${__Random(00000,99999)}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -1759,20 +1597,11 @@ ORDER BY   dbms_random.VALUE desc FETCH first 1 ROWS only  </stringProp>
               <stringProp name="TestPlan.comments">send_claim_patent_validate</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что не вернулся id патента" enabled="true">
+              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем что вернулся id патента" enabled="true">
                 <stringProp name="JSON_PATH">.result.id</stringProp>
                 <stringProp name="EXPECTED_VALUE"></stringProp>
                 <boolProp name="JSONVALIDATION">true</boolProp>
                 <boolProp name="EXPECT_NULL">true</boolProp>
-                <boolProp name="INVERT">true</boolProp>
-                <boolProp name="ISREGEX">false</boolProp>
-              </JSONPathAssertion>
-              <hashTree/>
-              <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем полученную ошибку" enabled="true">
-                <stringProp name="JSON_PATH">.error.message</stringProp>
-                <stringProp name="EXPECTED_VALUE"></stringProp>
-                <boolProp name="JSONVALIDATION">true</boolProp>
-                <boolProp name="EXPECT_NULL">false</boolProp>
                 <boolProp name="INVERT">true</boolProp>
                 <boolProp name="ISREGEX">false</boolProp>
               </JSONPathAssertion>
@@ -1838,51 +1667,7 @@ ${patent_claim_id}	9999	${__time(yyyy-MM-dd,)}	${customer_code}	${__time(yyyy)}-
               </JSR223Assertion>
               <hashTree/>
             </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Ищем ИД заявления RS" enabled="true">
-              <stringProp name="dataSource">RS_${__P(layer)}</stringProp>
-              <stringProp name="query">SELECT  
-ad.ID ,
-ad.ID_PARENT AS id_Report
-FROM ASTRAL_DOCUMENT ad 
-JOIN ASTRAL_CUSTOMER ac 
-	ON ac.ID  =ad.ID_OWNER 
-WHERE 	
-	ac.BUSINESS_ID =&apos;${customer_code}&apos;
-	AND ad.TYPE =&apos;Send_FNS&apos;
-	ORDER BY ad.I_CREATION_TIME  DESC  FETCH first 1 ROWS only</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">ID, id_Report</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Садим переменную без постфикса" enabled="true">
-                <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">vars.put(&quot;ID&quot;,vars[&apos;ID_1&apos;]);
-vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
-              </JSR223PostProcessor>
-              <hashTree/>
-              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">9000</stringProp>
-              </ConstantTimer>
-              <hashTree/>
-              <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Allure.log.info" enabled="true">
-                <stringProp name="cacheKey">false</stringProp>
-                <stringProp name="filename">${_allure_config_path}</stringProp>
-                <stringProp name="parameters">continue</stringProp>
-                <stringProp name="script"></stringProp>
-                <stringProp name="scriptLanguage">groovy</stringProp>
-              </JSR223Assertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие в кролика" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Посылаем событие governmentDoc в q_esb_incoming_events" enabled="true">
               <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
@@ -2019,8 +1804,8 @@ vars.put(&quot;id_Report&quot;,vars[&apos;id_Report_1&apos;]) </stringProp>
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Удаляем заявление" enabled="true">
               <stringProp name="dataSource">SKREPKA_${__P(layer)}</stringProp>
-              <stringProp name="query">update patent_patentclaim  set deleted = True  
-	where id = &apos;${patent_claim_id}&apos;;</stringProp>
+              <stringProp name="query">DELETE FROM patent_patentclaimplace WHERE claim_id = &apos;${patent_claim_id}&apos;;
+DELETE FROM patent_patentclaim WHERE id = &apos;${patent_claim_id}&apos;;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
