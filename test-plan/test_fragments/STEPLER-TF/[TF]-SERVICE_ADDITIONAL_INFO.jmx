@@ -16,10 +16,7 @@
       <hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверка условий для ИП с запросом доп информации" enabled="true"/>
         <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверка работы флага additional_info" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверка работы флага additional_info" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Флаг additional_info = false" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -438,10 +435,7 @@ vars.put(&quot;AllureTestOwner&quot;,&quot;Нога Екатерина Влад�
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение short_name" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверяем заполнение short_name" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение короткого названия услуги TAX_COUNT" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -659,7 +653,7 @@ from stepler_customer sc
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение короткого названия услуги REPORT" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение короткого названия услуги REPORT" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -756,8 +750,7 @@ select customer_code, organization_type,taxation_type_id
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение короткого имени доступных услуги REPORT" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;REPORT&apos;)].short_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;Отчётность&quot;]
-</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;Отчётность&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -774,7 +767,7 @@ select customer_code, organization_type,taxation_type_id
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение короткого названия услуги TAX_COUNT_IN_EXP" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение короткого названия услуги TAX_COUNT_IN_EXP" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
@@ -871,8 +864,7 @@ select customer_code, organization_type,taxation_type_id
                 <hashTree/>
                 <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Проверяем заполнение короткого имени доступных услуги TAX_COUNT_IN_EXP" enabled="true">
                   <stringProp name="JSON_PATH">.result.available_services.[?(@.name == &apos;TAX_COUNT_IN_EXP&apos;)].short_name</stringProp>
-                  <stringProp name="EXPECTED_VALUE">[&quot;Персональная&quot;]
-</stringProp>
+                  <stringProp name="EXPECTED_VALUE">[&quot;Персональная&quot;]</stringProp>
                   <boolProp name="JSONVALIDATION">true</boolProp>
                   <boolProp name="EXPECT_NULL">false</boolProp>
                   <boolProp name="INVERT">false</boolProp>
@@ -890,10 +882,7 @@ select customer_code, organization_type,taxation_type_id
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение full_price_visible" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверяем заполнение full_price_visible" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Стоимость REPORT при 401 тарифе" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -2804,10 +2793,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение finish_discount" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверяем заполнение finish_discount" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="finish_discount is null" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -3604,10 +3590,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение price_visible" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверяем заполнение price_visible" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="price_visible для REPORT при 401 тарифе без скидки" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -4705,10 +4688,7 @@ delete from stepler_discount sd where criteria -&gt; &apos;customer&apos; -&gt; 
               </hashTree>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение logo_url" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Проверяем заполнение logo_url" enabled="true"/>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Проверяем заполнение logo_url услуги TAX_COUNT" enabled="true">
               <boolProp name="TransactionController.includeTimers">false</boolProp>
